@@ -16,7 +16,9 @@
   "keywords": [
     "development",
     "environment",
-    "info"
+    "info",
+    "issues",
+    "reporting"
   ],
   "dependencies": {
     "chalk": "^1.1.3",
