@@ -1,0 +1,29 @@
+{
+  "name": "envinfo",
+  "version": "1.0.0",
+  "description": "Info about your dev environment for debugging purposes",
+  "repository": "https://github.com/tabrindle/envinfo",
+  "author": "tabrindle@gmail.com",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js",
+    "format": "prettier-eslint index.js --write"
+  },
+  "bin": {
+    "envinfo": "node index.js"
+  },
+  "keywords": [
+    "development",
+    "environment",
+    "info"
+  ],
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "os-name": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "prettier-eslint-cli": "^4.1.1"
+  }
+}
