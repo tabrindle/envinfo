@@ -1,6 +1,6 @@
 {
   "name": "envinfo",
-  "version": "1.0.0",
+  "version": "2.0.2",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
@@ -11,7 +11,7 @@
     "format": "prettier-eslint index.js --write"
   },
   "bin": {
-    "envinfo": "node index.js"
+    "envinfo": "index.js"
   },
   "keywords": [
     "development",
