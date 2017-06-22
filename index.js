@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+var argv = require('minimist')(process.argv.slice(2));
 var child_process = require('child_process');
 var execSync = child_process.execSync;
 var os = require('os');
@@ -109,3 +110,20 @@ console.log('  Yarn: ', getYarnVersion());
 console.log('  npm: ', getNpmVersion());
 console.log('  Xcode: ', getXcodeVersion());
 console.log('  Android Studio: ', getAndroidStudioVersion());
+
+if (argv.packages){
+  var packageJson = require(process.cwd() + '/package.json');
+  var devDependencies = packageJson.devDependencies || {};
+  var dependencies = packageJson.dependencies || {};
+  var allDependencies = Object.assign({}, devDependencies, dependencies);
+  var logFunction = function(dep) {
+    if(allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
+  };
+
+  if (typeof argv.packages === 'string') {
+    argv.packages.split(',').map(logFunction);
+  } else if (typeof argv.packages === 'boolean'){
+    Object.keys(allDependencies).map(logFunction);
+  }
+}
+
