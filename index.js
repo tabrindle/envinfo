@@ -100,6 +100,17 @@ function getYarnVersion() {
 }
 
 function getOperatingSystemInfo() {
+  try {
+    if (process.platform === 'darwin') {
+      var version = (execSync('sw_vers -productVersion ', {
+        stdio: [0, 'pipe', 'ignore']
+      }).toString() || '')
+        .trim();
+      return osName(os.platform(), os.release()) + ' ' + version;
+    }
+  } catch (err) {
+    console.log('Unable to find Mac OS version');
+  }
   return osName(os.platform(), os.release());
 }
 
@@ -111,19 +122,18 @@ console.log('  npm: ', getNpmVersion());
 console.log('  Xcode: ', getXcodeVersion());
 console.log('  Android Studio: ', getAndroidStudioVersion());
 
-if (argv.packages){
+if (argv.packages) {
   var packageJson = require(process.cwd() + '/package.json');
   var devDependencies = packageJson.devDependencies || {};
   var dependencies = packageJson.dependencies || {};
   var allDependencies = Object.assign({}, devDependencies, dependencies);
   var logFunction = function(dep) {
-    if(allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
+    if (allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
   };
 
   if (typeof argv.packages === 'string') {
     argv.packages.split(',').map(logFunction);
-  } else if (typeof argv.packages === 'boolean'){
+  } else if (typeof argv.packages === 'boolean') {
     Object.keys(allDependencies).map(logFunction);
   }
 }
-
