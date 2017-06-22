@@ -14,7 +14,6 @@ No need to install envinfo - npx will install and run it for you!
 Installed globally: `envinfo`
 Via npx: `npx envinfo`
 
-## Sample
 ```bash
 Environment:
   OS:  macOS Sierra
@@ -23,6 +22,39 @@ Environment:
   npm:  5.0.0
   Xcode:  Xcode 8.3.3 Build version 8E3004b 
   Android Studio:  2.3 AI-162.3934792
+```
+
+Optionally add packages from your package.json:
+`envinfo --packages react,react-native`
+
+```bash
+Environment:
+  OS:  macOS Sierra
+  Node:  v7.10.0
+  Yarn:  0.24.5
+  npm:  4.2.0
+  Xcode:  Xcode 8.3.3 Build version 8E3004b 
+  Android Studio:  2.3 AI-162.3934792 
+  react:  16.0.0-alpha.6
+  react-native:  0.44.0
+```
+
+Or all of your packages like this:
+`envinfo --packages`
+
+```bash
+Environment:
+  OS:  macOS Sierra
+  Node:  v7.10.0
+  Yarn:  0.24.5
+  npm:  4.2.0
+  Xcode:  Xcode 8.3.3 Build version 8E3004b 
+  Android Studio:  2.3 AI-162.3934792 
+  eslint:  ^4.0.0
+  prettier-eslint-cli:  ^4.1.1
+  chalk:  ^1.1.3
+  minimist:  ^1.2.0
+  os-name:  ^2.0.1
 ```
 
 ## Contributing
