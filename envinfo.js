@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var argv = require('minimist')(process.argv.slice(2));
 var child_process = require('child_process');
-var execSync = child_process.execSync;
 var os = require('os');
 var osName = require('os-name');
 
@@ -11,7 +9,7 @@ function getXcodeVersion() {
   var xcodeVersion = 'Not Found';
   if (process.platform === 'darwin') {
     try {
-      xcodeVersion = execSync('/usr/bin/xcodebuild -version').toString().split('\n').join(' ');
+      xcodeVersion = child_process.execSync('/usr/bin/xcodebuild -version').toString().split('\n').join(' ');
     } catch (err) {
       console.log('xcodebuild not found in typical install location');
     }
@@ -76,7 +74,7 @@ function getAndroidStudioVersion() {
 function getNpmVersion() {
   var npmVersion;
   try {
-    npmVersion = (execSync('npm -v', {
+    npmVersion = (child_process.execSync('npm -v', {
       stdio: [0, 'pipe', 'ignore']
     }).toString() || '')
       .trim();
@@ -89,7 +87,7 @@ function getNpmVersion() {
 function getYarnVersion() {
   var yarnVersion;
   try {
-    yarnVersion = (execSync('yarn --version', {
+    yarnVersion = (child_process.execSync('yarn --version', {
       stdio: [0, 'pipe', 'ignore']
     }).toString() || '')
       .trim();
@@ -102,7 +100,7 @@ function getYarnVersion() {
 function getOperatingSystemInfo() {
   try {
     if (process.platform === 'darwin') {
-      var version = (execSync('sw_vers -productVersion ', {
+      var version = (child_process.execSync('sw_vers -productVersion ', {
         stdio: [0, 'pipe', 'ignore']
       }).toString() || '')
         .trim();
@@ -114,26 +112,28 @@ function getOperatingSystemInfo() {
   return osName(os.platform(), os.release());
 }
 
-console.log('Environment:');
-console.log('  OS: ', getOperatingSystemInfo());
-console.log('  Node: ', process.version);
-console.log('  Yarn: ', getYarnVersion());
-console.log('  npm: ', getNpmVersion());
-console.log('  Xcode: ', getXcodeVersion());
-console.log('  Android Studio: ', getAndroidStudioVersion());
+module.exports.print = function(argv) {
+  console.log('Environment:');
+  console.log('  OS: ', getOperatingSystemInfo());
+  console.log('  Node: ', process.version);
+  console.log('  Yarn: ', getYarnVersion());
+  console.log('  npm: ', getNpmVersion());
+  console.log('  Xcode: ', getXcodeVersion());
+  console.log('  Android Studio: ', getAndroidStudioVersion());
 
-if (argv.packages) {
-  var packageJson = require(process.cwd() + '/package.json');
-  var devDependencies = packageJson.devDependencies || {};
-  var dependencies = packageJson.dependencies || {};
-  var allDependencies = Object.assign({}, devDependencies, dependencies);
-  var logFunction = function(dep) {
-    if (allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
-  };
+  if (argv.packages) {
+    var packageJson = require(process.cwd() + '/package.json');
+    var devDependencies = packageJson.devDependencies || {};
+    var dependencies = packageJson.dependencies || {};
+    var allDependencies = Object.assign({}, devDependencies, dependencies);
+    var logFunction = function(dep) {
+      if (allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
+    };
 
-  if (typeof argv.packages === 'string') {
-    argv.packages.split(',').map(logFunction);
-  } else if (typeof argv.packages === 'boolean') {
-    Object.keys(allDependencies).map(logFunction);
+    if (typeof argv.packages === 'string') {
+      argv.packages.split(',').map(logFunction);
+    } else if (typeof argv.packages === 'boolean') {
+      Object.keys(allDependencies).map(logFunction);
+    }
   }
-}
+};
