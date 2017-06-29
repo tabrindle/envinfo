@@ -112,7 +112,7 @@ function getOperatingSystemInfo() {
   return osName(os.platform(), os.release());
 }
 
-module.exports.print = function(argv) {
+module.exports.print = function(options) {
   console.log('Environment:');
   console.log('  OS: ', getOperatingSystemInfo());
   console.log('  Node: ', process.version);
@@ -121,19 +121,25 @@ module.exports.print = function(argv) {
   console.log('  Xcode: ', getXcodeVersion());
   console.log('  Android Studio: ', getAndroidStudioVersion());
 
-  if (argv.packages) {
-    var packageJson = require(process.cwd() + '/package.json');
-    var devDependencies = packageJson.devDependencies || {};
-    var dependencies = packageJson.dependencies || {};
-    var allDependencies = Object.assign({}, devDependencies, dependencies);
-    var logFunction = function(dep) {
-      if (allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
-    };
+  if (options) {
+    if (options.packages) {
+      console.log('Packages:');
 
-    if (typeof argv.packages === 'string') {
-      argv.packages.split(',').map(logFunction);
-    } else if (typeof argv.packages === 'boolean') {
-      Object.keys(allDependencies).map(logFunction);
+      var packageJson = require(process.cwd() + '/package.json');
+      var devDependencies = packageJson.devDependencies || {};
+      var dependencies = packageJson.dependencies || {};
+      var allDependencies = Object.assign({}, devDependencies, dependencies);
+      var logFunction = function(dep) {
+        if (allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
+      };
+
+      if (Array.isArray(options.packages)) {
+        options.packages.map(logFunction);
+      } else if (typeof options.packages === 'string') {
+        options.packages.split(',').map(logFunction);
+      } else if (typeof options.packages === 'boolean') {
+        Object.keys(allDependencies).map(logFunction);
+      }
     }
   }
 };
