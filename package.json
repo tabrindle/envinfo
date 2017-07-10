@@ -22,7 +22,8 @@
   ],
   "dependencies": {
     "minimist": "^1.2.0",
-    "os-name": "^2.0.1"
+    "os-name": "^2.0.1",
+    "which": "^1.2.14"
   },
   "devDependencies": {
     "eslint": "^4.0.0",
