@@ -2,17 +2,11 @@
 
 Reporting issues is a pain. Responding to issues is a pain. Make it a bit better.
 
-## Installation
-You can either install this package globally:
+## Installation & Usage
+Install this package globally:
+
 `npm install -g envinfo` 
-
-Or just install npx!
-`npm install -g npx`
-No need to install envinfo - npx will install and run it for you!
-
-## Usage
-Installed globally: `envinfo`
-Via npx: `npx envinfo`
+`envinfo`
 
 ```bash
 Environment:
