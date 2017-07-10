@@ -4,14 +4,22 @@
 var child_process = require('child_process');
 var os = require('os');
 var osName = require('os-name');
+var which = require('which');
+
+function run(cmd) {
+  return (child_process.execSync(cmd, {
+      stdio: [0, 'pipe', 'ignore']
+    }).toString() || '').trim();
+}
 
 function getXcodeVersion() {
-  var xcodeVersion = 'Not Found';
+  var xcodeVersion;
+  var xcodePath = which.sync('xcodebuild');
   if (process.platform === 'darwin') {
     try {
-      xcodeVersion = child_process.execSync('/usr/bin/xcodebuild -version').toString().split('\n').join(' ');
+      xcodeVersion = xcodePath && run(xcodePath + ' -version').split('\n').join(' ');
     } catch (err) {
-      console.log('xcodebuild not found in typical install location');
+      xcodeVersion = 'Not Found';
     }
   } else {
     xcodeVersion = 'N/A';
@@ -23,49 +31,41 @@ function getAndroidStudioVersion() {
   var androidStudioVersion = 'Not Found';
   if (process.platform === 'darwin') {
     try {
-      androidStudioVersion = child_process
-        .execFileSync(
-          '/usr/libexec/PlistBuddy',
+      androidStudioVersion = run(
           [
+            '/usr/libexec/PlistBuddy',
             '-c',
             'Print:CFBundleShortVersionString',
             '-c',
             'Print:CFBundleVersion',
-            '/Applications/Android Studio.app/Contents/Info.plist'
-          ],
-          { encoding: 'utf8' }
+            '/Applications/Android\ Studio.app/Contents/Info.plist'
+          ].join(' ')
         )
         .split('\n')
         .join(' ');
     } catch (err) {
-      console.log('Android Studio not found in typical install location');
+      androidStudioVersion = 'Not Found';
     }
   } else if (process.platform === 'linux') {
     try {
-      var linuxBuildNumber = child_process.execSync('cat /opt/android-studio/build.txt').toString();
-      var linuxVersion = child_process
-        .execSync('cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1')
-        .toString()
+      var linuxBuildNumber = run('cat /opt/android-studio/build.txt');
+      var linuxVersion = run('cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1')
         .match(/\d\.\d/)[0];
       androidStudioVersion = `${linuxVersion} ${linuxBuildNumber}`;
     } catch (err) {
-      console.log('Android Studio not found in typical install location');
+      androidStudioVersion = 'Not Found';
     }
   } else if (process.platform.startsWith('win')) {
     try {
-      var windowsVersion = child_process
-        .execSync(
+      var windowsVersion = run(
           'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
         )
-        .toString()
         .replace(/(\r\n|\n|\r)/gm, '');
-      var windowsBuildNumber = child_process
-        .execSync('type "C:\\\\Program Files\\\\Android\\\\Android Studio\\\\build.txt"')
-        .toString()
+      var windowsBuildNumber = run('type "C:\\\\Program Files\\\\Android\\\\Android Studio\\\\build.txt"')
         .replace(/(\r\n|\n|\r)/gm, '');
       androidStudioVersion = `${windowsVersion} ${windowsBuildNumber}`;
     } catch (err) {
-      console.log('Android Studio not found in typical install location');
+      androidStudioVersion = 'Not Found';
     }
   }
   return androidStudioVersion;
@@ -74,10 +74,7 @@ function getAndroidStudioVersion() {
 function getNpmVersion() {
   var npmVersion;
   try {
-    npmVersion = (child_process.execSync('npm -v', {
-      stdio: [0, 'pipe', 'ignore']
-    }).toString() || '')
-      .trim();
+    npmVersion = run('npm -v');
   } catch (error) {
     npmVersion = 'Not Found';
   }
@@ -87,10 +84,7 @@ function getNpmVersion() {
 function getYarnVersion() {
   var yarnVersion;
   try {
-    yarnVersion = (child_process.execSync('yarn --version', {
-      stdio: [0, 'pipe', 'ignore']
-    }).toString() || '')
-      .trim();
+    yarnVersion = run('yarn --version');
   } catch (error) {
     yarnVersion = 'Not Found';
   }
@@ -98,24 +92,32 @@ function getYarnVersion() {
 }
 
 function getOperatingSystemInfo() {
+  var operatingSystemInfo;
   try {
+    var operatingSystemInfo = osName(os.platform(), os.release());
     if (process.platform === 'darwin') {
-      var version = (child_process.execSync('sw_vers -productVersion ', {
-        stdio: [0, 'pipe', 'ignore']
-      }).toString() || '')
-        .trim();
-      return osName(os.platform(), os.release()) + ' ' + version;
+      operatingSystemInfo = operatingSystemInfo + ' ' + run('sw_vers -productVersion ');
     }
   } catch (err) {
-    console.log('Unable to find Mac OS version');
+    operatingSystemInfo = operatingSystemInfo + ' Unknown Version';
   }
-  return osName(os.platform(), os.release());
+  return operatingSystemInfo;
+}
+
+function getNodeVersion() {
+  var nodeVersion;
+  try {
+    nodeVersion = run('node --version').replace('v', '');
+  } catch (error) {
+    nodeVersion = 'Not Found';
+  }
+  return nodeVersion;
 }
 
 module.exports.print = function(options) {
   console.log('Environment:');
   console.log('  OS: ', getOperatingSystemInfo());
-  console.log('  Node: ', process.version);
+  console.log('  Node: ', getNodeVersion());
   console.log('  Yarn: ', getYarnVersion());
   console.log('  npm: ', getNpmVersion());
   console.log('  Xcode: ', getXcodeVersion());
