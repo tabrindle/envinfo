@@ -115,17 +115,19 @@ function getNodeVersion() {
 }
 
 module.exports.print = function(options) {
-  console.log('Environment:');
+  console.log('');
+  console.log('\x1b[4mEnvironment:\x1b[0m');
   console.log('  OS: ', getOperatingSystemInfo());
   console.log('  Node: ', getNodeVersion());
   console.log('  Yarn: ', getYarnVersion());
   console.log('  npm: ', getNpmVersion());
   console.log('  Xcode: ', getXcodeVersion());
   console.log('  Android Studio: ', getAndroidStudioVersion());
+  console.log('');
 
   if (options) {
     if (options.packages) {
-      console.log('Packages:');
+      console.log('\x1b[4mPackages:\x1b[0m');
 
       var packageJson = require(process.cwd() + '/package.json');
       var devDependencies = packageJson.devDependencies || {};
@@ -142,6 +144,7 @@ module.exports.print = function(options) {
       } else if (typeof options.packages === 'boolean') {
         Object.keys(allDependencies).map(logFunction);
       }
+      console.log('');
     }
   }
 };
