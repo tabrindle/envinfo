@@ -127,9 +127,16 @@ module.exports.print = function(options) {
 
   if (options) {
     if (options.packages) {
+      try {
+        var packageJson = require(process.cwd() + '/package.json');
+      } catch (err) {
+        console.log('ERROR: package.json not found!');
+        console.log('');
+        return;
+      }
+
       console.log('\x1b[4mPackages:\x1b[0m');
 
-      var packageJson = require(process.cwd() + '/package.json');
       var devDependencies = packageJson.devDependencies || {};
       var dependencies = packageJson.dependencies || {};
       var allDependencies = Object.assign({}, devDependencies, dependencies);
