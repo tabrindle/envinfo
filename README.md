@@ -16,11 +16,11 @@ Via npx: `npx envinfo`
 
 ```bash
 Environment:
-  OS:  macOS Sierra
-  Node:  v8.0.0
-  Yarn:  0.24.5
-  npm:  5.0.0
-  Xcode:  Xcode 8.3.3 Build version 8E3004b 
+  OS:  macOS Sierra 10.12.5
+  Node:  8.1.3
+  Yarn:  0.27.5
+  npm:  5.1.0
+  Xcode:  Xcode 8.3.3 Build version 8E3004b
   Android Studio:  2.3 AI-162.3934792
 ```
 
@@ -29,12 +29,13 @@ Optionally add packages from your package.json:
 
 ```bash
 Environment:
-  OS:  macOS Sierra
-  Node:  v7.10.0
-  Yarn:  0.24.5
-  npm:  4.2.0
-  Xcode:  Xcode 8.3.3 Build version 8E3004b 
-  Android Studio:  2.3 AI-162.3934792 
+  OS:  macOS Sierra 10.12.5
+  Node:  8.1.3
+  Yarn:  0.27.5
+  npm:  5.1.0
+  Xcode:  Xcode 8.3.3 Build version 8E3004b
+  Android Studio:  2.3 AI-162.3934792
+Packages:
   react:  16.0.0-alpha.6
   react-native:  0.44.0
 ```
@@ -44,17 +45,18 @@ Or all of your packages like this:
 
 ```bash
 Environment:
-  OS:  macOS Sierra
-  Node:  v7.10.0
-  Yarn:  0.24.5
-  npm:  4.2.0
-  Xcode:  Xcode 8.3.3 Build version 8E3004b 
-  Android Studio:  2.3 AI-162.3934792 
+  OS:  macOS Sierra 10.12.5
+  Node:  8.1.3
+  Yarn:  0.27.5
+  npm:  5.1.0
+  Xcode:  Xcode 8.3.3 Build version 8E3004b
+  Android Studio:  2.3 AI-162.3934792
+Packages:
   eslint:  ^4.0.0
   prettier-eslint-cli:  ^4.1.1
-  chalk:  ^1.1.3
   minimist:  ^1.2.0
   os-name:  ^2.0.1
+  which:  ^1.2.14
 ```
 
 ## Contributing
