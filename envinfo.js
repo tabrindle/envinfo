@@ -114,6 +114,17 @@ function getNodeVersion() {
   return nodeVersion;
 }
 
+function getWatchmanVersion() {
+  var watchmanVersion;
+  try {
+    var watchmanPath = which.sync('watchman');
+    watchmanVersion = watchmanPath && run(watchmanPath + ' --version');
+  } catch (error) {
+    watchmanVersion = 'Not Found';
+  }
+  return watchmanVersion;
+}
+
 module.exports.print = function(options) {
   console.log('');
   console.log('\x1b[4mEnvironment:\x1b[0m');
@@ -121,6 +132,7 @@ module.exports.print = function(options) {
   console.log('  Node: ', getNodeVersion());
   console.log('  Yarn: ', getYarnVersion());
   console.log('  npm: ', getNpmVersion());
+  console.log('  Watchman: ', getWatchmanVersion());
   console.log('  Xcode: ', getXcodeVersion());
   console.log('  Android Studio: ', getAndroidStudioVersion());
   console.log('');
