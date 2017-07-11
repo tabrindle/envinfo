@@ -147,13 +147,22 @@ module.exports.print = function(options) {
         return;
       }
 
-      console.log('\x1b[4mPackages:\x1b[0m');
+      console.log('\x1b[4mPackages:\x1b[0m (wanted => installed)');
 
       var devDependencies = packageJson.devDependencies || {};
       var dependencies = packageJson.dependencies || {};
       var allDependencies = Object.assign({}, devDependencies, dependencies);
       var logFunction = function(dep) {
-        if (allDependencies[dep]) console.log('  ' + dep + ': ', allDependencies[dep]);
+        if (allDependencies[dep]) {
+          var wanted = allDependencies[dep];
+          var installed;
+          try {
+            installed = require(process.cwd() + '/node_modules/' + dep + '/package.json').version;
+          } catch (err) {
+            installed = 'Not Installed';
+          }
+          console.log('  ' + dep + ': ' + wanted + ' => ' + installed);
+        }
       };
 
       if (Array.isArray(options.packages)) {
