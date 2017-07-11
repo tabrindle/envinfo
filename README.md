@@ -56,4 +56,4 @@ Packages: (wanted => installed)
 ## Contributing
 PRs for additional features are welcome! Run `npm run lint && npm run format` before commiting.
 
-This project came out of a PR to the React Native CLI tool - issues are reported frequently without important environment information, like Node/npm versions. 
+This project came out of a [PR](https://github.com/facebook/react-native/pull/14428) to the React Native CLI tool - issues are reported frequently without important environment information, like Node/npm versions. 
