@@ -29,9 +29,9 @@ Environment:
   npm:  5.1.0
   Xcode:  Xcode 8.3.3 Build version 8E3004b
   Android Studio:  2.3 AI-162.3934792
-Packages:
-  react:  16.0.0-alpha.6
-  react-native:  0.44.0
+Packages: (wanted => installed)
+  react:  16.0.0-alpha.6 => 16.0.0-alpha.6
+  react-native:  0.44.0 => 0.44.0
 ```
 
 Or all of your packages like this:
@@ -45,12 +45,12 @@ Environment:
   npm:  5.1.0
   Xcode:  Xcode 8.3.3 Build version 8E3004b
   Android Studio:  2.3 AI-162.3934792
-Packages:
-  eslint:  ^4.0.0
-  prettier-eslint-cli:  ^4.1.1
-  minimist:  ^1.2.0
-  os-name:  ^2.0.1
-  which:  ^1.2.14
+Packages: (wanted => installed)
+  eslint: ^4.0.0 => 4.2.0
+  prettier-eslint-cli: ^4.1.1 => 4.1.1
+  minimist: ^1.2.0 => 1.2.0
+  os-name: ^2.0.1 => 2.0.1
+  which: ^1.2.14 => 1.2.14
 ```
 
 ## Contributing
