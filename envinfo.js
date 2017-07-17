@@ -38,7 +38,7 @@ function getAndroidStudioVersion() {
             'Print:CFBundleShortVersionString',
             '-c',
             'Print:CFBundleVersion',
-            '/Applications/Android\ Studio.app/Contents/Info.plist'
+            '/Applications/Android\\ Studio.app/Contents/Info.plist'
           ].join(' ')
         )
         .split('\n')
