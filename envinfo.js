@@ -14,8 +14,8 @@ function run(cmd) {
 
 function getXcodeVersion() {
   var xcodeVersion;
-  var xcodePath = which.sync('xcodebuild');
   if (process.platform === 'darwin') {
+    var xcodePath = which.sync('xcodebuild');
     try {
       xcodeVersion = xcodePath && run(xcodePath + ' -version').split('\n').join(' ');
     } catch (err) {
