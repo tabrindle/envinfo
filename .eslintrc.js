@@ -1,26 +1,14 @@
 module.exports = {
   env: {
-    node: true,
-    es6: true
+    node: true
   },
-  extends: 'eslint:recommended',
+  extends: ['airbnb-base/legacy', 'prettier'],
   parserOptions: {
     sourceType: 'module'
   },
+  plugins: ['prettier'],
   rules: {
-    indent: ['error', 2],
-    'linebreak-style': ['error', 'unix'],
-    "no-console": 0,
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
-    'max-len': [
-      'error',
-      120,
-      2,
-      {
-        ignoreUrls: true,
-        ignoreComments: true
-      }
-    ]
-  }
+    'vars-on-top': 0,
+    'prettier/prettier': ['error']
+  },
 };
