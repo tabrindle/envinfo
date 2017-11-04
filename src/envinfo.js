@@ -16,8 +16,8 @@ module.exports.print = function print(options) {
   log.push('  Yarn: ' + helpers.getYarnVersion());
   log.push('  npm: ' + helpers.getNpmVersion());
   log.push('  Watchman: ' + helpers.getWatchmanVersion());
-  log.push('  Xcode: ' + helpers.getXcodeVersion());
-  log.push('  Android Studio: ' + helpers.getAndroidStudioVersion());
+  if (!options.noNativeIDE) log.push('  Xcode: ' + helpers.getXcodeVersion());
+  if (!options.noNativeIDE) log.push('  Android Studio: ' + helpers.getAndroidStudioVersion());
   log.push('');
 
   if (options) {
