@@ -3,6 +3,7 @@
 'use strict';
 
 var helpers = require('./helpers');
+var utils = require('./utils');
 var copypasta = require('copy-paste');
 
 module.exports.print = function print(options) {
@@ -22,8 +23,9 @@ module.exports.print = function print(options) {
 
   if (options) {
     if (options.packages) {
+      var packageJson;
       try {
-        var packageJson = require(process.cwd() + '/package.json');
+        packageJson = require(process.cwd() + '/package.json');
       } catch (err) {
         log.push('ERROR: package.json not found!');
         log.push('');
@@ -37,16 +39,26 @@ module.exports.print = function print(options) {
       var devDependencies = packageJson.devDependencies || {};
       var dependencies = packageJson.dependencies || {};
       var allDependencies = Object.assign({}, devDependencies, dependencies);
-      var logFunction = function(dep) {
-        if (allDependencies[dep]) {
-          var wanted = allDependencies[dep];
+      var packageTree;
+
+      if (options.recursive) {
+        packageTree = helpers.getPackageTree();
+      }
+
+      var logFunction = function logFunc(dep) {
+        var trimmedDep = dep.trim();
+        if (allDependencies[trimmedDep]) {
+          var wanted = allDependencies[trimmedDep];
           var installed;
-          try {
-            installed = require(process.cwd() + '/node_modules/' + dep + '/package.json').version;
-          } catch (err) {
-            installed = 'Not Installed';
+          if (options.recursive) {
+            var flatTree = helpers.flattenNodeModuleTree(packageTree.dependencies);
+            installed = utils.uniq(flatTree[trimmedDep]).join(', ');
+          } else {
+            installed = utils.getDependencyPackageJson(dep).version;
           }
-          log.push('  ' + dep + ': ' + wanted + ' => ' + installed);
+          log.push('  ' + trimmedDep + ': ' + wanted + ' => ' + installed);
+        } else {
+          log.push('  ' + trimmedDep + ': Not Found');
         }
       };
 

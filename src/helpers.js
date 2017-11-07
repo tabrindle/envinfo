@@ -100,6 +100,16 @@ function getOperatingSystemInfo() {
   return operatingSystemInfo;
 }
 
+function getPackageTree() {
+  var packages;
+  try {
+    packages = run('npm ls --json');
+  } catch (error) {
+    packages = 'Not able to run `npm ls`';
+  }
+  return JSON.parse(packages);
+}
+
 function getWatchmanVersion() {
   var watchmanVersion;
   try {
@@ -140,12 +150,28 @@ function getYarnVersion() {
   return yarnVersion;
 }
 
+function flattenNodeModuleTree(dependencies, acc = {}) {
+  Object.keys(dependencies).forEach(function each(key) {
+    if (dependencies[key].dependencies) {
+      flattenNodeModuleTree(dependencies[key].dependencies, acc);
+    }
+    if (acc[key]) {
+      acc[key].push(dependencies[key].version);
+    } else {
+      acc[key] = [dependencies[key].version];
+    }
+  });
+  return acc;
+}
+
 module.exports = {
+  flattenNodeModuleTree: flattenNodeModuleTree,
   getAndroidStudioVersion: getAndroidStudioVersion,
   getCPUInfo: getCPUInfo,
   getNodeVersion: getNodeVersion,
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
+  getPackageTree: getPackageTree,
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,
   getYarnVersion: getYarnVersion,

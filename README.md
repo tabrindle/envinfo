@@ -8,8 +8,6 @@ Install this package globally:
 `npm install -g envinfo` 
 `envinfo`
 
-Optionally copy directly to your clipboard with `envinfo --clipboard`
-
 ```bash
 Environment:
   OS: macOS High Sierra 10.13
@@ -21,7 +19,9 @@ Environment:
   Android Studio:  2.3 AI-162.3934792
 ```
 
-Optionally add packages from your package.json:
+## Options
+- --packages - Optionally add packages from your package.json: takes either boolean or string in CLI and also array via API
+
 `envinfo --packages react,react-native`
 
 ```bash
@@ -57,7 +57,8 @@ Packages: (wanted => installed)
   which: ^1.2.14 => 1.2.14
 ```
 
-Add CPU and architecture information with `envinfo --cpu`:
+- --clipboard - Optionally copy directly to your clipboard with `envinfo --clipboard`
+- --cpu - Add CPU and architecture information with `envinfo --cpu`
 
 ```bash
 Environment:
@@ -69,6 +70,13 @@ Environment:
   Watchman: 4.9.0
   Xcode: Xcode 9.0 Build version 9A235
   Android Studio:  2.3 AI-162.3934792
+```
+
+- --recursive - will search the entire module tree for additional versions installed
+
+```bash
+Packages: (wanted => installed)
+  minimist: ^1.2.0 => 0.0.8, 1.2.0
 ```
 
 ## Contributing
