@@ -72,11 +72,23 @@ Environment:
   Android Studio:  2.3 AI-162.3934792
 ```
 
-- --recursive - will search the entire module tree for additional versions installed
+- --duplicates - will search given packages for duplicates, display in parentheses
 
 ```bash
 Packages: (wanted => installed)
   minimist: ^1.2.0 => 0.0.8, 1.2.0
+```
+
+- --fullTree - will traverse and print the entire dependency tree **only works when --packages is array or string
+
+```bash
+...
+Packages: (wanted => installed)
+  abab: 1.0.4
+  xtend: 4.0.1 (2.0.6, 2.1.2, 2.2.0, 3.0.0)
+  abstract-leveldown: 0.12.4
+  accepts: 1.3.3
+...
 ```
 
 ## Contributing

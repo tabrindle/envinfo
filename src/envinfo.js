@@ -5,6 +5,7 @@
 var helpers = require('./helpers');
 var utils = require('./utils');
 var copypasta = require('copy-paste');
+var path = require('path');
 
 module.exports.print = function print(options) {
   var log = [];
@@ -23,10 +24,9 @@ module.exports.print = function print(options) {
 
   if (options) {
     if (options.packages) {
-      var packageJson;
-      try {
-        packageJson = require(process.cwd() + '/package.json');
-      } catch (err) {
+      var packageJson = utils.getPackageJsonByPath('/package.json');
+
+      if (!packageJson) {
         log.push('ERROR: package.json not found!');
         log.push('');
         return;
@@ -38,28 +38,31 @@ module.exports.print = function print(options) {
 
       var devDependencies = packageJson.devDependencies || {};
       var dependencies = packageJson.dependencies || {};
-      var allDependencies = Object.assign({}, devDependencies, dependencies);
-      var packageTree;
+      var topLevelDependencies = Object.assign({}, devDependencies, dependencies);
+      var packagePaths;
 
-      if (options.recursive) {
-        packageTree = helpers.getPackageTree();
+      if (options.duplicates || options.fullTree) {
+        packagePaths = helpers.getAllPackageJsonPaths();
       }
 
       var logFunction = function logFunc(dep) {
         var trimmedDep = dep.trim();
-        if (allDependencies[trimmedDep]) {
-          var wanted = allDependencies[trimmedDep];
-          var installed;
-          if (options.recursive) {
-            var flatTree = helpers.flattenNodeModuleTree(packageTree.dependencies);
-            installed = utils.uniq(flatTree[trimmedDep]).join(', ');
-          } else {
-            installed = utils.getDependencyPackageJson(dep).version;
-          }
-          log.push('  ' + trimmedDep + ': ' + wanted + ' => ' + installed);
-        } else {
-          log.push('  ' + trimmedDep + ': Not Found');
+        var wanted = topLevelDependencies[trimmedDep] || '';
+        var dependencyPackageJson = utils.getPackageJsonByName(dep);
+        var installed = dependencyPackageJson ? dependencyPackageJson.version : 'Not Found';
+        var duplicates = '';
+
+        if (options.duplicates) {
+          duplicates = helpers
+            .getModuleVersions(dep, packagePaths)
+            .filter(depVer => depVer !== installed)
+            .join(', ');
+          if (duplicates) duplicates = ' (' + duplicates + ')';
         }
+
+        if (wanted) wanted += ' => ';
+
+        log.push('  ' + trimmedDep + ': ' + wanted + installed + duplicates);
       };
 
       if (Array.isArray(options.packages)) {
@@ -67,7 +70,24 @@ module.exports.print = function print(options) {
       } else if (typeof options.packages === 'string') {
         options.packages.split(',').map(logFunction);
       } else if (typeof options.packages === 'boolean') {
-        Object.keys(allDependencies).map(logFunction);
+        if (options.fullTree) {
+          var allDependencies = packagePaths
+            .map(filePath => {
+              var json = utils.getPackageJsonByPath(filePath);
+              return {
+                name: json.name,
+                version: json.version,
+              };
+            })
+            .reduce((acc, val) => {
+              return Object.assign(acc, {
+                [val.name]: acc[val.name] ? acc[val.name].concat([val.version]) : [val.version],
+              });
+            }, {});
+          Object.keys(allDependencies).map(logFunction);
+        } else {
+          Object.keys(topLevelDependencies).map(logFunction);
+        }
       }
 
       log.push('');

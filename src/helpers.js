@@ -2,6 +2,8 @@ var childProcess = require('child_process');
 var os = require('os');
 var osName = require('os-name');
 var which = require('which');
+var utils = require('./utils');
+var glob = require('glob');
 
 function run(cmd) {
   return (childProcess
@@ -100,16 +102,6 @@ function getOperatingSystemInfo() {
   return operatingSystemInfo;
 }
 
-function getPackageTree() {
-  var packages;
-  try {
-    packages = run('npm ls --json');
-  } catch (error) {
-    packages = 'Not able to run `npm ls`';
-  }
-  return JSON.parse(packages);
-}
-
 function getWatchmanVersion() {
   var watchmanVersion;
   try {
@@ -150,28 +142,39 @@ function getYarnVersion() {
   return yarnVersion;
 }
 
-function flattenNodeModuleTree(dependencies, acc = {}) {
-  Object.keys(dependencies).forEach(function each(key) {
-    if (dependencies[key].dependencies) {
-      flattenNodeModuleTree(dependencies[key].dependencies, acc);
-    }
-    if (acc[key]) {
-      acc[key].push(dependencies[key].version);
-    } else {
-      acc[key] = [dependencies[key].version];
-    }
-  });
-  return acc;
+function getAllPackageJsonPaths() {
+  return glob.sync('node_modules/**/package.json');
+}
+
+function getModuleVersions(dependency, packagePaths) {
+  var paths;
+  var versions;
+  try {
+    paths = packagePaths.filter(function filterPackagePaths(packagePath) {
+      return packagePath.includes(`/${dependency}/package.json`);
+    });
+    versions = paths
+      .map(function mapPathsForVersion(packageJsonPath) {
+        var packageJson = utils.getPackageJsonByPath(packageJsonPath);
+        if (packageJson) return packageJson.version;
+        return false;
+      })
+      .filter(Boolean);
+    versions = utils.uniq(versions).sort();
+  } catch (error) {
+    versions = [];
+  }
+  return versions;
 }
 
 module.exports = {
-  flattenNodeModuleTree: flattenNodeModuleTree,
+  getAllPackageJsonPaths: getAllPackageJsonPaths,
   getAndroidStudioVersion: getAndroidStudioVersion,
   getCPUInfo: getCPUInfo,
+  getModuleVersions: getModuleVersions,
   getNodeVersion: getNodeVersion,
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
-  getPackageTree: getPackageTree,
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,
   getYarnVersion: getYarnVersion,
