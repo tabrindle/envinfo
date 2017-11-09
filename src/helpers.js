@@ -1,16 +1,35 @@
 var childProcess = require('child_process');
+var fs = require('fs');
+var glob = require('glob');
 var os = require('os');
 var osName = require('os-name');
+var path = require('path');
 var which = require('which');
-var utils = require('./utils');
-var glob = require('glob');
+
+function uniq(arr) {
+  return Array.from(new Set(arr));
+}
+
+function requireJson(filePath) {
+  if (fs.existsSync(filePath)) return require(filePath);
+  return false;
+}
+
+function getPackageJsonByName(dep) {
+  return this.requireJson(path.join(process.cwd(), '/node_modules/', dep, '/package.json'));
+}
+
+function getPackageJsonByPath(filePath) {
+  return this.requireJson(path.join(process.cwd(), filePath));
+}
 
 function run(cmd) {
-  return (childProcess
-    .execSync(cmd, {
-      stdio: [0, 'pipe', 'ignore'],
-    })
-    .toString() || ''
+  return (
+    childProcess
+      .execSync(cmd, {
+        stdio: [0, 'pipe', 'ignore'],
+      })
+      .toString() || ''
   ).trim();
 }
 
@@ -155,12 +174,12 @@ function getModuleVersions(dependency, packagePaths) {
     });
     versions = paths
       .map(function mapPathsForVersion(packageJsonPath) {
-        var packageJson = utils.getPackageJsonByPath(packageJsonPath);
+        var packageJson = getPackageJsonByPath(packageJsonPath);
         if (packageJson) return packageJson.version;
         return false;
       })
       .filter(Boolean);
-    versions = utils.uniq(versions).sort();
+    versions = uniq(versions).sort();
   } catch (error) {
     versions = [];
   }
@@ -175,7 +194,11 @@ module.exports = {
   getNodeVersion: getNodeVersion,
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
+  getPackageJsonByName: getPackageJsonByName,
+  getPackageJsonByPath: getPackageJsonByPath,
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,
   getYarnVersion: getYarnVersion,
+  requireJson: requireJson,
+  uniq: uniq,
 };

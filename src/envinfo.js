@@ -3,10 +3,9 @@
 'use strict';
 
 var helpers = require('./helpers');
-var utils = require('./utils');
 var copypasta = require('copy-paste');
-var path = require('path');
 
+module.exports.helpers = helpers;
 module.exports.print = function print(options) {
   var log = [];
 
@@ -24,7 +23,7 @@ module.exports.print = function print(options) {
 
   if (options) {
     if (options.packages) {
-      var packageJson = utils.getPackageJsonByPath('/package.json');
+      var packageJson = helpers.getPackageJsonByPath('/package.json');
 
       if (!packageJson) {
         log.push('ERROR: package.json not found!');
@@ -48,7 +47,7 @@ module.exports.print = function print(options) {
       var logFunction = function logFunc(dep) {
         var trimmedDep = dep.trim();
         var wanted = topLevelDependencies[trimmedDep] || '';
-        var dependencyPackageJson = utils.getPackageJsonByName(dep);
+        var dependencyPackageJson = helpers.getPackageJsonByName(dep);
         var installed = dependencyPackageJson ? dependencyPackageJson.version : 'Not Found';
         var duplicates = '';
 
@@ -73,7 +72,7 @@ module.exports.print = function print(options) {
         if (options.fullTree) {
           var allDependencies = packagePaths
             .map(filePath => {
-              var json = utils.getPackageJsonByPath(filePath);
+              var json = helpers.getPackageJsonByPath(filePath);
               return {
                 name: json.name,
                 version: json.version,
