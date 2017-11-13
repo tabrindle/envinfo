@@ -28,6 +28,9 @@ module.exports.print = function print(options) {
       if (!packageJson) {
         log.push('ERROR: package.json not found!');
         log.push('');
+        log = log.join('\n');
+        if (options.clipboard) copypasta.copy(log);
+        console.log(log);
         return;
       }
 
