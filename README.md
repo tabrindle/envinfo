@@ -91,6 +91,21 @@ Packages: (wanted => installed)
 ...
 ```
 
+- --browsers - will print the versions of Chrome, Firefox and Safari if installed. 
+
+```bash
+...
+Browsers:
+  Chrome: 62.0.3202.94
+  Chrome Canary: 64.0.3271.0
+  Firefox: 57.0
+  Firefox Developer Edition: 57.0
+  Firefox Nightly: 58.0a1
+  Safari: 11.0
+  Safari Technology Preview: 11.1
+...
+```
+
 ## Contributing
 PRs for additional features are welcome! Run `npm run lint && npm run format` before commiting.
 

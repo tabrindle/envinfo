@@ -22,6 +22,16 @@ module.exports.print = function print(options) {
   log.push('');
 
   if (options) {
+    if (options.browsers && process.platform === 'darwin') {
+      options.clipboard ? log.push('Browsers:') : log.push('\x1b[4mBrowsers:\x1b[0m');
+      var browsers = helpers.browserBundleIdentifiers;
+      var browserVersions = Object.keys(browsers).map(function browserMap(browser) {
+        return '  ' + browser + ': ' + helpers.getDarwinApplicationVersion(browsers[browser]);
+      });
+      log = log.concat(browserVersions);
+      log.push('');
+    }
+
     if (options.packages) {
       var packageJson = helpers.getPackageJsonByPath('/package.json');
 

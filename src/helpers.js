@@ -6,6 +6,16 @@ var osName = require('os-name');
 var path = require('path');
 var which = require('which');
 
+var browserBundleIdentifiers = {
+  Chrome: 'com.google.Chrome',
+  'Chrome Canary': 'com.google.Chrome.canary',
+  Firefox: 'org.mozilla.firefox',
+  'Firefox Developer Edition': 'org.mozilla.firefoxdeveloperedition',
+  'Firefox Nightly': 'org.mozilla.nightly',
+  Safari: 'com.apple.Safari',
+  'Safari Technology Preview': 'com.apple.SafariTechnologyPreview',
+};
+
 function uniq(arr) {
   return Array.from(new Set(arr));
 }
@@ -33,19 +43,35 @@ function run(cmd) {
   ).trim();
 }
 
+function findDarwinApplication(id) {
+  var appPath;
+  try {
+    appPath = run('mdfind "kMDItemCFBundleIdentifier=="' + id + '""').replace(/(\s)/g, '\\ ');
+  } catch (error) {
+    appPath = false;
+  }
+  return appPath;
+}
+
+function generatePlistBuddyCommand(appPath, options) {
+  var optionsArray = (options || ['CFBundleShortVersionString']).map(function optionsMap(option) {
+    return '-c Print:' + option;
+  });
+  return ['/usr/libexec/PlistBuddy']
+    .concat(optionsArray)
+    .concat([appPath])
+    .join(' ');
+}
+
 function getAndroidStudioVersion() {
   var androidStudioVersion = 'Not Found';
   if (process.platform === 'darwin') {
     try {
       androidStudioVersion = run(
-        [
-          '/usr/libexec/PlistBuddy',
-          '-c',
-          'Print:CFBundleShortVersionString',
-          '-c',
-          'Print:CFBundleVersion',
-          '/Applications/Android\\ Studio.app/Contents/Info.plist',
-        ].join(' ')
+        generatePlistBuddyCommand('/Applications/Android\\ Studio.app/Contents/Info.plist', [
+          'CFBundleShortVersionString',
+          'CFBundleVersion',
+        ])
       )
         .split('\n')
         .join(' ');
@@ -86,6 +112,21 @@ function getCPUInfo() {
     CPUInfo = 'Not Found';
   }
   return CPUInfo;
+}
+
+function getDarwinApplicationVersion(bundleIdentifier) {
+  var version;
+  try {
+    version = run(
+      generatePlistBuddyCommand(
+        path.join(findDarwinApplication(bundleIdentifier), 'Contents', 'Info.plist'),
+        ['CFBundleShortVersionString']
+      )
+    );
+  } catch (error) {
+    version = 'Not Found';
+  }
+  return version;
 }
 
 function getNodeVersion() {
@@ -187,9 +228,13 @@ function getModuleVersions(dependency, packagePaths) {
 }
 
 module.exports = {
+  browserBundleIdentifiers: browserBundleIdentifiers,
+  findDarwinApplication: findDarwinApplication,
+  generatePlistBuddyCommand: generatePlistBuddyCommand,
   getAllPackageJsonPaths: getAllPackageJsonPaths,
   getAndroidStudioVersion: getAndroidStudioVersion,
   getCPUInfo: getCPUInfo,
+  getDarwinApplicationVersion: getDarwinApplicationVersion,
   getModuleVersions: getModuleVersions,
   getNodeVersion: getNodeVersion,
   getNpmVersion: getNpmVersion,
