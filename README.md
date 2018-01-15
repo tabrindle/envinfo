@@ -5,10 +5,14 @@ Reporting issues is a pain. Responding to issues is a pain. Make it a bit better
 ## Installation & Usage
 Install this package globally:
 
-`npm install -g envinfo` 
-`envinfo`
+```sh
+npm install -g envinfo
+
+envinfo
+```
 
 ```bash
+# Outputs.
 Environment:
   OS: macOS High Sierra 10.13
   Node: 8.9.0
