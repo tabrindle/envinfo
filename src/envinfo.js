@@ -3,7 +3,7 @@
 'use strict';
 
 var helpers = require('./helpers');
-var copypasta = require('copy-paste');
+var copypasta = require('clipboardy');
 
 module.exports.helpers = helpers;
 module.exports.print = function print(options) {
@@ -107,7 +107,7 @@ module.exports.print = function print(options) {
     log = log.join('\n');
 
     if (options.clipboard) {
-      copypasta.copy(log);
+      copypasta.writeSync(log);
     }
   }
 
