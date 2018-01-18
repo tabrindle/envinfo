@@ -21,7 +21,15 @@ function uniq(arr) {
 }
 
 function requireJson(filePath) {
-  if (fs.existsSync(filePath)) return require(filePath);
+  var packageJson;
+  if (fs.existsSync(filePath)) {
+    try {
+      packageJson = require(filePath);
+    } catch (e) {
+      return false;
+    }
+    return packageJson;
+  }
   return false;
 }
 
