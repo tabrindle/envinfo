@@ -326,6 +326,38 @@ function getYarnVersion() {
   return yarnVersion;
 }
 
+function getChromeVersion() {
+  var chromeVersion = '';
+
+  if (process.platform === 'linux') {
+    try {
+      chromeVersion = utils.run('google-chrome --version').replace(/^.* ([^ ]*)/g, '$1');
+    } catch (err) {
+      chromeVersion = 'Not Found';
+    }
+  } else {
+    chromeVersion = getDarwinApplicationVersion(browserBundleIdentifiers.Chrome);
+  }
+
+  return chromeVersion;
+}
+
+function getFirefoxVersion() {
+  var firefoxVersion = '';
+
+  if (process.platform === 'linux') {
+    try {
+      firefoxVersion = utils.run('firefox --version').replace(/^.* ([^ ]*)/g, '$1');
+    } catch (err) {
+      firefoxVersion = 'Not Found';
+    }
+  } else {
+    firefoxVersion = getDarwinApplicationVersion(browserBundleIdentifiers.Firefox);
+  }
+
+  return firefoxVersion;
+}
+
 module.exports = {
   browserBundleIdentifiers: browserBundleIdentifiers,
   findDarwinApplication: findDarwinApplication,
@@ -352,4 +384,6 @@ module.exports = {
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,
   getYarnVersion: getYarnVersion,
+  getChromeVersion: getChromeVersion,
+  getFirefoxVersion: getFirefoxVersion,
 };
