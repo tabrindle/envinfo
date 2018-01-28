@@ -22,8 +22,7 @@ module.exports = {
     helpers.getDarwinApplicationVersion(
       helpers.browserBundleIdentifiers['Firefox Developer Edition']
     ),
-  firefox_nightly: () =>
-    helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers['Firefox Nightly']),
+  firefox_nightly: helpers.getFirefoxNightlyVersion,
   firefox: helpers.getFirefoxVersion,
   safari_technology_preview: () =>
     helpers.getDarwinApplicationVersion(

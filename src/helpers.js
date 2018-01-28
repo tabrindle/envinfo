@@ -354,6 +354,22 @@ function getFirefoxVersion() {
   return firefoxVersion;
 }
 
+function getFirefoxNightlyVersion() {
+  var firefoxNightlyVersion;
+  if (process.platform === 'linux') {
+    try {
+      firefoxNightlyVersion = utils.run('firefox-trunk --version').replace(/^.* ([^ ]*)/g, '$1');
+    } catch (err) {
+      firefoxNightlyVersion = 'Not Found';
+    }
+  } else {
+    firefoxNightlyVersion = getDarwinApplicationVersion(
+      browserBundleIdentifiers['Firefox Nightly']
+    );
+  }
+  return firefoxNightlyVersion;
+}
+
 module.exports = {
   browserBundleIdentifiers: browserBundleIdentifiers,
   findDarwinApplication: findDarwinApplication,
@@ -382,4 +398,5 @@ module.exports = {
   getYarnVersion: getYarnVersion,
   getChromeVersion: getChromeVersion,
   getFirefoxVersion: getFirefoxVersion,
+  getFirefoxNightlyVersion: getFirefoxNightlyVersion,
 };
