@@ -1,6 +1,6 @@
 {
   "name": "envinfo",
-  "version": "3.11.1",
+  "version": "4.0.0-beta.1",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
@@ -9,21 +9,19 @@
   "bin": {
     "envinfo": "src/cli.js"
   },
+  "engines": { "node": ">=4" },
   "scripts": {
     "lint": "eslint src",
     "format": "prettier --write 'src/**/*.js'"
   },
-  "keywords": [
-    "development",
-    "environment",
-    "info",
-    "issues",
-    "reporting"
-  ],
+  "keywords": ["development", "env", "environment", "info", "issues", "reporting", "diagnostics"],
   "dependencies": {
+    "array-includes": "^3.0.3",
     "clipboardy": "^1.2.2",
     "glob": "^7.1.2",
     "minimist": "^1.2.0",
+    "object.entries": "^1.0.4",
+    "object.values": "^1.0.4",
     "os-name": "^2.0.1",
     "which": "^1.2.14"
   },

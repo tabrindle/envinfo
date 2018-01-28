@@ -1,14 +1,15 @@
 module.exports = {
   env: {
-    node: true
+    node: true,
   },
   extends: ['airbnb-base/legacy', 'prettier'],
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['prettier'],
   rules: {
     'vars-on-top': 0,
-    'prettier/prettier': ['error']
+    'no-param-reassign': 0,
+    'prettier/prettier': ['error'],
   },
 };

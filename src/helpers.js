@@ -1,10 +1,9 @@
 var childProcess = require('child_process');
-var fs = require('fs');
-var glob = require('glob');
 var os = require('os');
 var osName = require('os-name');
 var path = require('path');
 var which = require('which');
+var utils = require('./utils');
 
 var browserBundleIdentifiers = {
   Chrome: 'com.google.Chrome',
@@ -16,47 +15,12 @@ var browserBundleIdentifiers = {
   'Safari Technology Preview': 'com.apple.SafariTechnologyPreview',
 };
 
-function uniq(arr) {
-  return Array.from(new Set(arr));
-}
-
-function requireJson(filePath) {
-  var packageJson;
-  if (fs.existsSync(filePath)) {
-    try {
-      packageJson = require(filePath);
-    } catch (e) {
-      return false;
-    }
-    return packageJson;
-  }
-  return false;
-}
-
-function getPackageJsonByName(dep) {
-  return this.requireJson(path.join(process.cwd(), '/node_modules/', dep, '/package.json'));
-}
-
-function getPackageJsonByPath(filePath) {
-  return this.requireJson(path.join(process.cwd(), filePath));
-}
-
-function run(cmd) {
-  return (
-    childProcess
-      .execSync(cmd, {
-        stdio: [0, 'pipe', 'ignore'],
-      })
-      .toString() || ''
-  ).trim();
-}
-
 function findDarwinApplication(id) {
   var appPath;
   try {
-    appPath = run('mdfind "kMDItemCFBundleIdentifier=="' + id + '""').replace(/(\s)/g, '\\ ');
+    appPath = utils.run('mdfind "kMDItemCFBundleIdentifier=="' + id + '""').replace(/(\s)/g, '\\ ');
   } catch (error) {
-    appPath = false;
+    appPath = null;
   }
   return appPath;
 }
@@ -71,16 +35,32 @@ function generatePlistBuddyCommand(appPath, options) {
     .join(' ');
 }
 
+function getDarwinApplicationVersion(bundleIdentifier) {
+  var version;
+  try {
+    version = utils.run(
+      generatePlistBuddyCommand(
+        path.join(findDarwinApplication(bundleIdentifier), 'Contents', 'Info.plist'),
+        ['CFBundleShortVersionString']
+      )
+    );
+  } catch (error) {
+    version = 'Not Found';
+  }
+  return version;
+}
+
 function getAndroidStudioVersion() {
   var androidStudioVersion = 'Not Found';
   if (process.platform === 'darwin') {
     try {
-      androidStudioVersion = run(
-        generatePlistBuddyCommand('/Applications/Android\\ Studio.app/Contents/Info.plist', [
-          'CFBundleShortVersionString',
-          'CFBundleVersion',
-        ])
-      )
+      androidStudioVersion = utils
+        .run(
+          generatePlistBuddyCommand('/Applications/Android\\ Studio.app/Contents/Info.plist', [
+            'CFBundleShortVersionString',
+            'CFBundleVersion',
+          ])
+        )
         .split('\n')
         .join(' ');
     } catch (err) {
@@ -88,28 +68,40 @@ function getAndroidStudioVersion() {
     }
   } else if (process.platform === 'linux') {
     try {
-      var linuxBuildNumber = run('cat /opt/android-studio/build.txt');
-      var linuxVersion = run(
-        'cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1'
-      ).match(/\d\.\d/)[0];
+      var linuxBuildNumber = utils.run('cat /opt/android-studio/build.txt');
+      var linuxVersion = utils
+        .run('cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1')
+        .match(/\d\.\d/)[0];
       androidStudioVersion = `${linuxVersion} ${linuxBuildNumber}`;
     } catch (err) {
       androidStudioVersion = 'Not Found';
     }
   } else if (process.platform.startsWith('win')) {
     try {
-      var windowsVersion = run(
-        'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
-      ).replace(/(\r\n|\n|\r)/gm, '');
-      var windowsBuildNumber = run(
-        'type "C:\\\\Program Files\\\\Android\\\\Android Studio\\\\build.txt"'
-      ).replace(/(\r\n|\n|\r)/gm, '');
+      var windowsVersion = utils
+        .run(
+          'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
+        )
+        .replace(/(\r\n|\n|\r)/gm, '');
+      var windowsBuildNumber = utils
+        .run('type "C:\\\\Program Files\\\\Android\\\\Android Studio\\\\build.txt"')
+        .replace(/(\r\n|\n|\r)/gm, '');
       androidStudioVersion = `${windowsVersion} ${windowsBuildNumber}`;
     } catch (err) {
       androidStudioVersion = 'Not Found';
     }
   }
   return androidStudioVersion;
+}
+
+function getAtomVersion() {
+  var atomVersion;
+  try {
+    atomVersion = getDarwinApplicationVersion('com.github.atom');
+  } catch (error) {
+    atomVersion = 'Not Found';
+  }
+  return atomVersion;
 }
 
 function getCPUInfo() {
@@ -122,25 +114,102 @@ function getCPUInfo() {
   return CPUInfo;
 }
 
-function getDarwinApplicationVersion(bundleIdentifier) {
-  var version;
+function getBashVersion() {
+  var bashVersion;
   try {
-    version = run(
-      generatePlistBuddyCommand(
-        path.join(findDarwinApplication(bundleIdentifier), 'Contents', 'Info.plist'),
-        ['CFBundleShortVersionString']
-      )
-    );
+    bashVersion = utils.run('echo $BASH_VERSION');
   } catch (error) {
-    version = 'Not Found';
+    bashVersion = 'Not Found';
   }
-  return version;
+  return bashVersion;
+}
+
+function getPhpVersion() {
+  var phpVersion;
+  try {
+    phpVersion = utils.run('php -v').split(' ', 2)[1];
+  } catch (error) {
+    phpVersion = 'Not Found';
+  }
+  return phpVersion;
+}
+
+function getDockerVersion() {
+  var dockerVersion;
+  try {
+    dockerVersion = utils.run('docker --version').replace('Docker version ', '');
+  } catch (error) {
+    dockerVersion = 'Not Found';
+  }
+  return dockerVersion;
+}
+
+function getFreeMemory() {
+  return utils.toReadableBytes(os.freemem());
+}
+
+function getTotalMemory() {
+  return utils.toReadableBytes(os.totalmem());
+}
+
+function getSublimeTextVersion() {
+  var sublimeTextVersion;
+  try {
+    sublimeTextVersion = getDarwinApplicationVersion('com.sublimetext.3');
+  } catch (error) {
+    sublimeTextVersion = 'Not Found';
+  }
+  return sublimeTextVersion;
+}
+
+function getHomeBrewVersion() {
+  var homeBrewVersion;
+  if (process.platform === 'darwin') {
+    try {
+      homeBrewVersion = utils
+        .run('brew --version')
+        .replace('Homebrew ', '')
+        .split('\n', 1)
+        .join();
+    } catch (error) {
+      homeBrewVersion = 'Not Found';
+    }
+  } else homeBrewVersion = 'N/A';
+  return homeBrewVersion;
+}
+
+function getGoVersion() {
+  var goVersion;
+  try {
+    goVersion = utils
+      .run('go version')
+      .replace('go version go', '')
+      .split(' ', 1)
+      .join();
+  } catch (error) {
+    goVersion = 'Not Found';
+  }
+  return goVersion;
+}
+
+function getRubyVersion() {
+  var rubyVersion;
+  try {
+    rubyVersion = utils
+      .run('ruby --version')
+      .replace('ruby ', '')
+      .split(' ', 1)
+      .join();
+  } catch (error) {
+    rubyVersion = 'Not Found';
+  }
+  return rubyVersion;
 }
 
 function getNodeVersion() {
   var nodeVersion;
   try {
-    nodeVersion = run('node --version').replace('v', '');
+    nodeVersion = utils.run('node --version').replace('v', '');
   } catch (error) {
     nodeVersion = 'Not Found';
   }
@@ -150,11 +219,29 @@ function getNodeVersion() {
 function getNpmVersion() {
   var npmVersion;
   try {
-    npmVersion = run('npm -v');
+    npmVersion = utils.run('npm -v');
   } catch (error) {
     npmVersion = 'Not Found';
   }
   return npmVersion;
+}
+
+function getNpmGlobalPackages() {
+  var npmGlobalPackages;
+  try {
+    npmGlobalPackages = utils.run('npm list -g --depth=0 --json');
+    npmGlobalPackages = JSON.parse(npmGlobalPackages);
+    npmGlobalPackages = Object.entries(npmGlobalPackages.dependencies).reduce((acc, dep) => {
+      const name = dep[0];
+      const info = dep[1];
+      return Object.assign(acc, {
+        [name]: info.version,
+      });
+    }, {});
+  } catch (error) {
+    npmGlobalPackages = 'Not Found';
+  }
+  return npmGlobalPackages;
 }
 
 function getOperatingSystemInfo() {
@@ -162,7 +249,7 @@ function getOperatingSystemInfo() {
   try {
     operatingSystemInfo = osName(os.platform(), os.release());
     if (process.platform === 'darwin') {
-      operatingSystemInfo = operatingSystemInfo + ' ' + run('sw_vers -productVersion ');
+      operatingSystemInfo = operatingSystemInfo + ' ' + utils.run('sw_vers -productVersion ');
     }
   } catch (err) {
     operatingSystemInfo += ' Unknown Version';
@@ -174,11 +261,39 @@ function getWatchmanVersion() {
   var watchmanVersion;
   try {
     var watchmanPath = which.sync('watchman');
-    watchmanVersion = watchmanPath && run(watchmanPath + ' --version');
+    watchmanVersion = watchmanPath && utils.run(watchmanPath + ' --version');
   } catch (error) {
     watchmanVersion = 'Not Found';
   }
   return watchmanVersion;
+}
+
+function getVSCodeVersion() {
+  var VSCodeVersion;
+  try {
+    VSCodeVersion = utils
+      .run('code --version')
+      .split('\n', 1)
+      .join('');
+  } catch (error) {
+    VSCodeVersion = 'Not Found';
+  }
+  return VSCodeVersion;
+}
+
+function getPythonVersion() {
+  var pythonVersion;
+  var pythonPath;
+  try {
+    pythonPath = utils.run('which python');
+    pythonVersion = childProcess
+      .execFileSync(pythonPath, ['-c', 'import platform; print(platform.python_version());'])
+      .toString()
+      .replace(/(\r\n|\n|\r)/gm, '');
+  } catch (error) {
+    pythonVersion = 'Not Found';
+  }
+  return pythonVersion;
 }
 
 function getXcodeVersion() {
@@ -188,7 +303,8 @@ function getXcodeVersion() {
     try {
       xcodeVersion =
         xcodePath &&
-        run(xcodePath + ' -version')
+        utils
+          .run(xcodePath + ' -version')
           .split('\n')
           .join(' ');
     } catch (err) {
@@ -203,55 +319,37 @@ function getXcodeVersion() {
 function getYarnVersion() {
   var yarnVersion;
   try {
-    yarnVersion = run('yarn --version');
+    yarnVersion = utils.run('yarn --version');
   } catch (error) {
     yarnVersion = 'Not Found';
   }
   return yarnVersion;
 }
 
-function getAllPackageJsonPaths() {
-  return glob.sync('node_modules/**/package.json');
-}
-
-function getModuleVersions(dependency, packagePaths) {
-  var paths;
-  var versions;
-  try {
-    paths = packagePaths.filter(function filterPackagePaths(packagePath) {
-      return packagePath.includes(`/${dependency}/package.json`);
-    });
-    versions = paths
-      .map(function mapPathsForVersion(packageJsonPath) {
-        var packageJson = getPackageJsonByPath(packageJsonPath);
-        if (packageJson) return packageJson.version;
-        return false;
-      })
-      .filter(Boolean);
-    versions = uniq(versions).sort();
-  } catch (error) {
-    versions = [];
-  }
-  return versions;
-}
-
 module.exports = {
   browserBundleIdentifiers: browserBundleIdentifiers,
   findDarwinApplication: findDarwinApplication,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
-  getAllPackageJsonPaths: getAllPackageJsonPaths,
   getAndroidStudioVersion: getAndroidStudioVersion,
+  getAtomVersion: getAtomVersion,
+  getBashVersion: getBashVersion,
   getCPUInfo: getCPUInfo,
   getDarwinApplicationVersion: getDarwinApplicationVersion,
-  getModuleVersions: getModuleVersions,
+  getDockerVersion: getDockerVersion,
+  getFreeMemory: getFreeMemory,
+  getGoVersion: getGoVersion,
+  getHomeBrewVersion: getHomeBrewVersion,
   getNodeVersion: getNodeVersion,
+  getNpmGlobalPackages: getNpmGlobalPackages,
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
-  getPackageJsonByName: getPackageJsonByName,
-  getPackageJsonByPath: getPackageJsonByPath,
+  getPhpVersion: getPhpVersion,
+  getPythonVersion: getPythonVersion,
+  getRubyVersion: getRubyVersion,
+  getSublimeTextVersion: getSublimeTextVersion,
+  getTotalMemory: getTotalMemory,
+  getVSCodeVersion: getVSCodeVersion,
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,
   getYarnVersion: getYarnVersion,
-  requireJson: requireJson,
-  uniq: uniq,
 };

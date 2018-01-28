@@ -2,113 +2,69 @@
 
 'use strict';
 
-var helpers = require('./helpers');
-var copypasta = require('clipboardy');
+const copypasta = require('clipboardy');
+const helpers = require('./helpers');
+const helperMap = require('./map');
+const formatters = require('./formatters');
+const packages = require('./packages');
+const arrayincludes = require('array-includes');
+const objectentries = require('object.entries');
+const objectvalues = require('object.values');
+
+if (!Object.entries) objectentries.shim();
+if (!Object.values) objectvalues.shim();
+if (!Array.prototype.includes) arrayincludes.shim();
 
 module.exports.helpers = helpers;
-module.exports.print = function print(opts) {
-  var options = opts || {};
-  var log = [];
-
-  log.push('');
-  options.clipboard ? log.push('Environment:') : log.push('\x1b[4mEnvironment:\x1b[0m');
-  log.push('  OS: ' + helpers.getOperatingSystemInfo());
-  if (options.cpu) log.push('  CPU: ' + helpers.getCPUInfo());
-  log.push('  Node: ' + helpers.getNodeVersion());
-  log.push('  Yarn: ' + helpers.getYarnVersion());
-  log.push('  npm: ' + helpers.getNpmVersion());
-  log.push('  Watchman: ' + helpers.getWatchmanVersion());
-  if (!options.noNativeIDE) log.push('  Xcode: ' + helpers.getXcodeVersion());
-  if (!options.noNativeIDE) log.push('  Android Studio: ' + helpers.getAndroidStudioVersion());
-  log.push('');
-
-  if (options.browsers && process.platform === 'darwin') {
-    options.clipboard ? log.push('Browsers:') : log.push('\x1b[4mBrowsers:\x1b[0m');
-    var browsers = helpers.browserBundleIdentifiers;
-    var browserVersions = Object.keys(browsers).map(function browserMap(browser) {
-      return '  ' + browser + ': ' + helpers.getDarwinApplicationVersion(browsers[browser]);
-    });
-    log = log.concat(browserVersions);
-    log.push('');
-  }
-
-  if (options.packages) {
-    var packageJson = helpers.getPackageJsonByPath('/package.json');
-
-    if (!packageJson) {
-      log.push('ERROR: package.json not found!');
-      log.push('');
-      log = log.join('\n');
-      if (options.clipboard) copypasta.copy(log);
-      console.log(log);
-      return;
-    }
-
-    options.clipboard
-      ? log.push('Packages: (wanted => installed)')
-      : log.push('\x1b[4mPackages:\x1b[0m (wanted => installed)');
-
-    var devDependencies = packageJson.devDependencies || {};
-    var dependencies = packageJson.dependencies || {};
-    var topLevelDependencies = Object.assign({}, devDependencies, dependencies);
-    var packagePaths;
-
-    if (options.duplicates || options.fullTree) {
-      packagePaths = helpers.getAllPackageJsonPaths();
-    }
-
-    var logFunction = function logFunc(dep) {
-      var trimmedDep = dep.trim();
-      var wanted = topLevelDependencies[trimmedDep] || '';
-      var dependencyPackageJson = helpers.getPackageJsonByName(dep);
-      var installed = dependencyPackageJson ? dependencyPackageJson.version : 'Not Found';
-      var duplicates = '';
-
-      if (options.duplicates) {
-        duplicates = helpers
-          .getModuleVersions(dep, packagePaths)
-          .filter(depVer => depVer !== installed)
-          .join(', ');
-        if (duplicates) duplicates = ' (' + duplicates + ')';
-      }
-
-      if (wanted) wanted += ' => ';
-
-      log.push('  ' + trimmedDep + ': ' + wanted + installed + duplicates);
+module.exports.envinfo = function print(options) {
+  const props = {
+    System: ['OS', 'CPU', 'Free Memory', 'Total Memory'],
+    Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew'],
+    IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
+    Languages: ['Bash', 'Go', 'PHP', 'Python', 'Ruby'],
+    Browsers: [
+      'Chrome',
+      'Chrome Canary',
+      'Firefox',
+      'Firefox Developer Edition',
+      'Firefox Nightly',
+      'Safari',
+      'Safari Technology Preview',
+    ],
+  };
+  const info = Object.entries(props).reduce((acc, prop) => {
+    const key = prop[0];
+    const value = prop[1];
+    const category = {
+      [key]: value.reduce((cat, name) => {
+        const fn = helperMap[name.toLowerCase().replace(/\s/g, '_')];
+        return Object.assign(cat, {
+          [name]: fn ? fn() : 'Unknown',
+        });
+      }, {}),
     };
-
-    if (Array.isArray(options.packages)) {
-      options.packages.map(logFunction);
-    } else if (typeof options.packages === 'string') {
-      options.packages.split(',').map(logFunction);
-    } else if (typeof options.packages === 'boolean') {
-      if (options.fullTree) {
-        var allDependencies = packagePaths
-          .map(filePath => {
-            var json = helpers.getPackageJsonByPath(filePath);
-            return {
-              name: json.name,
-              version: json.version,
-            };
-          })
-          .reduce((acc, val) => {
-            return Object.assign(acc, {
-              [val.name]: acc[val.name] ? acc[val.name].concat([val.version]) : [val.version],
-            });
-          }, {});
-        Object.keys(allDependencies).map(logFunction);
-      } else {
-        Object.keys(topLevelDependencies).map(logFunction);
+    return Object.assign(acc, category);
+  }, {});
+  const npmPackages = options.packages
+    ? {
+        Packages: packages.getPackageInfo(options.packages, options),
       }
-    }
+    : {};
+  const npmGlobals = options.globalPackages
+    ? {
+        'Global Packages': packages.getNpmGlobalPackages(),
+      }
+    : {};
+  const data = Object.assign(info, npmPackages, npmGlobals);
+  const formatter = (() => {
+    if (options.json) return formatters.json;
+    if (options.markdown) return formatters.markdown;
+    return formatters.table;
+  })();
+  const formatted = formatter(data, { console: false });
 
-    log.push('');
-  }
-  log = log.join('\n');
+  if (options.clipboard) copypasta.writeSync(formatted);
+  if (options.console) console.log(formatter(data, { console: true })); // eslint-disable-line no-console
 
-  if (options.clipboard) {
-    copypasta.writeSync(log);
-  }
-
-  console.log(log);
+  return formatted;
 };

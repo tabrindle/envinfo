@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
 var envinfo = require('./envinfo.js');
-var argv = require('minimist')(process.argv.slice(2));
+var argv = require('minimist')(process.argv.slice(2), {
+  boolean: ['console', 'fullTree', 'duplicates'],
+});
 
-envinfo.print(argv);
+argv.console = true;
+
+envinfo.envinfo(argv);
