@@ -7,6 +7,7 @@ module.exports = {
   os: helpers.getOperatingSystemInfo,
   total_memory: helpers.getTotalMemory,
   free_memory: helpers.getFreeMemory,
+  shell: helpers.getShell,
   // applications
   docker: helpers.getDockerVersion,
   node: helpers.getNodeVersion,

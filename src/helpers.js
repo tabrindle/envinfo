@@ -119,8 +119,10 @@ function getCPUInfo() {
 
 function getBashVersion() {
   var bashVersion;
+  var bashPath;
   try {
-    bashVersion = utils.run('echo $BASH_VERSION');
+    bashPath = which.sync('bash');
+    bashVersion = utils.run(`${bashPath} --version`).match(/\d+(\.\d+)+/)[0];
   } catch (error) {
     bashVersion = 'Not Found';
   }
@@ -245,6 +247,17 @@ function getNpmGlobalPackages() {
     npmGlobalPackages = 'Not Found';
   }
   return npmGlobalPackages;
+}
+
+function getShell() {
+  var shell;
+  try {
+    if (process.env.SHELL.indexOf('bash') > 0)
+      shell = utils.run(process.env.SHELL + ' --version').match(/\d+(\.\d+)+/)[0];
+  } catch (error) {
+    shell = 'Not Found';
+  }
+  return process.env.SHELL + ' - ' + shell;
 }
 
 function getOperatingSystemInfo() {
@@ -393,6 +406,7 @@ module.exports = {
   getPhpVersion: getPhpVersion,
   getPythonVersion: getPythonVersion,
   getRubyVersion: getRubyVersion,
+  getShell: getShell,
   getSublimeTextVersion: getSublimeTextVersion,
   getTotalMemory: getTotalMemory,
   getVSCodeVersion: getVSCodeVersion,
