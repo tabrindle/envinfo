@@ -12,7 +12,8 @@
   "engines": { "node": ">=4" },
   "scripts": {
     "lint": "eslint src",
-    "format": "prettier --write 'src/**/*.js'"
+    "format": "prettier --write 'src/**/*.js'",
+    "test": "npm run lint && prettier -l 'src/**/*.js'"
   },
   "keywords": ["development", "env", "environment", "info", "issues", "reporting", "diagnostics"],
   "dependencies": {
