@@ -10,6 +10,14 @@ function formatPackage(packageData, format) {
 
 function formatJson(data, options) {
   if (!options) options = {};
+
+  // delete properties that are not applicable
+  Object.entries(data).forEach(d => {
+    Object.entries(d[1]).forEach(i => {
+      if (i[1] === 'N/A') delete d[1][i[0]];
+    });
+  });
+
   if (options.console) {
     return `\n${JSON.stringify(data, null, '  ')}\n`;
   }
@@ -32,7 +40,7 @@ function formatMarkdown(data, options) {
       Object.entries(values).forEach(v => {
         const name = v[0];
         const version = v[1];
-        compiled.push(`* ${name}: ${version}`);
+        if (version !== 'N/A') compiled.push(`* ${name}: ${version}`);
       });
     }
   });
@@ -63,7 +71,7 @@ function formatTable(data, options) {
       Object.entries(values).forEach(v => {
         const name = v[0];
         const version = v[1];
-        compiled.push(`  ${name}: ${version}`);
+        if (version !== 'N/A') compiled.push(`  ${name}: ${version}`);
       });
     }
   });
