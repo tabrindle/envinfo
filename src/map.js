@@ -17,14 +17,13 @@ module.exports = {
   // browsers
   chrome_canary: () =>
     helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers['Chrome Canary']),
-  chrome: () => helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers.Chrome),
+  chrome: helpers.getChromeVersion,
   firefox_developer_edition: () =>
     helpers.getDarwinApplicationVersion(
       helpers.browserBundleIdentifiers['Firefox Developer Edition']
     ),
-  firefox_nightly: () =>
-    helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers['Firefox Nightly']),
-  firefox: () => helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers.Firefox),
+  firefox_nightly: helpers.getFirefoxNightlyVersion,
+  firefox: helpers.getFirefoxVersion,
   safari_technology_preview: () =>
     helpers.getDarwinApplicationVersion(
       helpers.browserBundleIdentifiers['Safari Technology Preview']
