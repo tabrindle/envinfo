@@ -37,17 +37,20 @@ function generatePlistBuddyCommand(appPath, options) {
 
 function getDarwinApplicationVersion(bundleIdentifier) {
   var version;
-  try {
-    version = utils.run(
-      generatePlistBuddyCommand(
-        path.join(findDarwinApplication(bundleIdentifier), 'Contents', 'Info.plist'),
-        ['CFBundleShortVersionString']
-      )
-    );
-  } catch (error) {
-    version = 'Not Found';
+  if (process.platform === 'darwin') {
+    try {
+      version = utils.run(
+        generatePlistBuddyCommand(
+          path.join(findDarwinApplication(bundleIdentifier), 'Contents', 'Info.plist'),
+          ['CFBundleShortVersionString']
+        )
+      );
+    } catch (error) {
+      version = 'Not Found';
+    }
+    return version;
   }
-  return version;
+  return 'N/A';
 }
 
 function getAndroidStudioVersion() {
