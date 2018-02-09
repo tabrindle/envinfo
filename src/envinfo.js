@@ -19,7 +19,7 @@ module.exports.helpers = helpers;
 module.exports.envinfo = function print(options) {
   const props = {
     System: ['OS', 'CPU', 'Free Memory', 'Total Memory', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew'],
+    Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew', 'Android SDKs'],
     IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
     Languages: ['Bash', 'Go', 'PHP', 'Python', 'Ruby'],
     Browsers: [

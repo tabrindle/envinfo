@@ -53,6 +53,29 @@ function getDarwinApplicationVersion(bundleIdentifier) {
   return 'N/A';
 }
 
+function getAllAndroidSDKs() {
+  var androidSDKs = []
+  try {
+    var installed = utils
+    .run(
+      '$ANDROID_HOME/tools/bin/sdkmanager --list'
+    ).split('Available')[0]
+
+    var getJustVersions = /build-tools;([\d|\.]+)[\S\s]/g
+    while (matcher = getJustVersions.exec(installed)) {
+      androidSDKs.push(matcher[1])
+    }
+  } catch(err) {
+    androidSDKs = ['Unknown']
+  }
+
+  return androidSDKs
+}
+
+function prettifyGetAllAndroidSDKs() {
+  return getAllAndroidSDKs().join(', ')
+}
+
 function getAndroidStudioVersion() {
   var androidStudioVersion = 'Not Found';
   if (process.platform === 'darwin') {
@@ -390,6 +413,8 @@ module.exports = {
   browserBundleIdentifiers: browserBundleIdentifiers,
   findDarwinApplication: findDarwinApplication,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
+  getAllAndroidSDKs: getAllAndroidSDKs,
+  prettifyGetAllAndroidSDKs: prettifyGetAllAndroidSDKs,
   getAndroidStudioVersion: getAndroidStudioVersion,
   getAtomVersion: getAtomVersion,
   getBashVersion: getBashVersion,
