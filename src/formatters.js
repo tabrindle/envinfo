@@ -8,12 +8,11 @@ function formatPackage(packageData, format) {
   return `  ${name}: ${wanted} ${installed} ${duplicates}`;
 }
 
-function formatArray(data, options = {emptyMessage: 'None'}) {
+function formatArray(data, options = { emptyMessage: 'None' }) {
   if (Array.isArray(data)) {
-    return (data.length > 0) ? data.join(', ') : emptyMessage;
-  } else {
-    return data;
+    return data.length > 0 ? data.join(', ') : options.emptyMessage;
   }
+  return data;
 }
 
 function formatJson(data, options) {

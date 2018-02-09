@@ -57,7 +57,7 @@ function getAllAndroidSDKs() {
   var androidSDKs = [];
   try {
     // try to use preferred install path
-    var command = process.env['ANDROID_HOME'] ? '$ANDROID_HOME/tools/bin/sdkmanager' : 'sdkmanager';
+    var command = process.env.ANDROID_HOME ? '$ANDROID_HOME/tools/bin/sdkmanager' : 'sdkmanager';
     var installed = utils.run(command + ' --list').split('Available')[0];
 
     var getJustVersions = /build-tools;([\d|.]+)[\S\s]/g;
