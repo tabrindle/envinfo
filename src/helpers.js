@@ -56,16 +56,15 @@ function getDarwinApplicationVersion(bundleIdentifier) {
 function getAllAndroidSDKs() {
   var androidSDKs = [];
   try {
-    var installed = utils
-    .run(
-      '$ANDROID_HOME/tools/bin/sdkmanager --list'
-    ).split('Available')[0];
+    var installed = utils.run('$ANDROID_HOME/tools/bin/sdkmanager --list').split('Available')[0];
 
-    var getJustVersions = /build-tools;([\d|\.]+)[\S\s]/g;
-    while (matcher = getJustVersions.exec(installed)) {
+    var getJustVersions = /build-tools;([\d|.]+)[\S\s]/g;
+    var matcher;
+    // eslint-disable-next-line
+    while ((matcher = getJustVersions.exec(installed))) {
       androidSDKs.push(matcher[1]);
     }
-  } catch(err) {
+  } catch (err) {
     androidSDKs = ['Unknown'];
   }
 
