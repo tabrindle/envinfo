@@ -60,6 +60,7 @@ function formatMarkdown(data, options) {
 function formatTable(data, options) {
   var compiled = [];
   if (!options) options = {};
+  const indent = options.indent || '  ';
   Object.entries(data).forEach(d => {
     const category = d[0];
     const values = d[1];
@@ -77,8 +78,13 @@ function formatTable(data, options) {
     } else {
       Object.entries(values).forEach(v => {
         const name = v[0];
-        const version = formatArray(v[1]);
-        if (version !== 'N/A') compiled.push(`  ${name}: ${version}`);
+        let version = formatArray(v[1]);
+        if (typeof version === 'object') {
+          version = formatTable(version, { indent: `${indent}${indent}` });
+          compiled.push(`${indent}${version}`);
+        } else if (version !== 'N/A') {
+          compiled.push(`${indent}${name}: ${version}`);
+        }
       });
     }
   });

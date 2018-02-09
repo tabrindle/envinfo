@@ -54,23 +54,35 @@ function getDarwinApplicationVersion(bundleIdentifier) {
 }
 
 function getAllAndroidSDKs() {
-  var androidSDKs = [];
+  var buildTools = [];
+  var androidAPIs = [];
   try {
     // try to use preferred install path
     var command = process.env.ANDROID_HOME ? '$ANDROID_HOME/tools/bin/sdkmanager' : 'sdkmanager';
     var installed = utils.run(command + ' --list').split('Available')[0];
 
-    var getJustVersions = /build-tools;([\d|.]+)[\S\s]/g;
+    var getBuildVersions = /build-tools;([\d|.]+)[\S\s]/g;
+    var getAPIVersions = /platforms;android-(\d+)[\S\s]/g;
     var matcher;
     // eslint-disable-next-line
-    while ((matcher = getJustVersions.exec(installed))) {
-      androidSDKs.push(matcher[1]);
+    while ((matcher = getBuildVersions.exec(installed))) {
+      buildTools.push(matcher[1]);
+    }
+    // eslint-disable-next-line
+    while ((matcher = getAPIVersions.exec(installed))) {
+      androidAPIs.push(matcher[1]);
     }
   } catch (err) {
-    androidSDKs = ['Unknown'];
+    buildTools = ['Unknown'];
+    androidAPIs = ['Unknown'];
   }
 
-  return androidSDKs;
+  return {
+    Android: {
+      'Build Tools': buildTools,
+      'API Levels': androidAPIs,
+    },
+  };
 }
 
 function getAndroidStudioVersion() {
