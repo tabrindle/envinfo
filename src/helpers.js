@@ -4,6 +4,7 @@ var osName = require('os-name');
 var path = require('path');
 var which = require('which');
 var utils = require('./utils');
+var formatters = require('./formatters');
 
 var browserBundleIdentifiers = {
   Chrome: 'com.google.Chrome',
@@ -69,10 +70,6 @@ function getAllAndroidSDKs() {
   }
 
   return androidSDKs;
-}
-
-function prettifyGetAllAndroidSDKs() {
-  return getAllAndroidSDKs().join(', ');
 }
 
 function getAndroidStudioVersion() {
@@ -413,7 +410,6 @@ module.exports = {
   findDarwinApplication: findDarwinApplication,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
   getAllAndroidSDKs: getAllAndroidSDKs,
-  prettifyGetAllAndroidSDKs: prettifyGetAllAndroidSDKs,
   getAndroidStudioVersion: getAndroidStudioVersion,
   getAtomVersion: getAtomVersion,
   getBashVersion: getBashVersion,

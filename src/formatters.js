@@ -8,6 +8,14 @@ function formatPackage(packageData, format) {
   return `  ${name}: ${wanted} ${installed} ${duplicates}`;
 }
 
+function formatArray(data, options = {emptyMessage: 'None'}) {
+  if (Array.isArray(data)) {
+    return (data.length > 0) ? data.join(', ') : emptyMessage;
+  } else {
+    return data;
+  }
+}
+
 function formatJson(data, options) {
   if (!options) options = {};
 
@@ -70,7 +78,7 @@ function formatTable(data, options) {
     } else {
       Object.entries(values).forEach(v => {
         const name = v[0];
-        const version = v[1];
+        const version = formatArray(v[1]);
         if (version !== 'N/A') compiled.push(`  ${name}: ${version}`);
       });
     }
@@ -82,6 +90,7 @@ function formatTable(data, options) {
 }
 
 module.exports = {
+  array: formatArray,
   json: formatJson,
   markdown: formatMarkdown,
   table: formatTable,
