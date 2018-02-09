@@ -4,7 +4,6 @@ var osName = require('os-name');
 var path = require('path');
 var which = require('which');
 var utils = require('./utils');
-var formatters = require('./formatters');
 
 var browserBundleIdentifiers = {
   Chrome: 'com.google.Chrome',
