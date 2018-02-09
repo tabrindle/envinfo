@@ -54,26 +54,26 @@ function getDarwinApplicationVersion(bundleIdentifier) {
 }
 
 function getAllAndroidSDKs() {
-  var androidSDKs = []
+  var androidSDKs = [];
   try {
     var installed = utils
     .run(
       '$ANDROID_HOME/tools/bin/sdkmanager --list'
-    ).split('Available')[0]
+    ).split('Available')[0];
 
-    var getJustVersions = /build-tools;([\d|\.]+)[\S\s]/g
+    var getJustVersions = /build-tools;([\d|\.]+)[\S\s]/g;
     while (matcher = getJustVersions.exec(installed)) {
-      androidSDKs.push(matcher[1])
+      androidSDKs.push(matcher[1]);
     }
   } catch(err) {
-    androidSDKs = ['Unknown']
+    androidSDKs = ['Unknown'];
   }
 
-  return androidSDKs
+  return androidSDKs;
 }
 
 function prettifyGetAllAndroidSDKs() {
-  return getAllAndroidSDKs().join(', ')
+  return getAllAndroidSDKs().join(', ');
 }
 
 function getAndroidStudioVersion() {
