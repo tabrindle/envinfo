@@ -78,10 +78,8 @@ function getAllAndroidSDKs() {
   }
 
   return {
-    Android: {
-      'Build Tools': buildTools,
-      'API Levels': androidAPIs,
-    },
+    'Build Tools': buildTools,
+    'API Levels': androidAPIs,
   };
 }
 

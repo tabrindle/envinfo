@@ -32,12 +32,14 @@ function formatJson(data, options) {
 }
 
 function formatMarkdown(data, options) {
-  if (!options) options = {};
   var compiled = [];
+  if (!options) options = {};
+  const indent = options.indent || '  ';
   Object.entries(data).forEach(d => {
     const category = d[0];
     const values = d[1];
-    if (Object.entries(values).length) compiled.push(`### ${category}:`);
+    if (Object.entries(values).length)
+      compiled.push(`${'#'.repeat(2 + indent.length / 2)} ${category}:`);
 
     if (category === 'Packages') {
       Object.entries(values)
@@ -46,8 +48,13 @@ function formatMarkdown(data, options) {
     } else {
       Object.entries(values).forEach(v => {
         const name = v[0];
-        const version = v[1];
-        if (version !== 'N/A') compiled.push(`* ${name}: ${version}`);
+        let version = formatArray(v[1]);
+        if (typeof version === 'object') {
+          version = formatMarkdown(values, { indent: `${indent}${indent}` });
+          compiled.push(`${indent}${version}`);
+        } else if (version !== 'N/A') {
+          compiled.push(`${indent}* ${name}: ${version}`);
+        }
       });
     }
   });
@@ -80,7 +87,7 @@ function formatTable(data, options) {
         const name = v[0];
         let version = formatArray(v[1]);
         if (typeof version === 'object') {
-          version = formatTable(version, { indent: `${indent}${indent}` });
+          version = formatTable(values, { indent: `${indent}${indent}` });
           compiled.push(`${indent}${version}`);
         } else if (version !== 'N/A') {
           compiled.push(`${indent}${name}: ${version}`);

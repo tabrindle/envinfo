@@ -15,7 +15,7 @@ module.exports = {
   watchman: helpers.getWatchmanVersion,
   yarn: helpers.getYarnVersion,
   homebrew: helpers.getHomeBrewVersion,
-  android_sdks: helpers.getAllAndroidSDKs,
+  android: helpers.getAllAndroidSDKs,
   // browsers
   chrome_canary: () =>
     helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers['Chrome Canary']),
