@@ -60,7 +60,7 @@ module.exports.envinfo = function print(options) {
   const formatter = (() => {
     if (options.json) return formatters.json;
     if (options.markdown) return formatters.markdown;
-    return formatters.table;
+    return formatters.yaml;
   })();
   const formatted = formatter(data, { console: false });
 

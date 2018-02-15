@@ -24,6 +24,9 @@ function toReadableBytes(bytes) {
   );
 }
 
+const isObject = val => typeof val === 'object' && !Array.isArray(val);
+const pipe = fns => x => fns.reduce((v, f) => f(v), x);
+
 function requireJson(filePath) {
   var packageJson;
   if (fs.existsSync(filePath)) {
@@ -45,10 +48,15 @@ function getPackageJsonByPath(filePath) {
   return this.requireJson(path.join(process.cwd(), filePath));
 }
 
+const noop = d => d;
+
 module.exports = {
   run: run,
   getPackageJsonByName: getPackageJsonByName,
   getPackageJsonByPath: getPackageJsonByPath,
+  isObject: isObject,
+  noop: noop,
+  pipe: pipe,
   requireJson: requireJson,
   toReadableBytes: toReadableBytes,
   uniq: uniq,

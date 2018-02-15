@@ -1,109 +1,143 @@
-function formatPackage(packageData, format) {
-  const name = packageData[0];
-  const data = packageData[1];
-  const wanted = data.wanted ? `${data.wanted} =>` : '';
-  const installed = Array.isArray(data.installed) ? data.installed.join(', ') : data.installed;
-  const duplicates = data.duplicates ? `(${data.duplicates.join(', ')})` : '';
-  if (format === 'markdown') return `* ${name}: ${wanted} ${installed} ${duplicates}`;
-  return `  ${name}: ${wanted} ${installed} ${duplicates}`;
+const yamlify = require('yamlify-object');
+const utils = require('./utils');
+
+function clean(data) {
+  return Object.keys(data).reduce((acc, prop) => {
+    if (data[prop] === 'N/A') return acc;
+    if (utils.isObject(data[prop])) {
+      return Object.assign(acc, { [prop]: clean(data[prop]) });
+    }
+    return Object.assign(acc, { [prop]: data[prop] });
+  }, {});
 }
 
-function formatArray(data, options = { emptyMessage: 'None' }) {
-  if (Array.isArray(data)) {
-    return data.length > 0 ? data.join(', ') : options.emptyMessage;
+function formatHeaders(data, options) {
+  if (!options) options = { type: 'underline' };
+  const formats = {
+    underline: ['\x1b[4m', '\x1b[0m'],
+  };
+  return data
+    .slice()
+    .split('\n')
+    .map(line => {
+      const isHeading = line.slice('-1') === ':';
+      if (isHeading) {
+        return `${formats[options.type][0]}${line}${formats[options.type][1]}`;
+      }
+      return line;
+    })
+    .join('\n');
+}
+
+function formatPackages(data) {
+  return Object.assign(
+    data,
+    Object.entries(data.packages || {}).reduce((acc, entry) => {
+      const key = entry[0];
+      const value = entry[1];
+      const wanted = value.wanted ? `${value.wanted} =>` : '';
+      const installed = Array.isArray(value.installed)
+        ? value.installed.join(', ')
+        : value.installed;
+      const duplicates = value.duplicates ? `(${value.duplicates.join(', ')})` : '';
+      return Object.assign(acc, {
+        [key]: `${wanted} ${installed} ${duplicates}`,
+      });
+    }, {})
+  );
+}
+
+function joinArray(key, value, options) {
+  if (!options) options = { emptyMessage: 'None' };
+  if (Array.isArray(value)) {
+    value = value.length > 0 ? value.join(', ') : options.emptyMessage;
   }
+  return {
+    [key]: value,
+  };
+}
+
+function recursiveTransform(data, fn) {
+  return Object.entries(data).reduce((acc, entry) => {
+    const key = entry[0];
+    const value = entry[1];
+    if (utils.isObject(value)) {
+      return Object.assign(acc, { [key]: recursiveTransform(value, fn) });
+    }
+    return Object.assign(acc, fn(key, value));
+  }, {});
+}
+
+function serializeArrays(data) {
+  return recursiveTransform(data, joinArray);
+}
+
+function yaml(data) {
+  return yamlify(data, {
+    indent: '  ',
+    prefix: '\n',
+    postfix: '\n',
+  });
+}
+
+function markdown(data) {
+  return data
+    .slice()
+    .split('\n')
+    .map(line => {
+      if (line !== '') {
+        const isHeading = line.slice('-1') === ':';
+        const indent = line.search(/\S|$/);
+        if (isHeading) {
+          return `${'#'.repeat(indent / 2 + 1)} ` + line.slice(indent);
+        }
+        return ' - ' + line.slice(indent);
+      }
+      return '';
+    })
+    .join('\n');
+}
+
+function json(data, options) {
+  if (!options)
+    options = {
+      indent: '  ',
+    };
+  return JSON.stringify(data, null, options.indent);
+}
+
+function formatToYaml(data, options) {
+  return utils.pipe([
+    formatPackages,
+    serializeArrays,
+    clean,
+    yaml,
+    options.console ? formatHeaders : utils.noop,
+  ])(data);
+}
+
+function formatToMarkdown(data, options) {
+  return utils.pipe([
+    formatPackages,
+    serializeArrays,
+    clean,
+    yaml,
+    markdown,
+    options.console ? formatHeaders : utils.noop,
+  ])(data);
+}
+
+function formatToJson(data, options) {
+  if (!options) options = {};
+
+  data = utils.pipe([json])(data);
+  data = options.console ? `\n${data}\n` : data;
+
   return data;
 }
 
-function formatJson(data, options) {
-  if (!options) options = {};
-
-  // delete properties that are not applicable
-  Object.entries(data).forEach(d => {
-    Object.entries(d[1]).forEach(i => {
-      if (i[1] === 'N/A') delete d[1][i[0]];
-    });
-  });
-
-  if (options.console) {
-    return `\n${JSON.stringify(data, null, '  ')}\n`;
-  }
-  return JSON.stringify(data, null, '  ');
-}
-
-function formatMarkdown(data, options) {
-  var compiled = [];
-  if (!options) options = {};
-  const indent = options.indent || '  ';
-  Object.entries(data).forEach(d => {
-    const category = d[0];
-    const values = d[1];
-    if (Object.entries(values).length)
-      compiled.push(`${'#'.repeat(2 + indent.length / 2)} ${category}:`);
-
-    if (category === 'Packages') {
-      Object.entries(values)
-        .map(p => formatPackage(p, 'markdown'))
-        .map(p => compiled.push(p));
-    } else {
-      Object.entries(values).forEach(v => {
-        const name = v[0];
-        let version = formatArray(v[1]);
-        if (typeof version === 'object') {
-          version = formatMarkdown(values, { indent: `${indent}${indent}` });
-          compiled.push(`${indent}${version}`);
-        } else if (version !== 'N/A') {
-          compiled.push(`${indent}* ${name}: ${version}`);
-        }
-      });
-    }
-  });
-  if (options.console) {
-    return '\n' + compiled.join('\n') + '\n';
-  }
-  return compiled.join('\n');
-}
-
-function formatTable(data, options) {
-  var compiled = [];
-  if (!options) options = {};
-  const indent = options.indent || '  ';
-  Object.entries(data).forEach(d => {
-    const category = d[0];
-    const values = d[1];
-    if (Object.entries(values).length) {
-      if (options.console) {
-        compiled.push(`\x1b[4m${category}:\x1b[0m`);
-      } else {
-        compiled.push(`${category}:`);
-      }
-    }
-    if (category === 'Packages') {
-      Object.entries(values)
-        .map(p => formatPackage(p, 'table'))
-        .map(p => compiled.push(p));
-    } else {
-      Object.entries(values).forEach(v => {
-        const name = v[0];
-        let version = formatArray(v[1]);
-        if (typeof version === 'object') {
-          version = formatTable(values, { indent: `${indent}${indent}` });
-          compiled.push(`${indent}${version}`);
-        } else if (version !== 'N/A') {
-          compiled.push(`${indent}${name}: ${version}`);
-        }
-      });
-    }
-  });
-  if (options.console) {
-    return '\n' + compiled.join('\n') + '\n';
-  }
-  return compiled.join('\n');
-}
-
 module.exports = {
-  array: formatArray,
-  json: formatJson,
-  markdown: formatMarkdown,
-  table: formatTable,
+  json: formatToJson,
+  markdown: formatToMarkdown,
+  yaml: formatToYaml,
 };

@@ -1486,6 +1486,10 @@ yallist@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
 
+yamlify-object@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/yamlify-object/-/yamlify-object-0.4.5.tgz#88291c64428d4aaf452141aaba6bda030d848f6c"
+
 yargs-parser@^8.0.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-8.1.0.tgz#f1376a33b6629a5d063782944da732631e966950"
