@@ -53,6 +53,25 @@ function getDarwinApplicationVersion(bundleIdentifier) {
   return 'N/A';
 }
 
+function getAlliOSSDKs() {
+  var iOSSDKVersions;
+
+  if (process.platform === 'darwin') {
+    try {
+      var output = utils.run('xcodebuild -showsdks');
+      iOSSDKVersions = output.match(/[\w]+\s[\d|.]+/g);
+    } catch (e) {
+      iOSSDKVersions = 'Unknown';
+    }
+  } else {
+    return 'N/A';
+  }
+
+  return {
+    Platforms: utils.uniq(iOSSDKVersions),
+  };
+}
+
 function getAllAndroidSDKs() {
   var buildTools = [];
   var androidAPIs = [];
@@ -421,6 +440,7 @@ module.exports = {
   findDarwinApplication: findDarwinApplication,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
   getAllAndroidSDKs: getAllAndroidSDKs,
+  getAlliOSSDKs: getAlliOSSDKs,
   getAndroidStudioVersion: getAndroidStudioVersion,
   getAtomVersion: getAtomVersion,
   getBashVersion: getBashVersion,

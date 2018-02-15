@@ -17,6 +17,7 @@ module.exports = {
   yarn: helpers.getYarnVersion,
   homebrew: helpers.getHomeBrewVersion,
   android: helpers.getAllAndroidSDKs,
+  ios: helpers.getAlliOSSDKs,
   // browsers
   chrome_canary: () =>
     helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers['Chrome Canary']),
