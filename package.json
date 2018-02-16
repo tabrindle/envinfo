@@ -34,7 +34,8 @@
     "object.entries": "^1.0.4",
     "object.values": "^1.0.4",
     "os-name": "^2.0.1",
-    "which": "^1.2.14"
+    "which": "^1.2.14",
+    "yamlify-object": "^0.4.5"
   },
   "devDependencies": {
     "eslint": "^4.10.0",
