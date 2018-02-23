@@ -61,52 +61,12 @@ npmPackages:
   eslint:
     wanted: ^4.10.0
     installed: 4.16.0
-  eslint-config-airbnb-base:
-    wanted: ^12.1.0
-    installed: 12.1.0
-  eslint-config-prettier:
-    wanted: ^2.7.0
-    installed: 2.9.0
-  eslint-plugin-import:
-    wanted: ^2.8.0
-    installed: 2.8.0
-  eslint-plugin-prettier:
-    wanted: ^2.3.1
-    installed: 2.5.0
-  prettier-eslint-cli:
-    wanted: ^4.1.1
-    installed: 4.7.0
-  array-includes:
-    wanted: ^3.0.3
-    installed: 3.0.3
-  clipboardy:
-    wanted: ^1.2.2
-    installed: 1.2.2
-  glob:
-    wanted: ^7.1.2
-    installed: 7.1.2
-  minimist:
-    wanted: ^1.2.0
-    installed: 1.2.0
-  object.entries:
-    wanted: ^1.0.4
-    installed: 1.0.4
-  object.values:
-    wanted: ^1.0.4
-    installed: 1.0.4
-  os-name:
-    wanted: ^2.0.1
-    installed: 2.0.1
-  which:
-    wanted: ^1.2.14
-    installed: 1.3.0
+  ...
   yamlify-object:
     wanted: ^0.4.5
     installed: 0.4.5
 npmGlobalPackages:
   create-react-native-app: 1.0.0
-  docker-registry-cli: 1.0.0
-  envinfo: 4.0.0-beta.6
   exp: 49.2.2
   lerna: 2.7.1
   npm: 5.6.0
@@ -120,28 +80,16 @@ npmGlobalPackages:
 
 * --npmPackages - Optionally return packages from your package.json: takes either boolean or comma delimited string in CLI or array via API
 
-`envinfo --system --binaries --npmPackages=minimist,which`
+`envinfo --npmPackages=minimist,which`
 
 ```sh
-  System:
-    OS: macOS High Sierra 10.13
-    CPU: x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
-    Free Memory: 3.93 GB
-    Total Memory: 16.00 GB
-    Shell: /usr/local/bin/bash - 4.4.12
-  Binaries:
-    Node: 8.9.4
-    Yarn: 1.3.2
-    npm: 5.6.0
-    ...
-  npmPackages:
-    eslint:
-      wanted: ^4.10.0
-      installed: 4.16.0
-    ...
-    yamlify-object:
-      wanted: ^0.4.5
-      installed: 0.4.5
+npmPackages:
+  minimist:
+    wanted: ^1.2.0
+    installed: 1.2.0
+  which:
+    wanted: ^1.2.14
+    installed: 1.3.0
 ```
 
 * --npmGlobalPackages - print your npm global packages versions
@@ -149,38 +97,15 @@ npmGlobalPackages:
 `envinfo --system --binaries --npmGlobalPackages`
 
 ```sh
-System:
-  OS: macOS High Sierra 10.13
-  CPU: x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
-  Free Memory: 4.01 GB
-  Total Memory: 16.00 GB
-Binaries:
-  Node: 8.9.4
-  Yarn: 1.3.2
-  npm: 5.6.0
-  ...
 npmGlobalPackages:
-  envinfo: 4.0.0-beta.1
   exp: 48.0.2
-  lerna: 2.7.1
   npm: 5.6.0
-  npm-check-updates: 2.14.0
   react-native-cli: 2.0.1
 ```
 
 * --duplicates - will search given packages for duplicates, display in parentheses
 
 ```sh
-System:
-  OS: macOS High Sierra 10.13
-  CPU: x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
-  Free Memory: 4.01 GB
-  Total Memory: 16.00 GB
-Binaries:
-  Node: 8.9.4
-  Yarn: 1.3.2
-  npm: 5.6.0
- ...
 Packages:
   minimist: ^1.2.0 => 1.2.0 (1.2.0, 0.0.8)
 ```
@@ -188,16 +113,6 @@ Packages:
 * --fullTree - will traverse and print the entire flattened dependency tree (optionally also with --duplicates)
 
 ```sh
-System:
-  OS: macOS High Sierra 10.13
-  CPU: x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
-  Free Memory: 4.01 GB
-  Total Memory: 16.00 GB
-Binaries:
-  Node: 8.9.4
-  Yarn: 1.3.2
-  npm: 5.6.0
- ...
 Packages:
   ...
   minimatch:  3.0.4
