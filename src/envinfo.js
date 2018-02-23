@@ -6,66 +6,100 @@ const copypasta = require('clipboardy');
 const helpers = require('./helpers');
 const helperMap = require('./map');
 const formatters = require('./formatters');
-const packages = require('./packages');
-const arrayincludes = require('array-includes');
-const objectentries = require('object.entries');
-const objectvalues = require('object.values');
+const arrayIncludes = require('array-includes');
+const objectEntries = require('object.entries');
+const objectValues = require('object.values');
 
-if (!Object.entries) objectentries.shim();
-if (!Object.values) objectvalues.shim();
-if (!Array.prototype.includes) arrayincludes.shim();
+if (!Array.prototype.includes) arrayIncludes.shim();
+if (!Object.entries) objectEntries.shim();
+if (!Object.values) objectValues.shim();
 
-module.exports.helpers = helpers;
-module.exports.envinfo = function print(options) {
-  const props = {
-    System: ['OS', 'CPU', 'Free Memory', 'Total Memory', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew'],
-    SDKs: ['Android'],
-    IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
-    Languages: ['Bash', 'Go', 'PHP', 'Python', 'Ruby'],
-    Browsers: [
-      'Chrome',
-      'Chrome Canary',
-      'Firefox',
-      'Firefox Developer Edition',
-      'Firefox Nightly',
-      'Safari',
-      'Safari Technology Preview',
-    ],
-  };
-  const info = Object.entries(props).reduce((acc, prop) => {
-    const key = prop[0];
+// a map of all the capabilities of envinfo - used as a default input
+const capabilities = {
+  System: ['OS', 'CPU', 'Free Memory', 'Total Memory', 'Shell'],
+  Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew'],
+  SDKs: ['Android'],
+  IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
+  Languages: ['Bash', 'Go', 'PHP', 'Python', 'Ruby'],
+  Browsers: [
+    'Chrome',
+    'Chrome Canary',
+    'Firefox',
+    'Firefox Developer Edition',
+    'Firefox Nightly',
+    'Safari',
+    'Safari Technology Preview',
+  ],
+  npmPackages: true,
+  npmGlobalPackages: true,
+};
+
+function main(props, options) {
+  // set props to passed in props or default all capabilites
+  const defaults = Object.keys(props).length > 0 ? props : capabilities;
+
+  // get data by iterating and calling helper functions
+  const data = Object.entries(defaults).reduce((acc, prop) => {
+    const category = prop[0];
     const value = prop[1];
-    const category = {
-      [key]: value.reduce((cat, name) => {
-        const fn = helperMap[name.toLowerCase().replace(/\s/g, '_')];
-        return Object.assign(cat, {
-          [name]: fn ? fn() : 'Unknown',
-        });
-      }, {}),
-    };
-    return Object.assign(acc, category);
+    // create an object of all the resolved helper values
+    return Object.assign(acc, {
+      [category]: helperMap[category]
+        ? helperMap[category](value, options) // if there is a category level helper
+        : value.reduce((cat, name) => {
+            const fn = helperMap[name.toLowerCase().replace(/\s/g, '_')];
+            return Object.assign(cat, {
+              [name]: fn ? fn() : 'Unknown',
+            });
+          }, {}),
+    });
   }, {});
-  const npmPackages = options.packages
-    ? {
-        Packages: packages.getPackageInfo(options.packages, options),
-      }
-    : {};
-  const npmGlobals = options.globalPackages
-    ? {
-        'Global Packages': packages.getNpmGlobalPackages(),
-      }
-    : {};
-  const data = Object.assign(info, npmPackages, npmGlobals);
+
+  // set the default formatter (yaml is default, similar to old table)
   const formatter = (() => {
     if (options.json) return formatters.json;
     if (options.markdown) return formatters.markdown;
     return formatters.yaml;
   })();
+
+  // call the formatter with console option off first to return, or pipe to clipboard
   const formatted = formatter(data, { console: false });
 
-  if (options.clipboard) copypasta.writeSync(formatted);
   if (options.console) console.log(formatter(data, { console: true })); // eslint-disable-line no-console
+  if (options.clipboard) copypasta.writeSync(formatted);
 
   return formatted;
+}
+
+// $ envinfo --system --npmPackages
+function cli(options) {
+  // generic function to make sure passed option exists in capability list
+  // TODO: This will eventually be replaced with a better fuzzy finder.
+  const matches = (list, opt) => list.toLowerCase().includes(opt.toLowerCase());
+  // check cli options to see if any args are top level categories
+  const categories = Object.keys(options).filter(o =>
+    Object.keys(capabilities).some(c => matches(c, o))
+  );
+  // build the props object for filtering capabilities
+  const props = Object.entries(capabilities).reduce((acc, entry) => {
+    if (categories.some(c => matches(c, entry[0]))) {
+      return Object.assign(acc, { [entry[0]]: entry[1] || options[entry[0]] });
+    }
+    return acc;
+  }, {});
+  // call the main function with the filtered props, and cli options
+  main(props, options);
+}
+
+// require('envinfo);
+// envinfo.run({ system: [os, cpu], fullTree: true })
+function run(options) {
+  main(options.props, options);
+}
+
+module.exports = {
+  cli: cli,
+  helpers: helpers,
+  main: main,
+  run: run,
 };

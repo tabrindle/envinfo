@@ -1,4 +1,5 @@
-var helpers = require('./helpers');
+const helpers = require('./helpers');
+const packages = require('./packages');
 // var fuse = require('fuse.js');
 
 module.exports = {
@@ -43,4 +44,7 @@ module.exports = {
   php: helpers.getPhpVersion,
   python: helpers.getPythonVersion,
   ruby: helpers.getRubyVersion,
+  // npm
+  npmPackages: packages.getPackageInfo,
+  npmGlobalPackages: packages.getNpmGlobalPackages,
 };
