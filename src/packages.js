@@ -1,5 +1,5 @@
-var glob = require('glob');
-var utils = require('./utils');
+const glob = require('glob');
+const utils = require('./utils');
 
 function getAllPackageJsonPaths() {
   return glob.sync('node_modules/**/package.json');
@@ -171,7 +171,11 @@ function getPackageInfo(packages, options) {
   return {};
 }
 
-function getNpmGlobalPackages() {
+function getNpmGlobalPackages(packages) {
+  if (typeof packages === 'string') {
+    packages = packages.split(',');
+  }
+
   var npmGlobalPackages;
   try {
     npmGlobalPackages = utils.run('npm list -g --depth=0 --json');
@@ -179,9 +183,11 @@ function getNpmGlobalPackages() {
     npmGlobalPackages = Object.entries(npmGlobalPackages.dependencies).reduce((acc, dep) => {
       const name = dep[0];
       const info = dep[1];
-      return Object.assign(acc, {
-        [name]: info.version,
-      });
+      if (packages.some(p => p.toLowerCase() === name.toLowerCase()))
+        return Object.assign(acc, {
+          [name]: info.version,
+        });
+      return acc;
     }, {});
   } catch (error) {
     npmGlobalPackages = 'Not Found';

@@ -1,9 +1,10 @@
-var childProcess = require('child_process');
-var os = require('os');
-var osName = require('os-name');
-var path = require('path');
-var which = require('which');
-var utils = require('./utils');
+const childProcess = require('child_process');
+const os = require('os');
+const osName = require('os-name');
+const path = require('path');
+const which = require('which');
+const packages = require('./packages');
+const utils = require('./utils');
 
 var browserBundleIdentifiers = {
   Chrome: 'com.google.Chrome',
@@ -280,24 +281,6 @@ function getNpmVersion() {
   return npmVersion;
 }
 
-function getNpmGlobalPackages() {
-  var npmGlobalPackages;
-  try {
-    npmGlobalPackages = utils.run('npm list -g --depth=0 --json');
-    npmGlobalPackages = JSON.parse(npmGlobalPackages);
-    npmGlobalPackages = Object.entries(npmGlobalPackages.dependencies).reduce((acc, dep) => {
-      const name = dep[0];
-      const info = dep[1];
-      return Object.assign(acc, {
-        [name]: info.version,
-      });
-    }, {});
-  } catch (error) {
-    npmGlobalPackages = 'Not Found';
-  }
-  return npmGlobalPackages;
-}
-
 function getShell() {
   var shell;
   try {
@@ -435,7 +418,7 @@ function getFirefoxNightlyVersion() {
   return firefoxNightlyVersion;
 }
 
-module.exports = {
+module.exports = Object.assign(packages, {
   browserBundleIdentifiers: browserBundleIdentifiers,
   findDarwinApplication: findDarwinApplication,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
@@ -451,7 +434,6 @@ module.exports = {
   getGoVersion: getGoVersion,
   getHomeBrewVersion: getHomeBrewVersion,
   getNodeVersion: getNodeVersion,
-  getNpmGlobalPackages: getNpmGlobalPackages,
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
   getPhpVersion: getPhpVersion,
@@ -467,4 +449,4 @@ module.exports = {
   getChromeVersion: getChromeVersion,
   getFirefoxVersion: getFirefoxVersion,
   getFirefoxNightlyVersion: getFirefoxNightlyVersion,
-};
+});

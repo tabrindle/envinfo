@@ -30,8 +30,8 @@ const capabilities = {
     'Safari',
     'Safari Technology Preview',
   ],
-  npmPackages: true,
-  npmGlobalPackages: true,
+  npmPackages: null,
+  npmGlobalPackages: null,
 };
 
 function main(props, options) {
