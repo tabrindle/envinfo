@@ -7,6 +7,7 @@ const argv = require('minimist')(process.argv.slice(2));
 argv.console = true;
 
 if (argv.help || argv._.indexOf('help') > -1) {
+  // eslint-disable-next-line
   console.log(`
   USAGE:
 
