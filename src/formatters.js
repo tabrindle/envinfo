@@ -22,7 +22,10 @@ function formatHeaders(data, options) {
     .map(line => {
       const isHeading = line.slice('-1') === ':';
       if (isHeading) {
-        return `${formats[options.type][0]}${line}${formats[options.type][1]}`;
+        const indent = line.match(/^[\s]*/g)[0];
+        return `${indent}${formats[options.type][0]}${line.slice(indent.length)}${
+          formats[options.type][1]
+        }`;
       }
       return line;
     })
@@ -116,15 +119,8 @@ function formatToYaml(data, options) {
   ])(data);
 }
 
-function formatToMarkdown(data, options) {
-  return utils.pipe([
-    formatPackages,
-    serializeArrays,
-    clean,
-    yaml,
-    markdown,
-    options.console ? formatHeaders : utils.noop,
-  ])(data);
+function formatToMarkdown(data) {
+  return utils.pipe([formatPackages, serializeArrays, clean, yaml, markdown])(data);
 }
 
 function formatToJson(data, options) {
