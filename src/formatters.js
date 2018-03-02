@@ -3,7 +3,7 @@ const utils = require('./utils');
 
 function clean(data) {
   return Object.keys(data).reduce((acc, prop) => {
-    if (data[prop] === 'N/A') return acc;
+    if (data[prop] === 'N/A' || Object.keys(data[prop]).length === 0) return acc;
     if (utils.isObject(data[prop])) {
       return Object.assign(acc, { [prop]: clean(data[prop]) });
     }

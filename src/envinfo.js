@@ -31,7 +31,7 @@ const capabilities = {
     'Safari Technology Preview',
   ],
   npmPackages: null,
-  npmGlobalPackages: null,
+  npmGlobalPackages: true,
 };
 
 function main(props, options) {
@@ -71,8 +71,11 @@ function main(props, options) {
   return formatted;
 }
 
+// Example usage:
 // $ envinfo --system --npmPackages
 function cli(options) {
+  // if all option is passed, do not pass go, do not collect 200 dollars, go straight to main
+  if (options.all) return main(Object.assign({}, capabilities, { npmPackages: true }), options);
   // generic function to make sure passed option exists in capability list
   // TODO: This will eventually be replaced with a better fuzzy finder.
   const matches = (list, opt) => list.toLowerCase().includes(opt.toLowerCase());
@@ -88,7 +91,7 @@ function cli(options) {
     return acc;
   }, {});
   // call the main function with the filtered props, and cli options
-  main(props, options);
+  return main(props, options);
 }
 
 // require('envinfo);

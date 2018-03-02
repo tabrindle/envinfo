@@ -183,7 +183,7 @@ function getNpmGlobalPackages(packages) {
     npmGlobalPackages = Object.entries(npmGlobalPackages.dependencies).reduce((acc, dep) => {
       const name = dep[0];
       const info = dep[1];
-      if (packages.some(p => p.toLowerCase() === name.toLowerCase()))
+      if (!Array.isArray(packages) || packages.some(p => p.toLowerCase() === name.toLowerCase()))
         return Object.assign(acc, {
           [name]: info.version,
         });
