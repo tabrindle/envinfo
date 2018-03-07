@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const packageJson = require('../package.json');
 const envinfo = require('./envinfo.js');
 const argv = require('minimist')(process.argv.slice(2));

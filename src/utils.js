@@ -31,7 +31,7 @@ function requireJson(filePath) {
   var packageJson;
   if (fs.existsSync(filePath)) {
     try {
-      packageJson = require(filePath); // eslint-disable-line global-require
+      packageJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch (e) {
       return null;
     }
