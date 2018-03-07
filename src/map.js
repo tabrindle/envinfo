@@ -42,6 +42,7 @@ module.exports = {
   // Languages
   bash: helpers.getBashVersion,
   go: helpers.getGoVersion,
+  elixir: helpers.getElixirVersion,
   php: helpers.getPhpVersion,
   python: helpers.getPythonVersion,
   ruby: helpers.getRubyVersion,
