@@ -199,6 +199,16 @@ function getDockerVersion() {
   return dockerVersion;
 }
 
+function getElixirVersion() {
+  var elixirVersion;
+  try {
+    elixirVersion = /[Elixir]+\s([\d|.]+)/g.exec(utils.run('elixir --version'))[1];
+  } catch (error) {
+    elixirVersion = 'Not Found';
+  }
+  return elixirVersion;
+}
+
 function getFreeMemory() {
   return utils.toReadableBytes(os.freemem());
 }
@@ -430,6 +440,7 @@ module.exports = Object.assign(packages, {
   getCPUInfo: getCPUInfo,
   getDarwinApplicationVersion: getDarwinApplicationVersion,
   getDockerVersion: getDockerVersion,
+  getElixirVersion: getElixirVersion,
   getFreeMemory: getFreeMemory,
   getGoVersion: getGoVersion,
   getHomeBrewVersion: getHomeBrewVersion,

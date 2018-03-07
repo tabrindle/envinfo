@@ -20,7 +20,7 @@ const capabilities = {
   Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew'],
   SDKs: ['iOS', 'Android'],
   IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
-  Languages: ['Bash', 'Go', 'PHP', 'Python', 'Ruby'],
+  Languages: ['Bash', 'Go', 'Elixir', 'PHP', 'Python', 'Ruby'],
   Browsers: [
     'Chrome',
     'Chrome Canary',
