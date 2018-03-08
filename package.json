@@ -5,9 +5,9 @@
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
   "license": "MIT",
-  "main": "src/envinfo.js",
+  "main": "dist/envinfo.js",
   "bin": {
-    "envinfo": "dist/bundle.js"
+    "envinfo": "dist/cli.js"
   },
   "engines": {
     "node": ">=4"
@@ -17,15 +17,7 @@
     "format": "prettier --write 'src/**/*.js'",
     "test": "npm run lint && prettier -l 'src/**/*.js'"
   },
-  "keywords": [
-    "development",
-    "env",
-    "environment",
-    "info",
-    "issues",
-    "reporting",
-    "diagnostics"
-  ],
+  "keywords": ["development", "env", "environment", "info", "issues", "reporting", "diagnostics"],
   "dependencies": {},
   "devDependencies": {
     "array-includes": "^3.0.3",

@@ -1,16 +1,19 @@
-const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: './src/cli.js',
+  entry: {
+    envinfo: './src/envinfo.js',
+    cli: './src/cli.js',
+  },
   target: 'node',
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    libraryTarget: 'commonjs2',
+    filename: '[name].js',
+    path: __dirname + '/dist',
   },
   plugins: [
     new UglifyJSPlugin(),
-    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
+    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true, include: 'cli' }),
   ],
 };
