@@ -7,13 +7,23 @@ Reporting issues is a pain. Responding to issues is a pain. Make it a bit better
 
 ## Installation
 
-Install this package globally:
+To use as a CLI tool, install this package globally:
 
 ```sh
 npm install -g envinfo || yarn global add envinfo
 ```
 
-## Usage
+Or, use without installing with npx: 
+
+`npx envinfo`
+
+To use as a library in another project:
+
+```sh
+npm install envinfo || yarn add envinfo
+```
+
+## CLI Usage
 
 `envinfo` || `npx envinfo`
 
@@ -74,13 +84,79 @@ npmGlobalPackages:
   react-native-cli: 2.0.1
 ```
 
-## Options
+## Programmatic Usage
+
+Envinfo takes a configuration object and returns a string (optionally yaml, json or markdown)
+
+```javascript
+import envinfo from 'envinfo';
+
+console.log(
+  envinfo.run(
+    {
+      System: ['OS', 'CPU'],
+      Binaries: ['Node', 'Yarn', 'npm'],
+      Browsers: ['Chrome', 'Firefox', 'Safari'],
+      npmPackages: ['styled-components', 'babel-plugin-styled-components'],
+    },
+    { json: true }
+  )
+);
+
+```
+```
+{
+  "System": {
+    "OS": "macOS High Sierra 10.13",
+    "CPU": "x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz"
+  },
+  "Binaries": {
+    "Node": "8.9.4",
+    "Yarn": "1.3.2",
+    "npm": "5.6.0"
+  },
+  "Browsers": {
+    "Chrome": "65.0.3325.146",
+    "Firefox": 58.0,
+    "Safari": 11.0
+  },
+  "npmPackages": {
+    "styled-components": {
+      "wanted": "^3.2.1",
+      "installed": "3.2.1"
+    },
+    "babel-plugin-styled-components": {
+      "wanted": "^1.5.1",
+      "installed": "1.5.1"
+    }
+  }
+}
+```
+
+All of envinfo's helpers are also exported for use. You can use envinfo as a whole, or just the parts that you need, like this:
+
+```javascript
+import { helpers } from 'envinfo'
+
+const OS = helpers.getOperatingSystemInfo();
+const docker = helpers.getDockerVersion();
+
+console.log({ OS, docker });
+```
+```
+{
+ OS: 'macOS High Sierra 10.13'
+ docker: '17.12.0-ce, build c97c6d6'
+}
+```
+
+## CLI Options
 
 * --clipboard - Optionally copy directly to your clipboard with `envinfo --clipboard`. This feature uses [Clipboardy](https://www.npmjs.com/package/clipboardy)
 
 * --npmPackages - Optionally return packages from your package.json: takes either boolean or comma delimited string in CLI or array via API
 
-`envinfo --npmPackages=minimist,which`
+`envinfo --npmPackages minimist,which`
 
 ```sh
 npmPackages:
@@ -94,7 +170,7 @@ npmPackages:
 
 * --npmGlobalPackages - print your npm global packages versions
 
-`envinfo --system --binaries --npmGlobalPackages`
+`envinfo --npmGlobalPackages`
 
 ```sh
 npmGlobalPackages:
@@ -129,6 +205,7 @@ envinfo is live in:
 * [create-react-app](https://github.com/facebook/create-react-app) (`create-react-app --info`)
 * [Exponent Development CLI](https://github.com/expo/exp) (`exp diagnostics`)
 * [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
+* [styled-components](https://github.com/styled-components/styled-components) ((ISSUE_TEMPLATE.md))
 
 ## Contributing
 
