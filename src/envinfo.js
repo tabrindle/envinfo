@@ -33,8 +33,9 @@ const capabilities = {
 };
 
 function main(props, options) {
-  // set props to passed in props or default all capabilites
+  // set props to passed in props or default all capabilities
   const defaults = Object.keys(props).length > 0 ? props : capabilities;
+  options = options || {};
 
   // get data by iterating and calling helper functions
   const data = Object.entries(defaults).reduce((acc, prop) => {
@@ -74,6 +75,8 @@ function main(props, options) {
 function cli(options) {
   // if all option is passed, do not pass go, do not collect 200 dollars, go straight to main
   if (options.all) return main(Object.assign({}, capabilities, { npmPackages: true }), options);
+  // if raw, parse the row options and skip to main
+  if (options.raw) return main(JSON.parse(options.raw), options);
   // generic function to make sure passed option exists in capability list
   // TODO: This will eventually be replaced with a better fuzzy finder.
   const matches = (list, opt) => list.toLowerCase().includes(opt.toLowerCase());
@@ -94,8 +97,8 @@ function cli(options) {
 
 // require('envinfo);
 // envinfo.run({ system: [os, cpu], fullTree: true })
-function run(options) {
-  main(options.props, options);
+function run(args, options) {
+  return main(args, options);
 }
 
 module.exports = {
