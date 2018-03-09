@@ -15,7 +15,8 @@ if (!Object.values) objectValues.shim();
 // a map of all the capabilities of envinfo - used as a default input
 const capabilities = {
   System: ['OS', 'CPU', 'Free Memory', 'Total Memory', 'Shell'],
-  Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'Docker', 'Homebrew'],
+  Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+  Virtualization: ['Docker', 'Parallels', 'Virtualbox', 'VMware Fusion'],
   SDKs: ['iOS', 'Android'],
   IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
   Languages: ['Bash', 'Go', 'Elixir', 'PHP', 'Python', 'Ruby'],

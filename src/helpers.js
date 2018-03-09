@@ -189,6 +189,16 @@ function getPhpVersion() {
   return phpVersion;
 }
 
+function getParallelsVersion() {
+  var parallelsVersion;
+  try {
+    parallelsVersion = utils.run('prlctl --version').match(/[version]+\s([\d|.]+)/)[1];
+  } catch (error) {
+    parallelsVersion = 'Not Found';
+  }
+  return parallelsVersion;
+}
+
 function getDockerVersion() {
   var dockerVersion;
   try {
@@ -339,6 +349,26 @@ function getVSCodeVersion() {
   return VSCodeVersion;
 }
 
+function getVirtualBoxVersion() {
+  var virtualBoxVersion;
+  try {
+    virtualBoxVersion = utils.run('vboxmanage --version');
+  } catch (error) {
+    virtualBoxVersion = 'Not Found';
+  }
+  return virtualBoxVersion;
+}
+
+function getVMwareVersion() {
+  var vmwareVersion;
+  try {
+    vmwareVersion = getDarwinApplicationVersion('com.vmware.fusion');
+  } catch (error) {
+    vmwareVersion = 'Not Found';
+  }
+  return vmwareVersion;
+}
+
 function getPythonVersion() {
   var pythonVersion;
   var pythonPath;
@@ -448,11 +478,14 @@ module.exports = Object.assign(packages, {
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
   getPhpVersion: getPhpVersion,
+  getParallelsVersion: getParallelsVersion,
   getPythonVersion: getPythonVersion,
   getRubyVersion: getRubyVersion,
   getShell: getShell,
   getSublimeTextVersion: getSublimeTextVersion,
   getTotalMemory: getTotalMemory,
+  getVirtualBoxVersion: getVirtualBoxVersion,
+  getVMwareVersion: getVMwareVersion,
   getVSCodeVersion: getVSCodeVersion,
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,

@@ -10,7 +10,6 @@ module.exports = {
   free_memory: helpers.getFreeMemory,
   shell: helpers.getShell,
   // applications
-  docker: helpers.getDockerVersion,
   node: helpers.getNodeVersion,
   npm: helpers.getNpmVersion,
   watchman: helpers.getWatchmanVersion,
@@ -18,6 +17,11 @@ module.exports = {
   homebrew: helpers.getHomeBrewVersion,
   android: helpers.getAllAndroidSDKs,
   ios: helpers.getAlliOSSDKs,
+  // virtualization
+  docker: helpers.getDockerVersion,
+  virtualbox: helpers.getVirtualBoxVersion,
+  vmware_fusion: helpers.getVMwareVersion,
+  parallels: helpers.getParallelsVersion,
   // browsers
   chrome_canary: () =>
     helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers['Chrome Canary']),
