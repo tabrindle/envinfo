@@ -12,6 +12,17 @@ function run(cmd) {
   ).trim();
 }
 
+function customGenericVersionFunction(fn, msg) {
+  if (!msg) msg = 'Not Found';
+  var version;
+  try {
+    version = fn();
+  } catch (error) {
+    version = msg;
+  }
+  return version;
+}
+
 function uniq(arr) {
   return Array.from(new Set(arr)); // eslint-disable-line no-undef
 }
@@ -51,13 +62,14 @@ function getPackageJsonByPath(filePath) {
 const noop = d => d;
 
 module.exports = {
-  run: run,
+  customGenericVersionFunction: customGenericVersionFunction,
   getPackageJsonByName: getPackageJsonByName,
   getPackageJsonByPath: getPackageJsonByPath,
   isObject: isObject,
   noop: noop,
   pipe: pipe,
   requireJson: requireJson,
+  run: run,
   toReadableBytes: toReadableBytes,
   uniq: uniq,
 };
