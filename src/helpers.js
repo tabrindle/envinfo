@@ -148,23 +148,11 @@ function getAndroidStudioVersion() {
 }
 
 function getAtomVersion() {
-  var atomVersion;
-  try {
-    atomVersion = getDarwinApplicationVersion('com.github.atom');
-  } catch (error) {
-    atomVersion = 'Not Found';
-  }
-  return atomVersion;
+  return utils.customGenericVersionFunction(() => getDarwinApplicationVersion('com.github.atom'));
 }
 
 function getCPUInfo() {
-  var CPUInfo;
-  try {
-    CPUInfo = os.arch() + ' ' + os.cpus()[0].model;
-  } catch (error) {
-    CPUInfo = 'Not Found';
-  }
-  return CPUInfo;
+  return utils.customGenericVersionFunction(() => os.arch() + ' ' + os.cpus()[0].model, 'Unknown');
 }
 
 function getBashVersion() {
@@ -180,33 +168,25 @@ function getBashVersion() {
 }
 
 function getPhpVersion() {
-  var phpVersion;
-  try {
-    phpVersion = utils.run('php -v').split(' ', 2)[1];
-  } catch (error) {
-    phpVersion = 'Not Found';
-  }
-  return phpVersion;
+  return utils.customGenericVersionFunction(() => utils.run('php -v').split(' ', 2)[1]);
+}
+
+function getParallelsVersion() {
+  return utils.customGenericVersionFunction(
+    () => utils.run('prlctl --version').match(/[version]+\s([\d|.]+)/)[1]
+  );
 }
 
 function getDockerVersion() {
-  var dockerVersion;
-  try {
-    dockerVersion = utils.run('docker --version').replace('Docker version ', '');
-  } catch (error) {
-    dockerVersion = 'Not Found';
-  }
-  return dockerVersion;
+  return utils.customGenericVersionFunction(() =>
+    utils.run('docker --version').replace('Docker version ', '')
+  );
 }
 
 function getElixirVersion() {
-  var elixirVersion;
-  try {
-    elixirVersion = /[Elixir]+\s([\d|.]+)/g.exec(utils.run('elixir --version'))[1];
-  } catch (error) {
-    elixirVersion = 'Not Found';
-  }
-  return elixirVersion;
+  return utils.customGenericVersionFunction(
+    () => /[Elixir]+\s([\d|.]+)/g.exec(utils.run('elixir --version'))[1]
+  );
 }
 
 function getFreeMemory() {
@@ -218,13 +198,7 @@ function getTotalMemory() {
 }
 
 function getSublimeTextVersion() {
-  var sublimeTextVersion;
-  try {
-    sublimeTextVersion = getDarwinApplicationVersion('com.sublimetext.3');
-  } catch (error) {
-    sublimeTextVersion = 'Not Found';
-  }
-  return sublimeTextVersion;
+  return utils.customGenericVersionFunction(() => getDarwinApplicationVersion('com.sublimetext.3'));
 }
 
 function getHomeBrewVersion() {
@@ -244,51 +218,31 @@ function getHomeBrewVersion() {
 }
 
 function getGoVersion() {
-  var goVersion;
-  try {
-    goVersion = utils
+  return utils.customGenericVersionFunction(() =>
+    utils
       .run('go version')
       .replace('go version go', '')
       .split(' ', 1)
-      .join();
-  } catch (error) {
-    goVersion = 'Not Found';
-  }
-  return goVersion;
+      .join()
+  );
 }
 
 function getRubyVersion() {
-  var rubyVersion;
-  try {
-    rubyVersion = utils
+  return utils.customGenericVersionFunction(() =>
+    utils
       .run('ruby --version')
       .replace('ruby ', '')
       .split(' ', 1)
-      .join();
-  } catch (error) {
-    rubyVersion = 'Not Found';
-  }
-  return rubyVersion;
+      .join()
+  );
 }
 
 function getNodeVersion() {
-  var nodeVersion;
-  try {
-    nodeVersion = utils.run('node --version').replace('v', '');
-  } catch (error) {
-    nodeVersion = 'Not Found';
-  }
-  return nodeVersion;
+  return utils.customGenericVersionFunction(() => utils.run('node --version').replace('v', ''));
 }
 
 function getNpmVersion() {
-  var npmVersion;
-  try {
-    npmVersion = utils.run('npm -v');
-  } catch (error) {
-    npmVersion = 'Not Found';
-  }
-  return npmVersion;
+  return utils.customGenericVersionFunction(() => utils.run('npm -v'));
 }
 
 function getShell() {
@@ -316,27 +270,26 @@ function getOperatingSystemInfo() {
 }
 
 function getWatchmanVersion() {
-  var watchmanVersion;
-  try {
-    var watchmanPath = which.sync('watchman');
-    watchmanVersion = watchmanPath && utils.run(watchmanPath + ' --version');
-  } catch (error) {
-    watchmanVersion = 'Not Found';
-  }
-  return watchmanVersion;
+  return utils.customGenericVersionFunction(
+    () => which.sync('watchman') && utils.run(which.sync('watchman') + ' --version')
+  );
 }
 
 function getVSCodeVersion() {
-  var VSCodeVersion;
-  try {
-    VSCodeVersion = utils
+  return utils.customGenericVersionFunction(() =>
+    utils
       .run('code --version')
       .split('\n', 1)
-      .join('');
-  } catch (error) {
-    VSCodeVersion = 'Not Found';
-  }
-  return VSCodeVersion;
+      .join('')
+  );
+}
+
+function getVirtualBoxVersion() {
+  return utils.customGenericVersionFunction(() => utils.run('vboxmanage --version'));
+}
+
+function getVMwareVersion() {
+  return utils.customGenericVersionFunction(() => getDarwinApplicationVersion('com.vmware.fusion'));
 }
 
 function getPythonVersion() {
@@ -375,13 +328,7 @@ function getXcodeVersion() {
 }
 
 function getYarnVersion() {
-  var yarnVersion;
-  try {
-    yarnVersion = utils.run('yarn --version');
-  } catch (error) {
-    yarnVersion = 'Not Found';
-  }
-  return yarnVersion;
+  return utils.customGenericVersionFunction(() => utils.run('yarn --version'));
 }
 
 function getChromeVersion() {
@@ -448,11 +395,14 @@ module.exports = Object.assign(packages, {
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,
   getPhpVersion: getPhpVersion,
+  getParallelsVersion: getParallelsVersion,
   getPythonVersion: getPythonVersion,
   getRubyVersion: getRubyVersion,
   getShell: getShell,
   getSublimeTextVersion: getSublimeTextVersion,
   getTotalMemory: getTotalMemory,
+  getVirtualBoxVersion: getVirtualBoxVersion,
+  getVMwareVersion: getVMwareVersion,
   getVSCodeVersion: getVSCodeVersion,
   getWatchmanVersion: getWatchmanVersion,
   getXcodeVersion: getXcodeVersion,
