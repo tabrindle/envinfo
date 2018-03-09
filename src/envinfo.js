@@ -4,6 +4,7 @@ const copypasta = require('clipboardy');
 const helpers = require('./helpers');
 const helperMap = require('./map');
 const formatters = require('./formatters');
+const presets = require('./presets');
 const arrayIncludes = require('array-includes');
 const objectEntries = require('object.entries');
 const objectValues = require('object.values');
@@ -92,12 +93,18 @@ function cli(options) {
     }
     return acc;
   }, {});
+
+  // if there is a preset, merge that with the parsed props
+  if (options.preset) {
+    if (!presets[options.preset]) console.error(`\nNo "${options.preset}" preset found.`);
+    return main(Object.assign({}, presets[options.preset], props), options);
+  }
   // call the main function with the filtered props, and cli options
   return main(props, options);
 }
 
 // require('envinfo);
-// envinfo.run({ system: [os, cpu], fullTree: true })
+// envinfo.run({ system: [os, cpu]}, {fullTree: true })
 function run(args, options) {
   return main(args, options);
 }
