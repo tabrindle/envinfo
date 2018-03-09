@@ -1,9 +1,10 @@
-# envinfo
-
-Reporting issues is a pain. Responding to issues is a pain. Make it a bit better.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/tabrindle/envinfo/master/logo.png" align="center"  width="700px"/>
+  <h3 align="center">Reporting issues is a pain. Responding to issues is a pain. Make it a bit better.</h3> 
+  <hr/>
+</p>
 
 [![Build Status](https://travis-ci.org/tabrindle/envinfo.svg?branch=master)](https://travis-ci.org/tabrindle/envinfo) [![npm version](https://badge.fury.io/js/envinfo.svg)](https://badge.fury.io/js/envinfo) [![npm downloads per month](https://img.shields.io/npm/dm/envinfo.svg?maxAge=86400)](https://www.npmjs.com/package/envinfo) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 
 ## Installation
 
@@ -13,7 +14,7 @@ To use as a CLI tool, install this package globally:
 npm install -g envinfo || yarn global add envinfo
 ```
 
-Or, use without installing with npx: 
+Or, use without installing with npx:
 
 `npx envinfo`
 
@@ -92,18 +93,18 @@ Envinfo takes a configuration object and returns a string (optionally yaml, json
 import envinfo from 'envinfo';
 
 console.log(
-  envinfo.run(
-    {
-      System: ['OS', 'CPU'],
-      Binaries: ['Node', 'Yarn', 'npm'],
-      Browsers: ['Chrome', 'Firefox', 'Safari'],
-      npmPackages: ['styled-components', 'babel-plugin-styled-components'],
-    },
-    { json: true }
-  )
+    envinfo.run(
+        {
+            System: ['OS', 'CPU'],
+            Binaries: ['Node', 'Yarn', 'npm'],
+            Browsers: ['Chrome', 'Firefox', 'Safari'],
+            npmPackages: ['styled-components', 'babel-plugin-styled-components'],
+        },
+        { json: true }
+    )
 );
-
 ```
+
 ```
 {
   "System": {
@@ -136,13 +137,14 @@ console.log(
 All of envinfo's helpers are also exported for use. You can use envinfo as a whole, or just the parts that you need, like this:
 
 ```javascript
-import { helpers } from 'envinfo'
+import { helpers } from 'envinfo';
 
 const OS = helpers.getOperatingSystemInfo();
 const docker = helpers.getDockerVersion();
 
 console.log({ OS, docker });
 ```
+
 ```
 {
  OS: 'macOS High Sierra 10.13'
@@ -152,9 +154,9 @@ console.log({ OS, docker });
 
 ## CLI Options
 
-* --clipboard - Optionally copy directly to your clipboard with `envinfo --clipboard`. This feature uses [Clipboardy](https://www.npmjs.com/package/clipboardy)
+*   --clipboard - Optionally copy directly to your clipboard with `envinfo --clipboard`. This feature uses [Clipboardy](https://www.npmjs.com/package/clipboardy)
 
-* --npmPackages - Optionally return packages from your package.json: takes either boolean or comma delimited string in CLI or array via API
+*   --npmPackages - Optionally return packages from your package.json: takes either boolean or comma delimited string in CLI or array via API
 
 `envinfo --npmPackages minimist,which`
 
@@ -168,7 +170,7 @@ npmPackages:
     installed: 1.3.0
 ```
 
-* --npmGlobalPackages - print your npm global packages versions
+*   --npmGlobalPackages - print your npm global packages versions
 
 `envinfo --npmGlobalPackages`
 
@@ -179,14 +181,14 @@ npmGlobalPackages:
   react-native-cli: 2.0.1
 ```
 
-* --duplicates - will search given packages for duplicates, display in parentheses
+*   --duplicates - will search given packages for duplicates, display in parentheses
 
 ```sh
 Packages:
   minimist: ^1.2.0 => 1.2.0 (1.2.0, 0.0.8)
 ```
 
-* --fullTree - will traverse and print the entire flattened dependency tree (optionally also with --duplicates)
+*   --fullTree - will traverse and print the entire flattened dependency tree (optionally also with --duplicates)
 
 ```sh
 Packages:
@@ -201,11 +203,11 @@ Packages:
 
 envinfo is live in:
 
-* [React Native](https://github.com/facebook/react-native) (`react-native info`)
-* [create-react-app](https://github.com/facebook/create-react-app) (`create-react-app --info`)
-* [Exponent Development CLI](https://github.com/expo/exp) (`exp diagnostics`)
-* [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
-* [styled-components](https://github.com/styled-components/styled-components) ((ISSUE_TEMPLATE.md))
+*   [React Native](https://github.com/facebook/react-native) (`react-native info`)
+*   [create-react-app](https://github.com/facebook/create-react-app) (`create-react-app --info`)
+*   [Exponent Development CLI](https://github.com/expo/exp) (`exp diagnostics`)
+*   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
+*   [styled-components](https://github.com/styled-components/styled-components) ((ISSUE_TEMPLATE.md))
 
 ## Contributing
 
