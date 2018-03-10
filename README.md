@@ -207,7 +207,10 @@ envinfo is live in:
 *   [create-react-app](https://github.com/facebook/create-react-app) (`create-react-app --info`)
 *   [Exponent Development CLI](https://github.com/expo/exp) (`exp diagnostics`)
 *   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
-*   [styled-components](https://github.com/styled-components/styled-components) ((ISSUE_TEMPLATE.md))
+
+envinfo is used in the ISSUE_TEMPLATE of:
+*   [styled-components](https://github.com/styled-components/styled-components)
+*   [Jest](https://github.com/facebook/jest)
 
 ## Contributing
 
