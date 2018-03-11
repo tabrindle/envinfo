@@ -180,18 +180,21 @@ function getNpmGlobalPackages(packages) {
   try {
     npmGlobalPackages = utils.run('npm list -g --depth=0 --json');
     npmGlobalPackages = JSON.parse(npmGlobalPackages);
-    npmGlobalPackages = Object.entries(npmGlobalPackages.dependencies).reduce((acc, dep) => {
-      const name = dep[0];
-      const info = dep[1];
-      if (!Array.isArray(packages) || packages.some(p => p.toLowerCase() === name.toLowerCase()))
-        return Object.assign(acc, {
-          [name]: info.version,
-        });
-      return acc;
-    }, {});
   } catch (error) {
-    npmGlobalPackages = 'Not Found';
+    if (error.stdout) npmGlobalPackages = JSON.parse(error.stdout.toString());
+    if (!npmGlobalPackages) return 'Not Found';
   }
+
+  npmGlobalPackages = Object.entries(npmGlobalPackages.dependencies).reduce((acc, dep) => {
+    const name = dep[0];
+    const info = dep[1];
+    if (!Array.isArray(packages) || packages.some(p => p.toLowerCase() === name.toLowerCase()))
+      return Object.assign(acc, {
+        [name]: info.version,
+      });
+    return acc;
+  }, {});
+
   return npmGlobalPackages;
 }
 
