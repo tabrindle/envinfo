@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/tabrindle/envinfo/master/logo.png" align="center"  width="700px"/>
-  <h3 align="center">Reporting issues is a pain. Responding to issues is a pain. Make it a bit better.</h3> 
+  <h3 align="center">envinfo generates a report of the common details needed when troubleshooting software issues, such as your operating system, binary versions, browsers, installed languages, and more</h3> 
   <hr/>
 </p>
 
