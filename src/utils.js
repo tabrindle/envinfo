@@ -61,6 +61,15 @@ function getPackageJsonByPath(filePath) {
 
 const noop = d => d;
 
+function sortObject(obj) {
+  return Object.keys(obj)
+    .sort()
+    .reduce((acc, val) => {
+      acc[val] = obj[val];
+      return acc;
+    }, {});
+}
+
 module.exports = {
   customGenericVersionFunction: customGenericVersionFunction,
   getPackageJsonByName: getPackageJsonByName,
@@ -70,6 +79,7 @@ module.exports = {
   pipe: pipe,
   requireJson: requireJson,
   run: run,
+  sortObject: sortObject,
   toReadableBytes: toReadableBytes,
   uniq: uniq,
 };

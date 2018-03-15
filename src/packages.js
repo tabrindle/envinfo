@@ -1,7 +1,8 @@
 const glob = require('glob');
 const utils = require('./utils');
 
-function getAllPackageJsonPaths() {
+function getAllPackageJsonPaths(packageGlob) {
+  if (packageGlob) return glob.sync(`node_modules/${packageGlob}/package.json`);
   return glob.sync('node_modules/**/package.json');
 }
 
@@ -98,74 +99,84 @@ function assignWantedVersion(dependency, topLevelDependencies) {
 
 function getPackageInfo(packages, options) {
   if (!options) options = {};
-  if (typeof packages === 'string') {
-    packages = packages.split(',');
-  }
 
+  let packageGlob = null;
+
+  if (typeof packages === 'string') {
+    if (
+      // detect characters that are not allowed in npm names, but are in globs
+      // wont work if the exactly once glob @ is used by itself, because of npm namespacing
+      packages.includes('*') ||
+      packages.includes('?') ||
+      packages.includes('+') ||
+      packages.includes('!')
+    ) {
+      packageGlob = packages;
+    } else {
+      packages = packages.split(',');
+    }
+  }
   // get the package.json files from the full tree for either option
-  var allPackageJsonPaths = (options.duplicates || options.fullTree) && getAllPackageJsonPaths();
+  const allPackageJsonPaths =
+    (packageGlob || options.duplicates || options.fullTree) && getAllPackageJsonPaths();
+
+  // get the globbed packages if the packageGlob is truthy
+  const globbedPackageJsonPaths = packageGlob && getAllPackageJsonPaths(packageGlob);
 
   // load top level package.json for the dependencies
-  var packageJson = utils.getPackageJsonByPath('package.json') || {};
-  var topLevelDependencies = Object.assign(
+  const packageJson = utils.getPackageJsonByPath('package.json') || {};
+  const topLevelDependencies = Object.assign(
     {},
     packageJson.devDependencies || {},
     packageJson.dependencies || {}
   );
+  const topLevelPackageNames = Object.keys(topLevelDependencies);
+
+  // filter the globbed paths by whats actually in your root package.json
+  const globbedTopLevelDependencies = (globbedPackageJsonPaths || []).filter(p => {
+    return topLevelPackageNames.includes(p.match(/(?:node_modules)\/(.+)\/(?:.*)/)[1]);
+  });
+
+  if (packageGlob) {
+    // --npmPackages "eslint-*" (--duplicates) (--fullTree)
+    // matches packages against given glob, optionally adding duplicates, or crawling the fullTree
+    return utils.sortObject(
+      Object.entries(
+        options.fullTree
+          ? getPackageFullTree(globbedPackageJsonPaths)
+          : getPackageFullTree(globbedTopLevelDependencies)
+      )
+        .map(options.fullTree ? mapFullPackageTree : mapTopLevelDependencies)
+        .map(d => assignWantedVersion(d, topLevelDependencies))
+        .map(d => (options.duplicates ? getPackageDuplicates(d, allPackageJsonPaths) : d))
+        .reduce(packageReducer, {})
+    );
+  }
 
   if (Array.isArray(packages)) {
-    if (options.duplicates) {
-      // --packages minimist,which --duplicates
-      // only specified top level packages with duplicates, wanted and installed
-      return Object.entries(topLevelDependencies)
+    // --npmPackages minimist,which (--duplicates)
+    // only specified top level packages (with duplicates) with wanted and installed
+    return utils.sortObject(
+      Object.entries(topLevelDependencies)
         .map(mapTopLevelDependencies)
         .filter(d => packages.includes(d.name))
-        .map(d => getPackageDuplicates(d, allPackageJsonPaths))
-        .reduce(packageReducer, {});
-    }
-
-    // --packages minimist,which
-    // only specified top level packages with wanted and installed
-    return Object.entries(topLevelDependencies)
-      .map(mapTopLevelDependencies)
-      .filter(d => packages.includes(d.name))
-      .reduce(packageReducer, {});
+        .map(d => (options.duplicates ? getPackageDuplicates(d, allPackageJsonPaths) : d))
+        .reduce(packageReducer, {})
+    );
   }
 
   if (typeof packages === 'boolean') {
-    if (options.duplicates && options.fullTree) {
-      // --packages --duplicates --fullTree
-      // full tree with installed, duplicates and wanted for top level
-      return Object.entries(getPackageFullTree(allPackageJsonPaths))
-        .map(mapFullPackageTree)
+    // --npmPackages (--duplicates) (--fullTree)
+    // print all packages (with duplicates) with wanted and installed, optionally crawling full tree
+    return utils.sortObject(
+      Object.entries(
+        options.fullTree ? getPackageFullTree(allPackageJsonPaths) : topLevelDependencies
+      )
+        .map(options.fullTree ? mapFullPackageTree : mapTopLevelDependencies)
         .map(d => assignWantedVersion(d, topLevelDependencies))
-        .map(d => getPackageDuplicates(d, allPackageJsonPaths))
-        .reduce(packageReducer, {});
-    }
-
-    if (options.duplicates) {
-      // --packages --duplicates
-      // top level packages with installed, wanted, and duplicates
-      return Object.entries(topLevelDependencies)
-        .map(mapTopLevelDependencies)
-        .map(dep => getPackageDuplicates(dep, allPackageJsonPaths))
-        .reduce(packageReducer, {});
-    }
-
-    if (options.fullTree) {
-      // --packages --fullTree
-      // all packages with installed and wanted if top level
-      return Object.entries(getPackageFullTree(allPackageJsonPaths))
-        .map(mapFullPackageTree)
-        .map(d => assignWantedVersion(d, topLevelDependencies))
-        .reduce(packageReducer, {});
-    }
-
-    // --packages
-    // top level wanted and installed
-    return Object.entries(topLevelDependencies)
-      .map(mapTopLevelDependencies)
-      .reduce(packageReducer, {});
+        .map(d => (options.duplicates ? getPackageDuplicates(d, allPackageJsonPaths) : d))
+        .reduce(packageReducer, {})
+    );
   }
 
   return {};
