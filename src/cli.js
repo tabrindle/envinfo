@@ -7,6 +7,17 @@ argv.console = true;
 if (argv.help || argv._.indexOf('help') > -1) {
   // eslint-disable-next-line
   console.log(`
+                            d8b           .d888
+                            Y8P          d88P"
+                                          888
+   .d88b.  88888b.  888  888 888 88888b.  888888  .d88b.
+  d8P  Y8b 888 "88b 888  888 888 888 "88b 888    d88""88b
+  88888888 888  888 Y88  88P 888 888  888 888    888  888
+  Y8b.     888  888  Y8bd8P  888 888  888 888    Y88..88P
+   "Y8888  888  888   Y88P   888 888  888 888     "Y88P"
+
+  VERSION: ${packageJson.version}
+
   USAGE:
 
     \`envinfo\` || \`npx envinfo\`
@@ -19,7 +30,7 @@ if (argv.help || argv._.indexOf('help') > -1) {
     --IDEs                 Get version numbers of installed IDEs
     --languages            Get version numbers of installed languages such as Java, Python, PHP, etc
     --binaries             Get version numbers of node, npm, watchman, etc
-    --npmPackages          Get version numbers of locally installed npm packages
+    --npmPackages          Get version numbers of locally installed npm packages - glob, string, or comma delimited list
     --npmGlobalPackages    Get version numbers of globally installed npm packages
 
     --duplicates           Mark duplicate npm packages inside parentheses eg. (2.1.4)
