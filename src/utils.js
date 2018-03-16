@@ -35,6 +35,18 @@ function toReadableBytes(bytes) {
   );
 }
 
+function omit(obj, props) {
+  return Object.keys(obj)
+    .filter(key => props.indexOf(key) < 0)
+    .reduce((acc, key) => Object.assign(acc, { [key]: obj[key] }), {});
+}
+
+function pick(obj, props) {
+  return Object.keys(obj)
+    .filter(key => props.indexOf(key) >= 0)
+    .reduce((acc, key) => Object.assign(acc, { [key]: obj[key] }), {});
+}
+
 const isObject = val => typeof val === 'object' && !Array.isArray(val);
 const pipe = fns => x => fns.reduce((v, f) => f(v), x);
 
@@ -76,6 +88,8 @@ module.exports = {
   getPackageJsonByPath: getPackageJsonByPath,
   isObject: isObject,
   noop: noop,
+  omit: omit,
+  pick: pick,
   pipe: pipe,
   requireJson: requireJson,
   run: run,
