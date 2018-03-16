@@ -5,6 +5,7 @@ const helpers = require('./helpers');
 const helperMap = require('./map');
 const formatters = require('./formatters');
 const presets = require('./presets');
+const utils = require('./utils');
 const arrayIncludes = require('array-includes');
 const objectEntries = require('object.entries');
 const objectValues = require('object.values');
@@ -94,10 +95,17 @@ function cli(options) {
     return acc;
   }, {});
 
-  // if there is a preset, merge that with the parsed props
+  // if there is a preset, merge that with the parsed props and options
   if (options.preset) {
     if (!presets[options.preset]) console.error(`\nNo "${options.preset}" preset found.`);
-    return main(Object.assign({}, presets[options.preset], props), options);
+    return main(
+      Object.assign({}, utils.omit(presets[options.preset], ['options']), props),
+      Object.assign(
+        {},
+        presets[options.preset].options,
+        utils.pick(options, ['duplicates', 'fullTree', 'json', 'markdown', 'console', 'clipboard'])
+      )
+    );
   }
   // call the main function with the filtered props, and cli options
   return main(props, options);
