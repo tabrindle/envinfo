@@ -15,7 +15,13 @@ module.exports = {
   webpack: {
     System: ['OS', 'CPU'],
     Binaries: ['Node', 'Yarn', 'npm'],
-    npmPackages: ['webpack', 'webpack-cli'],
+    npmPackages: '*webpack*',
     npmGlobalPackages: ['webpack', 'webpack-cli'],
+  },
+  'styled-components': {
+    System: ['OS', 'CPU'],
+    Binaries: ['Node', 'Yarn', 'npm'],
+    Browsers: ['Chrome', 'Firefox', 'Safari'],
+    npmPackages: '*styled-components*',
   },
 };
