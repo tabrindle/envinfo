@@ -160,7 +160,7 @@ function getBashVersion() {
   var bashPath;
   try {
     bashPath = which.sync('bash');
-    bashVersion = utils.run(`${bashPath} --version`).match(/\d+(\.\d+)+/)[0];
+    bashVersion = utils.run(`${bashPath} --version`).match(utils.versionRegex)[0];
   } catch (error) {
     bashVersion = 'Not Found';
   }
@@ -245,15 +245,14 @@ function getNpmVersion() {
   return utils.customGenericVersionFunction(() => utils.run('npm -v'));
 }
 
-function getShell() {
-  var shell;
-  try {
-    if (process.env.SHELL.indexOf('bash') > 0)
-      shell = utils.run(process.env.SHELL + ' --version').match(/\d+(\.\d+)+/)[0];
-  } catch (error) {
-    shell = 'Not Found';
-  }
-  return process.env.SHELL + ' - ' + shell;
+function getShell(shellBinary) {
+  shellBinary = shellBinary || process.env.SHELL;
+
+  const shellVersion = utils.customGenericVersionFunction(
+    () => utils.run(`${shellBinary} --version`).match(utils.versionRegex)[0]
+  );
+
+  return (shellBinary && shellVersion && `${shellBinary} - ${shellVersion}`) || `¯\\_(ツ)_/¯`;
 }
 
 function getOperatingSystemInfo() {

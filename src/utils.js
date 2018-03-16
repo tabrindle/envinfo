@@ -13,7 +13,7 @@ function run(cmd) {
 }
 
 function customGenericVersionFunction(fn, msg) {
-  if (!msg) msg = 'Not Found';
+  if (msg === undefined) msg = 'Not Found';
   var version;
   try {
     version = fn();
@@ -82,6 +82,8 @@ function sortObject(obj) {
     }, {});
 }
 
+const versionRegex = /\d+\.[\d+|\.]+/;
+
 module.exports = {
   customGenericVersionFunction: customGenericVersionFunction,
   getPackageJsonByName: getPackageJsonByName,
@@ -96,4 +98,5 @@ module.exports = {
   sortObject: sortObject,
   toReadableBytes: toReadableBytes,
   uniq: uniq,
+  versionRegex: versionRegex,
 };
