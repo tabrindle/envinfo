@@ -103,6 +103,22 @@ function getAllAndroidSDKs() {
   };
 }
 
+function getMicrosoftEdgeVersion() {
+  if (process.platform.startsWith('win')) {
+    const edgePath = path.join(
+      process.env.SYSTEMROOT,
+      'SystemApps',
+      'Microsoft.MicrosoftEdge_8wekyb3d8bbwe',
+      'MicrosoftEdge.exe'
+    );
+    return utils.customGenericVersionFunction(
+      () =>
+        utils.run(`wmic datafile where name="${edgePath}" get Version`).match(utils.versionRegex)[0]
+    );
+  }
+  return 'N/A';
+}
+
 function getAndroidStudioVersion() {
   var androidStudioVersion = 'Not Found';
   if (process.platform === 'darwin') {
@@ -390,6 +406,7 @@ module.exports = Object.assign(packages, {
   getFreeMemory: getFreeMemory,
   getGoVersion: getGoVersion,
   getHomeBrewVersion: getHomeBrewVersion,
+  getMicrosoftEdgeVersion: getMicrosoftEdgeVersion,
   getNodeVersion: getNodeVersion,
   getNpmVersion: getNpmVersion,
   getOperatingSystemInfo: getOperatingSystemInfo,

@@ -37,6 +37,7 @@ module.exports = {
       helpers.browserBundleIdentifiers['Safari Technology Preview']
     ),
   safari: () => helpers.getDarwinApplicationVersion(helpers.browserBundleIdentifiers.Safari),
+  edge: helpers.getMicrosoftEdgeVersion,
   // IDEs
   android_studio: helpers.getAndroidStudioVersion,
   atom: helpers.getAtomVersion,

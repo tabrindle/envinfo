@@ -25,6 +25,7 @@ const capabilities = {
   Browsers: [
     'Chrome',
     'Chrome Canary',
+    'Edge',
     'Firefox',
     'Firefox Developer Edition',
     'Firefox Nightly',
