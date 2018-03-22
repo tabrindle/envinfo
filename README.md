@@ -6,6 +6,19 @@
 
 [![Build Status](https://travis-ci.org/tabrindle/envinfo.svg?branch=master)](https://travis-ci.org/tabrindle/envinfo) [![npm version](https://badge.fury.io/js/envinfo.svg)](https://badge.fury.io/js/envinfo) [![npm downloads per month](https://img.shields.io/npm/dm/envinfo.svg?maxAge=86400)](https://www.npmjs.com/package/envinfo) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## The problem
+- It works on my computer
+- "command not found"
+- what version of "command" are you running?
+- what version of "different command" are you running?
+- do you have "insert obscure android sdk version"?
+- every github issue reporting template ever:
+
+**Please mention other relevant information such as the browser version, Node.js version, Operating System and programming language.**
+
+## This solution
+- Gather all of this information in one spot, quickly, and painlessly.
+
 ## Installation
 
 To use as a CLI tool, install this package globally:
@@ -191,3 +204,12 @@ envinfo is used in the ISSUE_TEMPLATE of:
 PRs for additional features are welcome! Run `npm run lint && npm run format` before committing.
 
 This project came out of a [PR](https://github.com/facebook/react-native/pull/14428) to the React Native CLI tool - issues are reported frequently without important environment information, like Node/npm versions.
+
+## Alternatives
+- type `$ command -v` until you smash your computer
+- [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
+- [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
+- write your own
+
+## License
+MIT
