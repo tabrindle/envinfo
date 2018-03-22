@@ -104,7 +104,7 @@ console.log(
     )
 );
 ```
-
+returns:
 ```
 {
   "System": {
@@ -154,49 +154,23 @@ console.log({ OS, docker });
 
 ## CLI Options
 
-*   --clipboard - Optionally copy directly to your clipboard with `envinfo --clipboard`. This feature uses [Clipboardy](https://www.npmjs.com/package/clipboardy)
-
-*   --npmPackages - Optionally return packages from your package.json: takes either boolean or comma delimited string in CLI or array via API
-
-`envinfo --npmPackages minimist,which`
-
-```sh
-npmPackages:
-  minimist:
-    wanted: ^1.2.0
-    installed: 1.2.0
-  which:
-    wanted: ^1.2.14
-    installed: 1.3.0
 ```
+    --system               Print general system info such as OS, CPU, Memory and Shell
+    --browsers             Get version numbers of installed web browsers
+    --SDKs                 Get platforms, build tools and SDKs of iOS and Android
+    --IDEs                 Get version numbers of installed IDEs
+    --languages            Get version numbers of installed languages such as Java, Python, PHP, etc
+    --binaries             Get version numbers of node, npm, watchman, etc
+    --npmPackages          Get version numbers of locally installed npm packages - glob, string, or comma delimited list
+    --npmGlobalPackages    Get version numbers of globally installed npm packages
 
-*   --npmGlobalPackages - print your npm global packages versions
+    --duplicates           Mark duplicate npm packages inside parentheses eg. (2.1.4)
+    --fullTree             Traverse entire node_modules dependency tree, not just top level
 
-`envinfo --npmGlobalPackages`
-
-```sh
-npmGlobalPackages:
-  exp: 48.0.2
-  npm: 5.6.0
-  react-native-cli: 2.0.1
-```
-
-*   --duplicates - will search given packages for duplicates, display in parentheses
-
-```sh
-Packages:
-  minimist: ^1.2.0 => 1.2.0 (1.2.0, 0.0.8)
-```
-
-*   --fullTree - will traverse and print the entire flattened dependency tree (optionally also with --duplicates)
-
-```sh
-Packages:
-  ...
-  minimatch:  3.0.4
-  minimist: ^1.2.0 => 1.2.0 (1.2.0, 0.0.8)
-  mkdirp:  0.5.1
-  ...
+    --markdown             Print output in markdown format
+    --json                 Print output in JSON format
+    --console              Print to console (defaults to on for CLI usage, off for programmatic usage)
+    --clipboard            Copy output to your system clipboard (uses clipboardy)
 ```
 
 ## Integration
