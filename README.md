@@ -191,8 +191,9 @@ console.log({ OS, docker });
 envinfo is live in:
 
 *   [React Native](https://github.com/facebook/react-native) (`react-native info`)
-*   [create-react-app](https://github.com/facebook/create-react-app) (`create-react-app --info`)
-*   [Exponent Development CLI](https://github.com/expo/exp) (`exp diagnostics`)
+*   [Create React App](https://github.com/facebook/create-react-app) (`create-react-app --info`)
+*   [Expo](https://github.com/expo/exp) (`exp diagnostics`)
+*   [Webpack](https://github.com/webpack/webpack-cli) (`webpack-cli info`)
 *   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
 
 envinfo is used in the ISSUE_TEMPLATE of:
