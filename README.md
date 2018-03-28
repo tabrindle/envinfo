@@ -7,6 +7,8 @@
 [![Build Status](https://travis-ci.org/tabrindle/envinfo.svg?branch=master)](https://travis-ci.org/tabrindle/envinfo) [![npm version](https://badge.fury.io/js/envinfo.svg)](https://badge.fury.io/js/envinfo) [![npm downloads per month](https://img.shields.io/npm/dm/envinfo.svg?maxAge=86400)](https://www.npmjs.com/package/envinfo) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## The problem
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/tabrindle/envinfo.svg)](https://greenkeeper.io/)
 - It works on my computer
 - "command not found"
 - what version of "command" are you running?
