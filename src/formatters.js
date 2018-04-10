@@ -34,9 +34,9 @@ function formatHeaders(data, options) {
 }
 
 function formatPackages(data) {
-  return Object.assign(
-    data,
-    Object.entries(data.packages || {}).reduce((acc, entry) => {
+  if (!data.npmPackages) return data;
+  return Object.assign(data, {
+    npmPackages: Object.entries(data.npmPackages || {}).reduce((acc, entry) => {
       const key = entry[0];
       const value = entry[1];
       const wanted = value.wanted ? `${value.wanted} =>` : '';
@@ -47,8 +47,8 @@ function formatPackages(data) {
       return Object.assign(acc, {
         [key]: `${wanted} ${installed} ${duplicates}`,
       });
-    }, {})
-  );
+    }, {}),
+  });
 }
 
 function joinArray(key, value, options) {
@@ -74,6 +74,31 @@ function recursiveTransform(data, fn) {
 
 function serializeArrays(data) {
   return recursiveTransform(data, joinArray);
+}
+
+function serializeVersionsAndPaths(data) {
+  return Object.entries(data).reduce(
+    (Dacc, Dentry) =>
+      Object.assign(
+        Dacc,
+        {
+          [Dentry[0]]: Object.entries(Dentry[1]).reduce((acc, entry) => {
+            const key = entry[0];
+            const value = entry[1];
+            if (value.version) {
+              return Object.assign(acc, {
+                [key]: [value.version, value.path].filter(Boolean).join(' - '),
+              });
+            }
+            return Object.assign(acc, {
+              [key]: [value][0],
+            });
+          }, {}),
+        },
+        {}
+      ),
+    {}
+  );
 }
 
 function yaml(data) {
@@ -112,22 +137,30 @@ function json(data, options) {
 
 function formatToYaml(data, options) {
   return utils.pipe([
+    clean,
     formatPackages,
     serializeArrays,
-    clean,
+    serializeVersionsAndPaths,
     yaml,
     options.console ? formatHeaders : utils.noop,
   ])(data);
 }
 
 function formatToMarkdown(data) {
-  return utils.pipe([formatPackages, serializeArrays, clean, yaml, markdown])(data);
+  return utils.pipe([
+    clean,
+    formatPackages,
+    serializeArrays,
+    serializeVersionsAndPaths,
+    yaml,
+    markdown,
+  ])(data);
 }
 
 function formatToJson(data, options) {
   if (!options) options = {};
 
-  data = utils.pipe([json])(data);
+  data = utils.pipe([clean, json])(data);
   data = options.console ? `\n${data}\n` : data;
 
   return data;
