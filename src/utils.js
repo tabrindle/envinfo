@@ -45,9 +45,10 @@ const requireJson = filePath => {
 const versionRegex = /\d+\.[\d+|.]+/;
 
 const findDarwinApplication = id => {
-  return run('mdfind "kMDItemCFBundleIdentifier=="' + id + '""').then(v =>
-    v.replace(/(\s)/g, '\\ ')
-  );
+  log('trace', 'findDarwinApplication', id);
+  const command = `mdfind "kMDItemCFBundleIdentifier=='${id}'"`;
+  log('trace', command);
+  return run(command).then(v => v.replace(/(\s)/g, '\\ '));
 };
 
 const generatePlistBuddyCommand = (appPath, options) => {
@@ -99,6 +100,7 @@ module.exports = {
   },
 
   getDarwinApplicationVersion: bundleIdentifier => {
+    log('trace', 'getDarwinApplicationVersion', bundleIdentifier);
     var version;
     if (process.platform !== 'darwin') {
       version = 'N/A';
