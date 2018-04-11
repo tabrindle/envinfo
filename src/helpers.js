@@ -307,13 +307,15 @@ module.exports = Object.assign({}, utils, packages, {
     utils.log('trace', 'getChromeInfo');
     let chromeVersion;
     if (process.platform === 'linux') {
-      try {
-        chromeVersion = utils.runSync('google-chrome --version').replace(/^.* ([^ ]*)/g, '$1');
-      } catch (err) {
-        chromeVersion = 'Not Found';
-      }
+      chromeVersion = utils
+        .run('google-chrome --version')
+        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (process.platform === 'darwin') {
+      chromeVersion = utils
+        .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
+        .then(utils.findVersion);
     } else {
-      chromeVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome);
+      chromeVersion = 'N/A';
     }
     return Promise.all(['Chrome', chromeVersion, 'N/A']);
   },
@@ -350,34 +352,30 @@ module.exports = Object.assign({}, utils, packages, {
 
   getFirefoxInfo: () => {
     utils.log('trace', 'getFirefoxInfo');
-    var firefoxVersion;
+    let firefoxVersion;
     if (process.platform === 'linux') {
-      try {
-        firefoxVersion = utils.runSync('firefox --version').replace(/^.* ([^ ]*)/g, '$1');
-      } catch (err) {
-        firefoxVersion = 'Not Found';
-      }
-    } else {
+      firefoxVersion = utils.run('firefox --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (process.platform !== 'darwin') {
       firefoxVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Firefox);
+    } else {
+      firefoxVersion = 'N/A';
     }
     return Promise.all(['Firefox', firefoxVersion, 'N/A']);
   },
 
   getFirefoxNightlyInfo: () => {
     utils.log('trace', 'getFirefoxNightlyInfo');
-    var firefoxNightlyVersion;
+    let firefoxNightlyVersion;
     if (process.platform === 'linux') {
-      try {
-        firefoxNightlyVersion = utils
-          .runSync('firefox-trunk --version')
-          .replace(/^.* ([^ ]*)/g, '$1');
-      } catch (err) {
-        firefoxNightlyVersion = 'Not Found';
-      }
-    } else {
+      firefoxNightlyVersion = utils
+        .run('firefox-trunk --version')
+        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (process.platform !== 'darwin') {
       firefoxNightlyVersion = utils.getDarwinApplicationVersion(
         utils.browserBundleIdentifiers['Firefox Nightly']
       );
+    } else {
+      firefoxNightlyVersion = 'N/A';
     }
     return Promise.all(['Firefox Nightly', firefoxNightlyVersion, 'N/A']);
   },
