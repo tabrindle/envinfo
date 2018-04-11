@@ -13,7 +13,7 @@ module.exports = Object.assign({}, utils, packages, {
         .run('xcodebuild -showsdks')
         .then(sdks => sdks.match(/[\w]+\s[\d|.]+/g))
         .then(utils.uniq)
-        .catch(() => 'Unknown');
+        .catch(() => 'Not Found');
     } else {
       iOSSDKVersions = 'N/A';
     }
@@ -49,8 +49,8 @@ module.exports = Object.assign({}, utils, packages, {
         ];
       })
       .catch(() => ({
-        buildTools: ['Unknown'],
-        androidAPIs: ['Unknown'],
+        buildTools: ['Not Found'],
+        androidAPIs: ['Not Found'],
       }));
   },
 
