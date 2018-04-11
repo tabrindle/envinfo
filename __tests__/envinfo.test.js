@@ -106,4 +106,26 @@ describe('Running the programmatic interface', () => {
         });
       });
   });
+
+  test('filters out returned values with N/A', () => {
+    helpers.getChromeInfo.mockImplementation(() => Promise.resolve(['Chrome', 'N/A', 'N/A']));
+    return envinfo.run({ Browsers: ['Chrome'] }, { json: true }).then(data => {
+      return expect(JSON.parse(data)).toEqual({
+        Browsers: {},
+      });
+    });
+  });
+
+  test('filters out returned path values with N/A', () => {
+    helpers.getChromeInfo.mockImplementation(() =>
+      Promise.resolve(['Chrome', '65.0.3325.181', 'N/A'])
+    );
+    return envinfo.run({ Browsers: ['Chrome'] }, { json: true }).then(data => {
+      return expect(JSON.parse(data)).toEqual({
+        Browsers: {
+          Chrome: { version: '65.0.3325.181' },
+        },
+      });
+    });
+  });
 });
