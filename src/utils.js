@@ -178,6 +178,6 @@ module.exports = {
   },
 
   condensePath: pathString => {
-    return pathString.replace(process.env.HOME, '~');
+    return (pathString || '').replace(process.env.HOME, '~');
   },
 };
