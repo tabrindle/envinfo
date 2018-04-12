@@ -5,19 +5,22 @@ const path = require('path');
 const packages = require('./packages');
 const utils = require('./utils');
 
+const NA = 'N/A';
+const NotFound = 'Not Found';
+
 module.exports = Object.assign({}, utils, packages, {
   getiOSSDKInfo: () => {
-    var iOSSDKVersions;
     if (process.platform === 'darwin') {
-      iOSSDKVersions = utils
+      return utils
         .run('xcodebuild -showsdks')
         .then(sdks => sdks.match(/[\w]+\s[\d|.]+/g))
         .then(utils.uniq)
-        .catch(() => 'Not Found');
-    } else {
-      iOSSDKVersions = 'N/A';
+        .then(
+          platforms =>
+            platforms.length ? ['iOS SDK', { Platforms: platforms }] : ['iOS SDK', NotFound]
+        );
     }
-    return iOSSDKVersions.then(platforms => ['iOS SDK', { Platforms: platforms }]);
+    return Promise.resolve(['iOS SDK', NA]);
   },
 
   getAndroidSDKInfo: () => {
@@ -40,18 +43,16 @@ module.exports = Object.assign({}, utils, packages, {
         while ((matcher = getAPIVersions.exec(installed))) {
           androidAPIs.push(matcher[1]);
         }
-        return [
-          'Android SDK',
-          {
-            'Build Tools': buildTools,
-            'API Levels': androidAPIs,
-          },
-        ];
-      })
-      .catch(() => ({
-        buildTools: ['Not Found'],
-        androidAPIs: ['Not Found'],
-      }));
+        if (buildTools.length || androidAPIs.length)
+          return Promise.resolve([
+            'Android SDK',
+            {
+              'Build Tools': buildTools || NotFound,
+              'API Levels': androidAPIs || NotFound,
+            },
+          ]);
+        return Promise.resolve(['Android SDK', NotFound]);
+      });
   },
 
   getAndroidStudioInfo: () => {
@@ -74,7 +75,7 @@ module.exports = Object.assign({}, utils, packages, {
       ]).then(tasks => {
         const linuxVersion = tasks[0];
         const linuxBuildNumber = tasks[1];
-        return `${linuxVersion} ${linuxBuildNumber}`;
+        return `${linuxVersion} ${linuxBuildNumber}`.trim() || NotFound;
       });
     } else if (process.platform.startsWith('win')) {
       androidStudioVersion = Promise.all([
@@ -89,15 +90,17 @@ module.exports = Object.assign({}, utils, packages, {
       ]).then(tasks => {
         const windowsVersion = tasks[0];
         const windowsBuildNumber = tasks[1];
-        return `${windowsVersion} ${windowsBuildNumber}`;
+        return `${windowsVersion} ${windowsBuildNumber}`.trim() || NotFound;
       });
     }
-    return Promise.all(['Android Studio', androidStudioVersion || 'Not Found']);
+    return androidStudioVersion.then(v => utils.determineFound('Android Studio', v));
   },
 
   getAtomInfo: () => {
     utils.log('trace', 'getAtomInfo');
-    return Promise.all(['Atom', utils.getDarwinApplicationVersion('com.github.atom'), 'N/A']);
+    return Promise.all([utils.getDarwinApplicationVersion('com.github.atom'), NA]).then(v =>
+      utils.determineFound('Atom', v[0], v[1])
+    );
   },
 
   getCPUInfo: () => {
@@ -114,42 +117,42 @@ module.exports = Object.assign({}, utils, packages, {
   getBashInfo: () => {
     utils.log('trace', 'getBashInfo');
     return Promise.all([
-      'Bash',
       utils.run('bash --version').then(utils.findVersion),
       utils.which('bash'),
-    ]);
+    ]).then(v => utils.determineFound('Bash', v[0], v[1]));
   },
 
   getPHPInfo: () => {
     utils.log('trace', 'getPHPInfo');
-    return Promise.all(['PHP', utils.run('php -v').then(utils.findVersion), utils.which('php')]);
+    return Promise.all([utils.run('php -v').then(utils.findVersion), utils.which('php')]).then(v =>
+      utils.determineFound('PHP', v[0], v[1])
+    );
   },
 
   getParallelsInfo: () => {
     utils.log('trace', 'getParallelsInfo');
     return Promise.all([
-      'Parallels',
       utils.run('prlctl --version').then(utils.findVersion),
       utils.which('prlctl'),
-    ]);
+    ]).then(v => utils.determineFound('Parallels', v[0], v[1]));
   },
 
   getDockerInfo: () => {
     utils.log('trace', 'getDockerInfo');
     return Promise.all([
-      'Docker',
       utils.run('docker --version').then(utils.findVersion),
       utils.which('docker'),
-    ]);
+    ]).then(v => utils.determineFound('Docker', v[0], v[1]));
   },
 
   getElixirInfo: () => {
     utils.log('trace', 'getElixirInfo');
     return Promise.all([
-      'Elixir',
-      utils.run('elixir --version').then(version => version.match(/[Elixir]+\s([\d+.[\d+|.]+)/)[1]),
+      utils
+        .run('elixir --version')
+        .then(version => version && version.match(/[Elixir]+\s([\d+.[\d+|.]+)/)[1]),
       utils.which('elixir'),
-    ]);
+    ]).then(v => Promise.resolve(utils.determineFound('Elixir', v[0], v[1])));
   },
 
   getMemoryInfo: () => {
@@ -163,10 +166,9 @@ module.exports = Object.assign({}, utils, packages, {
   getSublimeTextInfo: () => {
     utils.log('trace', 'getSublimeTextInfo');
     return Promise.all([
-      'Sublime Text',
       utils.run('subl --version').then(version => utils.findVersion(version, /\d+/)),
       utils.which('subl'),
-    ]);
+    ]).then(v => utils.determineFound('Sublime Text', v[0], v[1]));
   },
 
   getHomeBrewInfo: () => {
@@ -178,41 +180,45 @@ module.exports = Object.assign({}, utils, packages, {
         utils.run('brew --version').then(utils.findVersion),
         utils.which('brew'),
       ]);
-    } else homeBrewVersion = Promise.resolve('N/A');
+    } else homeBrewVersion = Promise.all(['Homebrew', NA]);
     return homeBrewVersion;
   },
 
   getGoInfo: () => {
     utils.log('trace', 'getGoInfo');
-    return Promise.all(['Go', utils.run('go version').then(utils.findVersion), utils.which('go')]);
+    return Promise.all([utils.run('go version').then(utils.findVersion), utils.which('go')]).then(
+      v => utils.determineFound('Go', v[0], v[1])
+    );
   },
 
   getRubyInfo: () => {
     utils.log('trace', 'getRubyInfo');
-    return Promise.all(['Ruby', utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]);
+    return Promise.all([utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]).then(
+      v => utils.determineFound('Ruby', v[0], v[1])
+    );
   },
 
   getNodeInfo: () => {
     utils.log('trace', 'getNodeInfo');
     return Promise.all([
-      'Node',
       utils.run('node -v').then(v => v.replace('v', '')),
       utils.which('node').then(utils.condensePath),
-    ]);
+    ]).then(v => utils.determineFound('Node', v[0], v[1]));
   },
 
   getnpmInfo: () => {
     utils.log('trace', 'getnpmInfo');
-    return Promise.all(['npm', utils.run('npm -v'), utils.which('npm').then(utils.condensePath)]);
+    return Promise.all([utils.run('npm -v'), utils.which('npm').then(utils.condensePath)]).then(v =>
+      utils.determineFound('npm', v[0], v[1])
+    );
   },
 
   getShellInfo: () => {
     utils.log('trace', 'getShellInfo');
     return Promise.all([
-      'Shell',
       utils.run(`${process.env.SHELL} --version`).then(utils.findVersion),
       utils.which(process.env.SHELL),
-    ]);
+    ]).then(v => utils.determineFound('Shell', v[0], v[1]));
   },
 
   getOSInfo: () => {
@@ -230,37 +236,34 @@ module.exports = Object.assign({}, utils, packages, {
   getWatchmanInfo: () => {
     utils.log('trace', 'getWatchmanInfo');
     return Promise.all([
-      'Watchman',
-      utils.which('watchman').then(watchmanPath => utils.run(watchmanPath + ' -v')),
+      utils
+        .which('watchman')
+        .then(watchmanPath => (watchmanPath ? utils.run(watchmanPath + ' -v') : undefined)),
       utils.which('watchman'),
-    ]);
+    ]).then(v => utils.determineFound('Watchman', v[0], v[1]));
   },
 
   getVSCodeInfo: () => {
     utils.log('trace', 'getVSCodeInfo');
     return Promise.all([
-      'VSCode',
       utils.run('code --version').then(utils.findVersion),
       utils.which('code'),
-    ]);
+    ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
   getVirtualBoxInfo: () => {
     utils.log('trace', 'getVirtualBoxInfo');
     return Promise.all([
-      'VirtualBox',
       utils.run('vboxmanage --version').then(utils.findVersion),
       utils.which('vboxmanage'),
-    ]);
+    ]).then(v => utils.determineFound('VirtualBox', v[0], v[1]));
   },
 
   getVMwareFusionInfo: () => {
     utils.log('trace', 'getVMwareFusionInfo');
-    return Promise.all([
-      'VMWare Fusion',
-      utils.getDarwinApplicationVersion('com.vmware.fusion'),
-      'N/A',
-    ]);
+    return utils
+      .getDarwinApplicationVersion('com.vmware.fusion')
+      .then(v => utils.determineFound('VMWare Fusion', v, NA));
   },
 
   getPythonInfo: () => {
@@ -274,33 +277,32 @@ module.exports = Object.assign({}, utils, packages, {
         .toString()
         .replace(/(\r\n|\n|\r)/gm, '');
     } catch (error) {
-      pythonVersion = 'Not Found';
+      pythonVersion = NotFound;
     }
-    return Promise.resolve(['Python', pythonVersion, pythonPath]);
+    return Promise.all([pythonVersion, pythonPath]).then(v =>
+      utils.determineFound('Python', v[0], v[1])
+    );
   },
 
   getXcodeInfo: () => {
     utils.log('trace', 'getXcodeInfo');
     if (process.platform === 'darwin') {
       return Promise.all([
-        'Xcode',
         utils
           .which('xcodebuild')
           .then(xcodePath => utils.run(xcodePath + ' -version'))
           .then(version => `${utils.findVersion(version)} - ${version.split('Build version ')[1]}`),
-        utils.which('xcodebuild'),
+        utils.which('xcodebuild').then(v => utils.determineFound('Xcode', v[0], v[1])),
       ]);
     }
-    return Promise.resolve(['Xcode', 'N/A']);
+    return Promise.resolve(['Xcode', NA]);
   },
 
   getYarnInfo: () => {
     utils.log('trace', 'getYarnInfo');
-    return Promise.all([
-      'Yarn',
-      utils.run('yarn -v'),
-      utils.which('yarn').then(utils.condensePath),
-    ]);
+    return Promise.all([utils.run('yarn -v'), utils.which('yarn').then(utils.condensePath)]).then(
+      v => utils.determineFound('Yarn', v[0], v[1])
+    );
   },
 
   getChromeInfo: () => {
@@ -315,9 +317,9 @@ module.exports = Object.assign({}, utils, packages, {
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
         .then(utils.findVersion);
     } else {
-      chromeVersion = 'N/A';
+      chromeVersion = 'NA';
     }
-    return Promise.all(['Chrome', chromeVersion, 'N/A']);
+    return chromeVersion.then(v => utils.determineFound('Chrome', v, NA));
   },
 
   getChromeCanaryInfo: () => {
@@ -325,7 +327,7 @@ module.exports = Object.assign({}, utils, packages, {
     const chromeCanaryVersion = utils.getDarwinApplicationVersion(
       utils.browserBundleIdentifiers['Chrome Canary']
     );
-    return Promise.all(['Chrome Canary', chromeCanaryVersion, 'N/A']);
+    return chromeCanaryVersion.then(v => utils.determineFound('Chrome Canary', v, NA));
   },
 
   getFirefoxDeveloperEditionInfo: () => {
@@ -333,7 +335,9 @@ module.exports = Object.assign({}, utils, packages, {
     const firefoxDeveloperEdition = utils.getDarwinApplicationVersion(
       utils.browserBundleIdentifiers['Firefox Developer Edition']
     );
-    return Promise.all(['Firefox Developer Edition', firefoxDeveloperEdition, 'N/A']);
+    return firefoxDeveloperEdition.then(v =>
+      utils.determineFound('Firefox Developer Edition', v, NA)
+    );
   },
 
   getSafariTechnologyPreviewInfo: () => {
@@ -341,13 +345,15 @@ module.exports = Object.assign({}, utils, packages, {
     const safariTechnologyPreview = utils.getDarwinApplicationVersion(
       utils.browserBundleIdentifiers['Safari Technology Preview']
     );
-    return Promise.all(['Safari Technology Preview', safariTechnologyPreview, 'N/A']);
+    return safariTechnologyPreview.then(v =>
+      utils.determineFound('Safari Technology Preview', v, NA)
+    );
   },
 
   getSafariInfo: () => {
     utils.log('trace', 'getSafariInfo');
     const safariVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Safari);
-    return Promise.all(['Safari', safariVersion, 'N/A']);
+    return safariVersion.then(v => utils.determineFound('Safari', v, NA));
   },
 
   getFirefoxInfo: () => {
@@ -355,12 +361,12 @@ module.exports = Object.assign({}, utils, packages, {
     let firefoxVersion;
     if (process.platform === 'linux') {
       firefoxVersion = utils.run('firefox --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
-    } else if (process.platform !== 'darwin') {
+    } else if (process.platform === 'darwin') {
       firefoxVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Firefox);
     } else {
-      firefoxVersion = 'N/A';
+      firefoxVersion = Promise.resolve('NA');
     }
-    return Promise.all(['Firefox', firefoxVersion, 'N/A']);
+    return firefoxVersion.then(v => utils.determineFound('Firefox', v, NA));
   },
 
   getFirefoxNightlyInfo: () => {
@@ -370,13 +376,14 @@ module.exports = Object.assign({}, utils, packages, {
       firefoxNightlyVersion = utils
         .run('firefox-trunk --version')
         .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
-    } else if (process.platform !== 'darwin') {
+    } else if (process.platform === 'darwin') {
       firefoxNightlyVersion = utils.getDarwinApplicationVersion(
         utils.browserBundleIdentifiers['Firefox Nightly']
       );
     } else {
-      firefoxNightlyVersion = 'N/A';
+      firefoxNightlyVersion = Promise.resolve(['NA']);
     }
-    return Promise.all(['Firefox Nightly', firefoxNightlyVersion, 'N/A']);
+
+    return firefoxNightlyVersion.then(v => utils.determineFound('Firefox Nightly', v, NA));
   },
 });

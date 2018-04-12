@@ -21,10 +21,11 @@ function format(data, options) {
     return formatters.yaml;
   })();
 
-  if (options.console) return console.log(formatter(data, { console: true })); // eslint-disable-line no-console
+  if (options.console)
+    return console.log(formatter(data, Object.assign({}, options, { console: true }))); // eslint-disable-line no-console
 
   // call the formatter with console option off first to return, or pipe to clipboard
-  const formatted = formatter(data, { console: false });
+  const formatted = formatter(data, Object.assign({}, options, { console: false }));
   if (options.clipboard) copypasta.writeSync(formatted);
 
   return formatted;

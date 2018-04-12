@@ -1,19 +1,31 @@
 const yamlify = require('yamlify-object');
 const utils = require('./utils');
 
-function clean(data) {
+function clean(data, options) {
+  utils.log('trace', 'clean', data);
   return Object.keys(data).reduce((acc, prop) => {
-    if (data[prop] === 'N/A' || data[prop] === undefined || Object.keys(data[prop]).length === 0)
+    if (
+      (!options.showNotFound && data[prop] === 'Not Found') ||
+      data[prop] === 'N/A' ||
+      data[prop] === undefined ||
+      Object.keys(data[prop]).length === 0
+    )
       return acc;
     if (utils.isObject(data[prop])) {
-      if (Object.values(data[prop]).every(v => v === 'N/A')) return acc;
-      return Object.assign(acc, { [prop]: clean(data[prop]) });
+      if (
+        Object.values(data[prop]).every(
+          v => v === 'N/A' || (!options.showNotFound && v === 'Not Found')
+        )
+      )
+        return acc;
+      return Object.assign(acc, { [prop]: clean(data[prop], options) });
     }
     return Object.assign(acc, { [prop]: data[prop] });
   }, {});
 }
 
 function formatHeaders(data, options) {
+  utils.log('trace', 'formatHeaders');
   if (!options) options = { type: 'underline' };
   const formats = {
     underline: ['\x1b[4m', '\x1b[0m'],
@@ -35,6 +47,7 @@ function formatHeaders(data, options) {
 }
 
 function formatPackages(data) {
+  utils.log('trace', 'formatPackages');
   if (!data.npmPackages) return data;
   return Object.assign(data, {
     npmPackages: Object.entries(data.npmPackages || {}).reduce((acc, entry) => {
@@ -74,10 +87,12 @@ function recursiveTransform(data, fn) {
 }
 
 function serializeArrays(data) {
+  utils.log('trace', 'serializeArrays');
   return recursiveTransform(data, joinArray);
 }
 
 function serializeVersionsAndPaths(data) {
+  utils.log('trace', 'serializeVersionsAndPaths');
   return Object.entries(data).reduce(
     (Dacc, Dentry) =>
       Object.assign(
@@ -137,31 +152,34 @@ function json(data, options) {
 }
 
 function formatToYaml(data, options) {
+  utils.log('trace', 'formatToYaml', options);
   return utils.pipe([
-    clean,
+    () => clean(data, options),
     formatPackages,
     serializeArrays,
     serializeVersionsAndPaths,
     yaml,
     options.console ? formatHeaders : utils.noop,
-  ])(data);
+  ])(data, options);
 }
 
-function formatToMarkdown(data) {
+function formatToMarkdown(data, options) {
+  utils.log('trace', 'formatToMarkdown');
   return utils.pipe([
-    clean,
+    () => clean(data, options), // I'm either too lazy too stupid to fix this. #didYouMeanRecursion?
     formatPackages,
     serializeArrays,
     serializeVersionsAndPaths,
     yaml,
     markdown,
-  ])(data);
+  ])(data, options);
 }
 
 function formatToJson(data, options) {
+  utils.log('trace', 'formatToJson');
   if (!options) options = {};
 
-  data = utils.pipe([clean, json])(data);
+  data = utils.pipe([() => clean(data, options), json])(data);
   data = options.console ? `\n${data}\n` : data;
 
   return data;

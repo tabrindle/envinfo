@@ -109,9 +109,9 @@ describe('Running the programmatic interface', () => {
 
   test('filters out returned values with N/A', () => {
     helpers.getChromeInfo.mockImplementation(() => Promise.resolve(['Chrome', 'N/A', 'N/A']));
-    return envinfo.run({ Browsers: ['Chrome'] }, { json: true }).then(data => {
+    return envinfo.run({ Browsers: ['Chrome', 'Firefox'] }, { json: true }).then(data => {
       return expect(JSON.parse(data)).toEqual({
-        Browsers: {},
+        Browsers: { Firefox: { path: '/usr/local/bin/firefox', version: '10.0.0' } },
       });
     });
   });

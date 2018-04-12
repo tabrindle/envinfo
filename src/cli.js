@@ -42,6 +42,7 @@ if (argv.help || argv._.indexOf('help') > -1) {
     --json                 Print output in JSON format
     --console              Print to console (defaults to on for CLI usage, off for programmatic usage)
     --clipboard            Copy output to your system clipboard
+    --showNotFound         Don't filter out values marked 'Not Found'
   `);
   process.exit(0);
 } else if (argv.version || argv.v || argv._.indexOf('version') > -1) {
