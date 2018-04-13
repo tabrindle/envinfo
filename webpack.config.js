@@ -14,6 +14,11 @@ module.exports = {
   },
   plugins: [
     new UglifyJSPlugin(),
-    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true, include: 'cli' }),
+    new webpack.BannerPlugin({
+      banner: `#!/usr/bin/env node
+      "use strict"`,
+      raw: true,
+      include: 'cli',
+    }),
   ],
 };

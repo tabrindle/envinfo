@@ -1,6 +1,6 @@
 {
   "name": "envinfo",
-  "version": "4.4.2",
+  "version": "5.1.0",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
@@ -16,7 +16,8 @@
     "start": "node src/cli.js",
     "lint": "eslint src",
     "format": "prettier --write 'src/**/*.js'",
-    "test": "npm run lint && prettier -l 'src/**/*.js'",
+    "test": "jest && npm run lint && npm run check:format",
+    "check:format": "prettier -l 'src/**/*.js'",
     "preversion": "yarn webpack && git add ."
   },
   "keywords": [
@@ -32,19 +33,21 @@
   "devDependencies": {
     "array-includes": "^3.0.3",
     "clipboardy": "^1.2.2",
+    "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-prettier": "^2.3.1",
-    "eslint": "^4.10.0",
     "glob": "^7.1.2",
+    "jest": "^22.4.3",
     "minimist": "^1.2.0",
     "object.entries": "^1.0.4",
     "object.values": "^1.0.4",
     "os-name": "^2.0.1",
     "prettier-eslint-cli": "^4.1.1",
     "uglifyjs-webpack-plugin": "^1.2.1",
-    "webpack": "^3.11.0",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
     "which": "^1.2.14",
     "yamlify-object": "^0.4.5"
   }

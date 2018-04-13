@@ -1,4 +1,23 @@
 module.exports = {
+  defaults: {
+    System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
+    Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
+    SDKs: ['iOS SDK', 'Android SDK'],
+    IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
+    Languages: ['Bash', 'Go', 'Elixir', 'PHP', 'Python', 'Ruby'],
+    Browsers: [
+      'Chrome',
+      'Chrome Canary',
+      'Firefox',
+      'Firefox Developer Edition',
+      'Firefox Nightly',
+      'Safari',
+      'Safari Technology Preview',
+    ],
+    npmPackages: null,
+    npmGlobalPackages: null,
+  },
   jest: {
     System: ['OS', 'CPU'],
     Binaries: ['Node', 'Yarn', 'npm'],
@@ -7,7 +26,7 @@ module.exports = {
   'react-native': {
     System: ['OS', 'CPU'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
-    SDKs: ['iOS', 'Android'],
+    SDKs: ['iOS SDK', 'Android SDK'],
     IDEs: ['Android Studio', 'Xcode'],
     npmPackages: ['react', 'react-native'],
     npmGlobalPackages: ['react-native-cli'],

@@ -2,411 +2,407 @@ const childProcess = require('child_process');
 const os = require('os');
 const osName = require('os-name');
 const path = require('path');
-const which = require('which');
 const packages = require('./packages');
 const utils = require('./utils');
 
-var browserBundleIdentifiers = {
-  Chrome: 'com.google.Chrome',
-  'Chrome Canary': 'com.google.Chrome.canary',
-  Firefox: 'org.mozilla.firefox',
-  'Firefox Developer Edition': 'org.mozilla.firefoxdeveloperedition',
-  'Firefox Nightly': 'org.mozilla.nightly',
-  Safari: 'com.apple.Safari',
-  'Safari Technology Preview': 'com.apple.SafariTechnologyPreview',
-};
+const NA = 'N/A';
+const NotFound = 'Not Found';
 
-function findDarwinApplication(id) {
-  var appPath;
-  try {
-    appPath = utils.run('mdfind "kMDItemCFBundleIdentifier=="' + id + '""').replace(/(\s)/g, '\\ ');
-  } catch (error) {
-    appPath = null;
-  }
-  return appPath;
-}
-
-function generatePlistBuddyCommand(appPath, options) {
-  var optionsArray = (options || ['CFBundleShortVersionString']).map(function optionsMap(option) {
-    return '-c Print:' + option;
-  });
-  return ['/usr/libexec/PlistBuddy']
-    .concat(optionsArray)
-    .concat([appPath])
-    .join(' ');
-}
-
-function getDarwinApplicationVersion(bundleIdentifier) {
-  var version;
-  if (process.platform === 'darwin') {
-    try {
-      version = utils.run(
-        generatePlistBuddyCommand(
-          path.join(findDarwinApplication(bundleIdentifier), 'Contents', 'Info.plist'),
-          ['CFBundleShortVersionString']
-        )
-      );
-    } catch (error) {
-      version = 'Not Found';
+module.exports = Object.assign({}, utils, packages, {
+  getiOSSDKInfo: () => {
+    if (process.platform === 'darwin') {
+      return utils
+        .run('xcodebuild -showsdks')
+        .then(sdks => sdks.match(/[\w]+\s[\d|.]+/g))
+        .then(utils.uniq)
+        .then(
+          platforms =>
+            platforms.length ? ['iOS SDK', { Platforms: platforms }] : ['iOS SDK', NotFound]
+        );
     }
-    return version;
-  }
-  return 'N/A';
-}
+    return Promise.resolve(['iOS SDK', NA]);
+  },
 
-function getAlliOSSDKs() {
-  var iOSSDKVersions;
+  getAndroidSDKInfo: () => {
+    var buildTools = [];
+    var androidAPIs = [];
+    return utils
+      .run(
+        process.env.ANDROID_HOME ? '$ANDROID_HOME/tools/bin/sdkmanager --list' : 'sdkmanager --list'
+      )
+      .then(output => {
+        const installed = output.split('Available')[0];
+        const getBuildVersions = /build-tools;([\d|.]+)[\S\s]/g;
+        const getAPIVersions = /platforms;android-(\d+)[\S\s]/g;
+        let matcher;
+        // eslint-disable-next-line
+        while ((matcher = getBuildVersions.exec(installed))) {
+          buildTools.push(matcher[1]);
+        }
+        // eslint-disable-next-line
+        while ((matcher = getAPIVersions.exec(installed))) {
+          androidAPIs.push(matcher[1]);
+        }
+        if (buildTools.length || androidAPIs.length)
+          return Promise.resolve([
+            'Android SDK',
+            {
+              'Build Tools': buildTools || NotFound,
+              'API Levels': androidAPIs || NotFound,
+            },
+          ]);
+        return Promise.resolve(['Android SDK', NotFound]);
+      });
+  },
 
-  if (process.platform === 'darwin') {
-    try {
-      var output = utils.run('xcodebuild -showsdks');
-      iOSSDKVersions = output.match(/[\w]+\s[\d|.]+/g);
-    } catch (e) {
-      iOSSDKVersions = 'Unknown';
-    }
-  } else {
-    return 'N/A';
-  }
-
-  return {
-    Platforms: utils.uniq(iOSSDKVersions),
-  };
-}
-
-function getAllAndroidSDKs() {
-  var buildTools = [];
-  var androidAPIs = [];
-  try {
-    // try to use preferred install path
-    var command = process.env.ANDROID_HOME ? '$ANDROID_HOME/tools/bin/sdkmanager' : 'sdkmanager';
-    var installed = utils.run(command + ' --list').split('Available')[0];
-
-    var getBuildVersions = /build-tools;([\d|.]+)[\S\s]/g;
-    var getAPIVersions = /platforms;android-(\d+)[\S\s]/g;
-    var matcher;
-    // eslint-disable-next-line
-    while ((matcher = getBuildVersions.exec(installed))) {
-      buildTools.push(matcher[1]);
-    }
-    // eslint-disable-next-line
-    while ((matcher = getAPIVersions.exec(installed))) {
-      androidAPIs.push(matcher[1]);
-    }
-  } catch (err) {
-    buildTools = ['Unknown'];
-    androidAPIs = ['Unknown'];
-  }
-
-  return {
-    'Build Tools': buildTools,
-    'API Levels': androidAPIs,
-  };
-}
-
-function getAndroidStudioVersion() {
-  var androidStudioVersion = 'Not Found';
-  if (process.platform === 'darwin') {
-    try {
+  getAndroidStudioInfo: () => {
+    let androidStudioVersion;
+    if (process.platform === 'darwin') {
       androidStudioVersion = utils
         .run(
-          generatePlistBuddyCommand('/Applications/Android\\ Studio.app/Contents/Info.plist', [
-            'CFBundleShortVersionString',
-            'CFBundleVersion',
-          ])
+          utils.generatePlistBuddyCommand(
+            path.join('/', 'Applications', 'Android\\ Studio.app', 'Contents', 'Info.plist'),
+            ['CFBundleShortVersionString', 'CFBundleVersion']
+          )
         )
-        .split('\n')
-        .join(' ');
-    } catch (err) {
-      androidStudioVersion = 'Not Found';
-    }
-  } else if (process.platform === 'linux') {
-    try {
-      var linuxBuildNumber = utils.run('cat /opt/android-studio/build.txt');
-      var linuxVersion = utils
-        .run('cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1')
-        .match(/\d\.\d/)[0];
-      androidStudioVersion = `${linuxVersion} ${linuxBuildNumber}`;
-    } catch (err) {
-      androidStudioVersion = 'Not Found';
-    }
-  } else if (process.platform.startsWith('win')) {
-    try {
-      var windowsVersion = utils
-        .run(
-          'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
-        )
-        .replace(/(\r\n|\n|\r)/gm, '');
-      var windowsBuildNumber = utils
-        .run('type "C:\\\\Program Files\\\\Android\\\\Android Studio\\\\build.txt"')
-        .replace(/(\r\n|\n|\r)/gm, '');
-      androidStudioVersion = `${windowsVersion} ${windowsBuildNumber}`;
-    } catch (err) {
-      androidStudioVersion = 'Not Found';
-    }
-  }
-  return androidStudioVersion;
-}
-
-function getAtomVersion() {
-  return utils.customGenericVersionFunction(() => getDarwinApplicationVersion('com.github.atom'));
-}
-
-function getCPUInfo() {
-  return utils.customGenericVersionFunction(() => os.arch() + ' ' + os.cpus()[0].model, 'Unknown');
-}
-
-function getBashVersion() {
-  var bashVersion;
-  var bashPath;
-  try {
-    bashPath = which.sync('bash');
-    bashVersion = utils.run(`${bashPath} --version`).match(utils.versionRegex)[0];
-  } catch (error) {
-    bashVersion = 'Not Found';
-  }
-  return bashVersion;
-}
-
-function getPhpVersion() {
-  return utils.customGenericVersionFunction(() => utils.run('php -v').split(' ', 2)[1]);
-}
-
-function getParallelsVersion() {
-  return utils.customGenericVersionFunction(
-    () => utils.run('prlctl --version').match(/[version]+\s([\d|.]+)/)[1]
-  );
-}
-
-function getDockerVersion() {
-  return utils.customGenericVersionFunction(() =>
-    utils.run('docker --version').replace('Docker version ', '')
-  );
-}
-
-function getElixirVersion() {
-  return utils.customGenericVersionFunction(
-    () => /[Elixir]+\s([\d|.]+)/g.exec(utils.run('elixir --version'))[1]
-  );
-}
-
-function getFreeMemory() {
-  return utils.toReadableBytes(os.freemem());
-}
-
-function getTotalMemory() {
-  return utils.toReadableBytes(os.totalmem());
-}
-
-function getSublimeTextVersion() {
-  return utils.customGenericVersionFunction(() => getDarwinApplicationVersion('com.sublimetext.3'));
-}
-
-function getHomeBrewVersion() {
-  var homeBrewVersion;
-  if (process.platform === 'darwin') {
-    try {
-      homeBrewVersion = utils
-        .run('brew --version')
-        .replace('Homebrew ', '')
-        .split('\n', 1)
-        .join();
-    } catch (error) {
-      homeBrewVersion = 'Not Found';
-    }
-  } else homeBrewVersion = 'N/A';
-  return homeBrewVersion;
-}
-
-function getGoVersion() {
-  return utils.customGenericVersionFunction(() =>
-    utils
-      .run('go version')
-      .replace('go version go', '')
-      .split(' ', 1)
-      .join()
-  );
-}
-
-function getRubyVersion() {
-  return utils.customGenericVersionFunction(() =>
-    utils
-      .run('ruby --version')
-      .replace('ruby ', '')
-      .split(' ', 1)
-      .join()
-  );
-}
-
-function getNodeVersion() {
-  return utils.customGenericVersionFunction(() => utils.run('node --version').replace('v', ''));
-}
-
-function getNpmVersion() {
-  return utils.customGenericVersionFunction(() => utils.run('npm -v'));
-}
-
-function getShell(shellBinary) {
-  shellBinary = shellBinary || process.env.SHELL;
-
-  const shellVersion = utils.customGenericVersionFunction(
-    () => utils.run(`${shellBinary} --version`).match(utils.versionRegex)[0]
-  );
-
-  return (shellBinary && shellVersion && `${shellBinary} - ${shellVersion}`) || `¯\\_(ツ)_/¯`;
-}
-
-function getOperatingSystemInfo() {
-  var operatingSystemInfo;
-  try {
-    operatingSystemInfo = osName(os.platform(), os.release());
-    if (process.platform === 'darwin') {
-      operatingSystemInfo = operatingSystemInfo + ' ' + utils.run('sw_vers -productVersion ');
-    }
-  } catch (err) {
-    operatingSystemInfo += ' Unknown Version';
-  }
-  return operatingSystemInfo;
-}
-
-function getWatchmanVersion() {
-  return utils.customGenericVersionFunction(
-    () => which.sync('watchman') && utils.run(which.sync('watchman') + ' --version')
-  );
-}
-
-function getVSCodeVersion() {
-  return utils.customGenericVersionFunction(() =>
-    utils
-      .run('code --version')
-      .split('\n', 1)
-      .join('')
-  );
-}
-
-function getVirtualBoxVersion() {
-  return utils.customGenericVersionFunction(() => utils.run('vboxmanage --version'));
-}
-
-function getVMwareVersion() {
-  return utils.customGenericVersionFunction(() => getDarwinApplicationVersion('com.vmware.fusion'));
-}
-
-function getPythonVersion() {
-  var pythonVersion;
-  var pythonPath;
-  try {
-    pythonPath = utils.run('which python');
-    pythonVersion = childProcess
-      .execFileSync(pythonPath, ['-c', 'import platform; print(platform.python_version());'])
-      .toString()
-      .replace(/(\r\n|\n|\r)/gm, '');
-  } catch (error) {
-    pythonVersion = 'Not Found';
-  }
-  return pythonVersion;
-}
-
-function getXcodeVersion() {
-  var xcodeVersion;
-  if (process.platform === 'darwin') {
-    var xcodePath = which.sync('xcodebuild');
-    try {
-      xcodeVersion =
-        xcodePath &&
+        .then(version => version.split('\n').join(' '));
+    } else if (process.platform === 'linux') {
+      androidStudioVersion = Promise.all([
         utils
-          .run(xcodePath + ' -version')
-          .split('\n')
-          .join(' ');
-    } catch (err) {
-      xcodeVersion = 'Not Found';
+          .run('cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1')
+          .then(utils.findVersion),
+        utils.run('cat /opt/android-studio/build.txt'),
+      ]).then(tasks => {
+        const linuxVersion = tasks[0];
+        const linuxBuildNumber = tasks[1];
+        return `${linuxVersion} ${linuxBuildNumber}`.trim() || NotFound;
+      });
+    } else if (process.platform.startsWith('win')) {
+      androidStudioVersion = Promise.all([
+        utils
+          .run(
+            'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
+          )
+          .then(version => version.replace(/(\r\n|\n|\r)/gm, '')),
+        utils
+          .run('type "C:\\\\Program Files\\\\Android\\\\Android Studio\\\\build.txt"')
+          .then(version => version.replace(/(\r\n|\n|\r)/gm, '')),
+      ]).then(tasks => {
+        const windowsVersion = tasks[0];
+        const windowsBuildNumber = tasks[1];
+        return `${windowsVersion} ${windowsBuildNumber}`.trim() || NotFound;
+      });
     }
-  } else {
-    xcodeVersion = 'N/A';
-  }
-  return xcodeVersion;
-}
+    return androidStudioVersion.then(v => utils.determineFound('Android Studio', v));
+  },
 
-function getYarnVersion() {
-  return utils.customGenericVersionFunction(() => utils.run('yarn --version'));
-}
-
-function getChromeVersion() {
-  var chromeVersion;
-  if (process.platform === 'linux') {
-    try {
-      chromeVersion = utils.run('google-chrome --version').replace(/^.* ([^ ]*)/g, '$1');
-    } catch (err) {
-      chromeVersion = 'Not Found';
-    }
-  } else {
-    chromeVersion = getDarwinApplicationVersion(browserBundleIdentifiers.Chrome);
-  }
-  return chromeVersion;
-}
-
-function getFirefoxVersion() {
-  var firefoxVersion;
-  if (process.platform === 'linux') {
-    try {
-      firefoxVersion = utils.run('firefox --version').replace(/^.* ([^ ]*)/g, '$1');
-    } catch (err) {
-      firefoxVersion = 'Not Found';
-    }
-  } else {
-    firefoxVersion = getDarwinApplicationVersion(browserBundleIdentifiers.Firefox);
-  }
-  return firefoxVersion;
-}
-
-function getFirefoxNightlyVersion() {
-  var firefoxNightlyVersion;
-  if (process.platform === 'linux') {
-    try {
-      firefoxNightlyVersion = utils.run('firefox-trunk --version').replace(/^.* ([^ ]*)/g, '$1');
-    } catch (err) {
-      firefoxNightlyVersion = 'Not Found';
-    }
-  } else {
-    firefoxNightlyVersion = getDarwinApplicationVersion(
-      browserBundleIdentifiers['Firefox Nightly']
+  getAtomInfo: () => {
+    utils.log('trace', 'getAtomInfo');
+    return Promise.all([utils.getDarwinApplicationVersion('com.github.atom'), NA]).then(v =>
+      utils.determineFound('Atom', v[0], v[1])
     );
-  }
-  return firefoxNightlyVersion;
-}
+  },
 
-module.exports = Object.assign(packages, {
-  browserBundleIdentifiers: browserBundleIdentifiers,
-  findDarwinApplication: findDarwinApplication,
-  generatePlistBuddyCommand: generatePlistBuddyCommand,
-  getAllAndroidSDKs: getAllAndroidSDKs,
-  getAlliOSSDKs: getAlliOSSDKs,
-  getAndroidStudioVersion: getAndroidStudioVersion,
-  getAtomVersion: getAtomVersion,
-  getBashVersion: getBashVersion,
-  getCPUInfo: getCPUInfo,
-  getDarwinApplicationVersion: getDarwinApplicationVersion,
-  getDockerVersion: getDockerVersion,
-  getElixirVersion: getElixirVersion,
-  getFreeMemory: getFreeMemory,
-  getGoVersion: getGoVersion,
-  getHomeBrewVersion: getHomeBrewVersion,
-  getNodeVersion: getNodeVersion,
-  getNpmVersion: getNpmVersion,
-  getOperatingSystemInfo: getOperatingSystemInfo,
-  getPhpVersion: getPhpVersion,
-  getParallelsVersion: getParallelsVersion,
-  getPythonVersion: getPythonVersion,
-  getRubyVersion: getRubyVersion,
-  getShell: getShell,
-  getSublimeTextVersion: getSublimeTextVersion,
-  getTotalMemory: getTotalMemory,
-  getVirtualBoxVersion: getVirtualBoxVersion,
-  getVMwareVersion: getVMwareVersion,
-  getVSCodeVersion: getVSCodeVersion,
-  getWatchmanVersion: getWatchmanVersion,
-  getXcodeVersion: getXcodeVersion,
-  getYarnVersion: getYarnVersion,
-  getChromeVersion: getChromeVersion,
-  getFirefoxVersion: getFirefoxVersion,
-  getFirefoxNightlyVersion: getFirefoxNightlyVersion,
+  getCPUInfo: () => {
+    utils.log('trace', 'getCPUInfo');
+    let info;
+    try {
+      info = os.arch() + ' ' + os.cpus()[0].model;
+    } catch (err) {
+      info = 'Unknown';
+    }
+    return Promise.all(['CPU', info]);
+  },
+
+  getBashInfo: () => {
+    utils.log('trace', 'getBashInfo');
+    return Promise.all([
+      utils.run('bash --version').then(utils.findVersion),
+      utils.which('bash'),
+    ]).then(v => utils.determineFound('Bash', v[0], v[1]));
+  },
+
+  getPHPInfo: () => {
+    utils.log('trace', 'getPHPInfo');
+    return Promise.all([utils.run('php -v').then(utils.findVersion), utils.which('php')]).then(v =>
+      utils.determineFound('PHP', v[0], v[1])
+    );
+  },
+
+  getParallelsInfo: () => {
+    utils.log('trace', 'getParallelsInfo');
+    return Promise.all([
+      utils.run('prlctl --version').then(utils.findVersion),
+      utils.which('prlctl'),
+    ]).then(v => utils.determineFound('Parallels', v[0], v[1]));
+  },
+
+  getDockerInfo: () => {
+    utils.log('trace', 'getDockerInfo');
+    return Promise.all([
+      utils.run('docker --version').then(utils.findVersion),
+      utils.which('docker'),
+    ]).then(v => utils.determineFound('Docker', v[0], v[1]));
+  },
+
+  getElixirInfo: () => {
+    utils.log('trace', 'getElixirInfo');
+    return Promise.all([
+      utils
+        .run('elixir --version')
+        .then(version => version && version.match(/[Elixir]+\s([\d+.[\d+|.]+)/)[1]),
+      utils.which('elixir'),
+    ]).then(v => Promise.resolve(utils.determineFound('Elixir', v[0], v[1])));
+  },
+
+  getMemoryInfo: () => {
+    utils.log('trace', 'getMemoryInfo');
+    return Promise.all([
+      'Memory',
+      `${utils.toReadableBytes(os.freemem())} / ${utils.toReadableBytes(os.totalmem())}`,
+    ]);
+  },
+
+  getSublimeTextInfo: () => {
+    utils.log('trace', 'getSublimeTextInfo');
+    return Promise.all([
+      utils.run('subl --version').then(version => utils.findVersion(version, /\d+/)),
+      utils.which('subl'),
+    ]).then(v => utils.determineFound('Sublime Text', v[0], v[1]));
+  },
+
+  getHomeBrewInfo: () => {
+    utils.log('trace', 'getHomeBrewInfo');
+    var homeBrewVersion;
+    if (process.platform === 'darwin') {
+      homeBrewVersion = Promise.all([
+        'Homebrew',
+        utils.run('brew --version').then(utils.findVersion),
+        utils.which('brew'),
+      ]);
+    } else homeBrewVersion = Promise.all(['Homebrew', NA]);
+    return homeBrewVersion;
+  },
+
+  getGoInfo: () => {
+    utils.log('trace', 'getGoInfo');
+    return Promise.all([utils.run('go version').then(utils.findVersion), utils.which('go')]).then(
+      v => utils.determineFound('Go', v[0], v[1])
+    );
+  },
+
+  getRubyInfo: () => {
+    utils.log('trace', 'getRubyInfo');
+    return Promise.all([utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]).then(
+      v => utils.determineFound('Ruby', v[0], v[1])
+    );
+  },
+
+  getNodeInfo: () => {
+    utils.log('trace', 'getNodeInfo');
+    return Promise.all([
+      utils.run('node -v').then(v => v.replace('v', '')),
+      utils.which('node').then(utils.condensePath),
+    ]).then(v => utils.determineFound('Node', v[0], v[1]));
+  },
+
+  getnpmInfo: () => {
+    utils.log('trace', 'getnpmInfo');
+    return Promise.all([utils.run('npm -v'), utils.which('npm').then(utils.condensePath)]).then(v =>
+      utils.determineFound('npm', v[0], v[1])
+    );
+  },
+
+  getShellInfo: () => {
+    utils.log('trace', 'getShellInfo');
+    return Promise.all([
+      utils.run(`${process.env.SHELL} --version`).then(utils.findVersion),
+      utils.which(process.env.SHELL),
+    ]).then(v => utils.determineFound('Shell', v[0], v[1]));
+  },
+
+  getOSInfo: () => {
+    utils.log('trace', 'getOSInfo');
+    let version;
+    if (process.platform === 'darwin') {
+      version = utils.run('sw_vers -productVersion ');
+    } else if (process.platform === 'linux') {
+      version = utils.run('cat /etc/os-release').then(v => {
+        const distro = v.match(/NAME="(.+)"/);
+        const versionInfo = v.match(/VERSION="(.+)"/);
+        return `${distro[1]} ${versionInfo[1]}`.trim() || '';
+      });
+    } else {
+      version = Promise.resolve();
+    }
+    return version.then(v => {
+      let info = osName(os.platform(), os.release());
+      if (v) info += ` ${v}`;
+      return ['OS', info];
+    });
+  },
+
+  getContainerInfo: () => {
+    utils.log('trace', 'getContainerInfo');
+    return Promise.all([utils.fileExists('/.dockerenv'), utils.readFile('/proc/self/cgroup')])
+      .then(results => {
+        utils.log('trace', 'getContainerInfoThen', results);
+        return Promise.resolve(['Container', results[0] || results[1] ? 'Yes' : 'No']);
+      })
+      .catch(err => utils.log('trace', 'getContainerInfoCatch', err));
+  },
+
+  getWatchmanInfo: () => {
+    utils.log('trace', 'getWatchmanInfo');
+    return Promise.all([
+      utils
+        .which('watchman')
+        .then(watchmanPath => (watchmanPath ? utils.run(watchmanPath + ' -v') : undefined)),
+      utils.which('watchman'),
+    ]).then(v => utils.determineFound('Watchman', v[0], v[1]));
+  },
+
+  getVSCodeInfo: () => {
+    utils.log('trace', 'getVSCodeInfo');
+    return Promise.all([
+      utils.run('code --version').then(utils.findVersion),
+      utils.which('code'),
+    ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
+  },
+
+  getVirtualBoxInfo: () => {
+    utils.log('trace', 'getVirtualBoxInfo');
+    return Promise.all([
+      utils.run('vboxmanage --version').then(utils.findVersion),
+      utils.which('vboxmanage'),
+    ]).then(v => utils.determineFound('VirtualBox', v[0], v[1]));
+  },
+
+  getVMwareFusionInfo: () => {
+    utils.log('trace', 'getVMwareFusionInfo');
+    return utils
+      .getDarwinApplicationVersion('com.vmware.fusion')
+      .then(v => utils.determineFound('VMWare Fusion', v, NA));
+  },
+
+  getPythonInfo: () => {
+    utils.log('trace', 'getPythonInfo');
+    let pythonVersion;
+    let pythonPath;
+    try {
+      pythonPath = utils.runSync('which python');
+      pythonVersion = childProcess
+        .execFileSync(pythonPath, ['-c', 'import platform; print(platform.python_version());'])
+        .toString()
+        .replace(/(\r\n|\n|\r)/gm, '');
+    } catch (error) {
+      pythonVersion = NotFound;
+    }
+    return Promise.all([pythonVersion, pythonPath]).then(v =>
+      utils.determineFound('Python', v[0], v[1])
+    );
+  },
+
+  getXcodeInfo: () => {
+    utils.log('trace', 'getXcodeInfo');
+    if (process.platform === 'darwin') {
+      return Promise.all([
+        utils
+          .which('xcodebuild')
+          .then(xcodePath => utils.run(xcodePath + ' -version'))
+          .then(version => `${utils.findVersion(version)} - ${version.split('Build version ')[1]}`),
+        utils.which('xcodebuild').then(v => utils.determineFound('Xcode', v[0], v[1])),
+      ]);
+    }
+    return Promise.resolve(['Xcode', NA]);
+  },
+
+  getYarnInfo: () => {
+    utils.log('trace', 'getYarnInfo');
+    return Promise.all([utils.run('yarn -v'), utils.which('yarn').then(utils.condensePath)]).then(
+      v => utils.determineFound('Yarn', v[0], v[1])
+    );
+  },
+
+  getChromeInfo: () => {
+    utils.log('trace', 'getChromeInfo');
+    let chromeVersion;
+    if (process.platform === 'linux') {
+      chromeVersion = utils
+        .run('google-chrome --version')
+        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (process.platform === 'darwin') {
+      chromeVersion = utils
+        .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
+        .then(utils.findVersion);
+    } else {
+      chromeVersion = 'NA';
+    }
+    return chromeVersion.then(v => utils.determineFound('Chrome', v, NA));
+  },
+
+  getChromeCanaryInfo: () => {
+    utils.log('trace', 'getChromeCanaryInfo');
+    const chromeCanaryVersion = utils.getDarwinApplicationVersion(
+      utils.browserBundleIdentifiers['Chrome Canary']
+    );
+    return chromeCanaryVersion.then(v => utils.determineFound('Chrome Canary', v, NA));
+  },
+
+  getFirefoxDeveloperEditionInfo: () => {
+    utils.log('trace', 'getFirefoxDeveloperEditionInfo');
+    const firefoxDeveloperEdition = utils.getDarwinApplicationVersion(
+      utils.browserBundleIdentifiers['Firefox Developer Edition']
+    );
+    return firefoxDeveloperEdition.then(v =>
+      utils.determineFound('Firefox Developer Edition', v, NA)
+    );
+  },
+
+  getSafariTechnologyPreviewInfo: () => {
+    utils.log('trace', 'getSafariTechnologyPreviewInfo');
+    const safariTechnologyPreview = utils.getDarwinApplicationVersion(
+      utils.browserBundleIdentifiers['Safari Technology Preview']
+    );
+    return safariTechnologyPreview.then(v =>
+      utils.determineFound('Safari Technology Preview', v, NA)
+    );
+  },
+
+  getSafariInfo: () => {
+    utils.log('trace', 'getSafariInfo');
+    const safariVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Safari);
+    return safariVersion.then(v => utils.determineFound('Safari', v, NA));
+  },
+
+  getFirefoxInfo: () => {
+    utils.log('trace', 'getFirefoxInfo');
+    let firefoxVersion;
+    if (process.platform === 'linux') {
+      firefoxVersion = utils.run('firefox --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (process.platform === 'darwin') {
+      firefoxVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Firefox);
+    } else {
+      firefoxVersion = Promise.resolve('NA');
+    }
+    return firefoxVersion.then(v => utils.determineFound('Firefox', v, NA));
+  },
+
+  getFirefoxNightlyInfo: () => {
+    utils.log('trace', 'getFirefoxNightlyInfo');
+    let firefoxNightlyVersion;
+    if (process.platform === 'linux') {
+      firefoxNightlyVersion = utils
+        .run('firefox-trunk --version')
+        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (process.platform === 'darwin') {
+      firefoxNightlyVersion = utils.getDarwinApplicationVersion(
+        utils.browserBundleIdentifiers['Firefox Nightly']
+      );
+    } else {
+      firefoxNightlyVersion = Promise.resolve(['NA']);
+    }
+
+    return firefoxNightlyVersion.then(v => utils.determineFound('Firefox Nightly', v, NA));
+  },
 });
