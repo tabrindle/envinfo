@@ -19,8 +19,9 @@ const run = cmd => {
 };
 
 const log = function log(level) {
-  const args = Object.values(Array.prototype.slice.call(arguments).slice(1)).join(', ');
-  if ((process.env.ENVINFO_DEBUG || '').toLowerCase() === level) console.log(level, args);
+  const args = Object.values(Array.prototype.slice.call(arguments).slice(1));
+  if ((process.env.ENVINFO_DEBUG || '').toLowerCase() === level)
+    console.log(level, JSON.stringify(args));
 };
 
 const fileExists = filePath => {
@@ -179,5 +180,13 @@ module.exports = {
 
   condensePath: pathString => {
     return (pathString || '').replace(process.env.HOME, '~');
+  },
+
+  determineFound: (name, version, appPath) => {
+    log('trace', 'clean', name, version, appPath);
+    if (!version || version === 'N/A' || (version === 'N/A' && appPath === 'N/A'))
+      return Promise.resolve([name, 'Not Found']);
+    if (!appPath) return Promise.resolve([name, version]);
+    return Promise.resolve([name, version, appPath]);
   },
 };

@@ -1,6 +1,6 @@
 module.exports = {
   defaults: {
-    System: ['OS', 'CPU', 'Memory', 'Shell', 'derp'],
+    System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
     SDKs: ['iOS SDK', 'Android SDK'],

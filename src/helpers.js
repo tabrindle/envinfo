@@ -223,14 +223,33 @@ module.exports = Object.assign({}, utils, packages, {
 
   getOSInfo: () => {
     utils.log('trace', 'getOSInfo');
-    return (process.platform === 'darwin'
-      ? utils.run('sw_vers -productVersion ')
-      : Promise.resolve()
-    ).then(version => {
+    let version;
+    if (process.platform === 'darwin') {
+      version = utils.run('sw_vers -productVersion ');
+    } else if (process.platform === 'linux') {
+      version = utils.run('cat /etc/os-release').then(v => {
+        const distro = v.match(/NAME="(.+)"/);
+        const versionInfo = v.match(/VERSION="(.+)"/);
+        return `${distro[1]} ${versionInfo[1]}`.trim() || '';
+      });
+    } else {
+      version = Promise.resolve();
+    }
+    return version.then(v => {
       let info = osName(os.platform(), os.release());
-      if (version) info += ` ${version}`;
+      if (v) info += ` ${v}`;
       return ['OS', info];
     });
+  },
+
+  getContainerInfo: () => {
+    utils.log('trace', 'getContainerInfo');
+    return Promise.all([utils.fileExists('/.dockerenv'), utils.readFile('/proc/self/cgroup')])
+      .then(results => {
+        utils.log('trace', 'getContainerInfoThen', results);
+        return Promise.resolve(['Container', results[0] || results[1] ? 'Yes' : 'No']);
+      })
+      .catch(err => utils.log('trace', 'getContainerInfoCatch', err));
   },
 
   getWatchmanInfo: () => {
