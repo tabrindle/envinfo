@@ -218,12 +218,15 @@ module.exports = Object.assign({}, utils, packages, {
 
   getShellInfo: () => {
     utils.log('trace', 'getShellInfo', process.env);
-    const shell =
-      process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
-    return Promise.all([
-      utils.run(`${shell} --version`).then(utils.findVersion),
-      utils.which(shell),
-    ]).then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
+    if (process.platform === 'darwin' || process.platform === 'linux') {
+      const shell =
+        process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
+      return Promise.all([
+        utils.run(`${shell} --version`).then(utils.findVersion),
+        utils.which(shell),
+      ]).then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
+    }
+    return Promise.resolve(['Shell', 'N/A']);
   },
 
   getOSInfo: () => {
@@ -249,12 +252,14 @@ module.exports = Object.assign({}, utils, packages, {
 
   getContainerInfo: () => {
     utils.log('trace', 'getContainerInfo');
-    return Promise.all([utils.fileExists('/.dockerenv'), utils.readFile('/proc/self/cgroup')])
-      .then(results => {
-        utils.log('trace', 'getContainerInfoThen', results);
-        return Promise.resolve(['Container', results[0] || results[1] ? 'Yes' : 'No']);
-      })
-      .catch(err => utils.log('trace', 'getContainerInfoCatch', err));
+    if (process.platform === 'linux')
+      return Promise.all([utils.fileExists('/.dockerenv'), utils.readFile('/proc/self/cgroup')])
+        .then(results => {
+          utils.log('trace', 'getContainerInfoThen', results);
+          return Promise.resolve(['Container', results[0] || results[1] ? 'Yes' : 'No']);
+        })
+        .catch(err => utils.log('trace', 'getContainerInfoCatch', err));
+    return Promise.resolve(['Container', 'N/A']);
   },
 
   getWatchmanInfo: () => {
@@ -341,7 +346,7 @@ module.exports = Object.assign({}, utils, packages, {
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
         .then(utils.findVersion);
     } else {
-      chromeVersion = 'NA';
+      chromeVersion = Promise.resolve(NA);
     }
     return chromeVersion.then(v => utils.determineFound('Chrome', v, NA));
   },
@@ -388,7 +393,7 @@ module.exports = Object.assign({}, utils, packages, {
     } else if (process.platform === 'darwin') {
       firefoxVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Firefox);
     } else {
-      firefoxVersion = Promise.resolve('NA');
+      firefoxVersion = Promise.resolve(NA);
     }
     return firefoxVersion.then(v => utils.determineFound('Firefox', v, NA));
   },
@@ -405,7 +410,7 @@ module.exports = Object.assign({}, utils, packages, {
         utils.browserBundleIdentifiers['Firefox Nightly']
       );
     } else {
-      firefoxNightlyVersion = Promise.resolve(['NA']);
+      firefoxNightlyVersion = Promise.resolve(NA);
     }
 
     return firefoxNightlyVersion.then(v => utils.determineFound('Firefox Nightly', v, NA));
