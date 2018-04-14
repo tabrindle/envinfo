@@ -201,7 +201,10 @@ module.exports = Object.assign({}, utils, packages, {
   getNodeInfo: () => {
     utils.log('trace', 'getNodeInfo');
     return Promise.all([
-      utils.run('node -v').then(v => v.replace('v', '')),
+      utils
+        .which('node')
+        .then(nodePath => (nodePath ? utils.run(nodePath + ' -v') : Promise.resolve('')))
+        .then(v => v.replace('v', '')),
       utils.which('node').then(utils.condensePath),
     ]).then(v => utils.determineFound('Node', v[0], v[1]));
   },
@@ -214,11 +217,13 @@ module.exports = Object.assign({}, utils, packages, {
   },
 
   getShellInfo: () => {
-    utils.log('trace', 'getShellInfo');
+    utils.log('trace', 'getShellInfo', process.env);
+    const shell =
+      process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
     return Promise.all([
-      utils.run(`${process.env.SHELL} --version`).then(utils.findVersion),
-      utils.which(process.env.SHELL),
-    ]).then(v => utils.determineFound('Shell', v[0], v[1]));
+      utils.run(`${shell} --version`).then(utils.findVersion),
+      utils.which(shell),
+    ]).then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
   },
 
   getOSInfo: () => {
@@ -228,8 +233,8 @@ module.exports = Object.assign({}, utils, packages, {
       version = utils.run('sw_vers -productVersion ');
     } else if (process.platform === 'linux') {
       version = utils.run('cat /etc/os-release').then(v => {
-        const distro = v.match(/NAME="(.+)"/);
-        const versionInfo = v.match(/VERSION="(.+)"/);
+        const distro = (v || '').match(/NAME="(.+)"/);
+        const versionInfo = (v || '').match(/VERSION="(.+)"/);
         return `${distro[1]} ${versionInfo[1]}`.trim() || '';
       });
     } else {
