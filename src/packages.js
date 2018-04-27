@@ -75,7 +75,7 @@ function getnpmPackages(packages, options) {
           if (!d || !d.name) return acc;
           // create object if its not already created
           if (!acc[d.name]) acc[d.name] = {};
-          // set duplicates if flag set, if version  not already there, && !== installed
+          // set duplicates if flag set, if version not already there, && !== installed
           if (options.duplicates) {
             if (acc[d.name].installed && acc[d.name].installed !== d.version) {
               utils.uniq(
@@ -91,11 +91,21 @@ function getnpmPackages(packages, options) {
           return acc;
         }, {});
       })
+      .then(versions => {
+        if (options.showNotFound) {
+          packages.forEach(p => {
+            if (!versions[p]) {
+              versions[p] = 'Not Found';
+            }
+          });
+        }
+        return versions;
+      })
       .then(versions => utils.sortObject(versions)),
   ]);
 }
 
-function getnpmGlobalPackages(packages) {
+function getnpmGlobalPackages(packages, options) {
   utils.log('trace', 'getnpmGlobalPackages', packages);
 
   let packageGlob = null;
@@ -156,7 +166,17 @@ function getnpmGlobalPackages(packages) {
           (acc, json) => (json ? Object.assign(acc, { [json.name]: json.version }) : acc),
           {}
         )
-      ),
+      )
+      .then(versions => {
+        if (options.showNotFound) {
+          packages.forEach(p => {
+            if (!versions[p]) {
+              versions[p] = 'Not Found';
+            }
+          });
+        }
+        return versions;
+      }),
   ]);
 }
 

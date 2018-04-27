@@ -53,6 +53,10 @@ function formatPackages(data) {
     npmPackages: Object.entries(data.npmPackages || {}).reduce((acc, entry) => {
       const key = entry[0];
       const value = entry[1];
+      if (value === 'Not Found')
+        return Object.assign(acc, {
+          [key]: value,
+        });
       const wanted = value.wanted ? `${value.wanted} =>` : '';
       const installed = Array.isArray(value.installed)
         ? value.installed.join(', ')
