@@ -1,6 +1,6 @@
 {
   "name": "envinfo",
-  "version": "5.1.2",
+  "version": "5.2.0",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
@@ -21,7 +21,15 @@
     "start": "node src/cli.js",
     "test": "jest && npm run lint && npm run check:format"
   },
-  "keywords": ["development", "env", "environment", "info", "issues", "reporting", "diagnostics"],
+  "keywords": [
+    "development",
+    "env",
+    "environment",
+    "info",
+    "issues",
+    "reporting",
+    "diagnostics"
+  ],
   "dependencies": {},
   "devDependencies": {
     "array-includes": "^3.0.3",
