@@ -17,7 +17,7 @@
     "check:format": "prettier -l 'src/**/*.js'",
     "format": "prettier --write 'src/**/*.js'",
     "lint": "eslint src",
-    "preversion": "webpack && git add .",
+    "preversion": "npm run test && webpack && git add .",
     "start": "node src/cli.js",
     "test": "jest && npm run lint && npm run check:format"
   },
