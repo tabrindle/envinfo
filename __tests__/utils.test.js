@@ -41,7 +41,7 @@ const cases = {
   },
   postgres: {
     string: 'postgres (PostgreSQL) 10.3',
-    version: 10.3,
+    version: '10.3',
   },
   ruby: {
     string: 'ruby 2.3.3p222 (2016-11-21 revision 56859) [universal.x86_64-darwin17]',
