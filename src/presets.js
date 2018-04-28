@@ -6,6 +6,7 @@ module.exports = {
     SDKs: ['iOS SDK', 'Android SDK'],
     IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
     Languages: ['Bash', 'Go', 'Elixir', 'PHP', 'Python', 'Ruby'],
+    Databases: ['MongoDB', 'MySQL', 'PostgreSQL', 'SQLite'],
     Browsers: [
       'Chrome',
       'Chrome Canary',
