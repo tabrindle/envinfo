@@ -150,7 +150,7 @@ module.exports = Object.assign({}, utils, packages, {
     return Promise.all([
       utils
         .run('elixir --version')
-        .then(version => version && version.match(/[Elixir]+\s([\d+.[\d+|.]+)/)[1]),
+        .then(v => utils.findVersion(v, /[Elixir]+\s([\d+.[\d+|.]+)/, 1)),
       utils.which('elixir'),
     ]).then(v => Promise.resolve(utils.determineFound('Elixir', v[0], v[1])));
   },
@@ -321,8 +321,8 @@ module.exports = Object.assign({}, utils, packages, {
           .which('xcodebuild')
           .then(xcodePath => utils.run(xcodePath + ' -version'))
           .then(version => `${utils.findVersion(version)} - ${version.split('Build version ')[1]}`),
-        utils.which('xcodebuild').then(v => utils.determineFound('Xcode', v[0], v[1])),
-      ]);
+        utils.which('xcodebuild'),
+      ]).then(v => utils.determineFound('Xcode', v[0], v[1]));
     }
     return Promise.resolve(['Xcode', NA]);
   },

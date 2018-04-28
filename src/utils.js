@@ -43,7 +43,7 @@ const requireJson = filePath => {
     .then(file => (file ? JSON.parse(file) : null));
 };
 
-const versionRegex = /\d+\.[\d+|.]+/;
+const versionRegex = /\d+\.[\d+|.]+/g;
 
 const findDarwinApplication = id => {
   log('trace', 'findDarwinApplication', id);
@@ -172,10 +172,11 @@ module.exports = {
       }, {});
   },
 
-  findVersion: (versionString, regex) => {
+  findVersion: (versionString, regex, index) => {
+    const idx = index || 0;
     const matcher = regex || versionRegex;
     const matched = versionString.match(matcher);
-    return matched ? matched[0] : versionString;
+    return matched ? matched[idx] : versionString;
   },
 
   condensePath: pathString => {
