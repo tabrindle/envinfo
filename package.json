@@ -13,9 +13,9 @@
     "node": ">=4"
   },
   "scripts": {
-    "build": "npm run webpack",
-    "check:format": "prettier -l 'src/**/*.js'",
-    "format": "prettier --write 'src/**/*.js'",
+    "build": "webpack",
+    "check:format": "prettier -l src/*.js",
+    "format": "prettier --write src/*.js",
     "lint": "eslint src",
     "preversion": "npm run test && webpack && git add .",
     "start": "node src/cli.js",

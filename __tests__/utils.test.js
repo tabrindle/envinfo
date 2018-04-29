@@ -12,12 +12,27 @@ const cases = {
     string: 'Docker version 18.03.0-ce, build 0520e24',
     version: '18.03.0',
   },
+  edge: {
+    string: `
+    Name              : Microsoft.MicrosoftEdge
+    Version           : 20.10240.17146.0
+    PackageFullName   : Microsoft.MicrosoftEdge_20.10240.17146.0_neutral__8wekyb3d8bbwe
+    InstallLocation   : C:\Windows\SystemApps\Microsoft.MicrosoftEdge_8wekyb3d8bbwe
+    PackageFamilyName : Microsoft.MicrosoftEdge_8wekyb3d8bbwe
+    PublisherId       : 8wekyb3d8bbwe`,
+    version: '20.10240.17146.0',
+  },
   elixir: {
     regex: /[Elixir]+\s([\d+.[\d+|.]+)/,
     index: 1,
     string: `Erlang/OTP 20 [erts-9.2.1] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
   Elixir 1.6.2 (compiled with OTP 20)`,
     version: '1.6.2',
+  },
+  explorer: {
+    string: `Version
+    11.0.10240.17443`,
+    version: '11.0.10240.17443',
   },
   go: {
     string: 'go version go1.9.3 darwin/amd64',

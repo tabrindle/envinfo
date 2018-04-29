@@ -10,9 +10,11 @@ module.exports = {
     Browsers: [
       'Chrome',
       'Chrome Canary',
+      'Edge',
       'Firefox',
       'Firefox Developer Edition',
       'Firefox Nightly',
+      'Internet Explorer',
       'Safari',
       'Safari Technology Preview',
     ],
