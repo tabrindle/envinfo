@@ -1,4 +1,3 @@
-const childProcess = require('child_process');
 const os = require('os');
 const osName = require('os-name');
 const path = require('path');
@@ -331,20 +330,10 @@ module.exports = Object.assign({}, utils, packages, {
 
   getPythonInfo: () => {
     utils.log('trace', 'getPythonInfo');
-    let pythonVersion;
-    let pythonPath;
-    try {
-      pythonPath = utils.runSync('which python');
-      pythonVersion = childProcess
-        .execFileSync(pythonPath, ['-c', 'import platform; print(platform.python_version());'])
-        .toString()
-        .replace(/(\r\n|\n|\r)/gm, '');
-    } catch (error) {
-      pythonVersion = NotFound;
-    }
-    return Promise.all([pythonVersion, pythonPath]).then(v =>
-      utils.determineFound('Python', v[0], v[1])
-    );
+    return Promise.all([
+      utils.run('python -V 2>&1').then(utils.findVersion),
+      utils.run('which python'),
+    ]).then(v => utils.determineFound('Python', v[0], v[1]));
   },
 
   getXcodeInfo: () => {
@@ -366,6 +355,38 @@ module.exports = Object.assign({}, utils, packages, {
     return Promise.all([utils.run('yarn -v'), utils.which('yarn').then(utils.condensePath)]).then(
       v => utils.determineFound('Yarn', v[0], v[1])
     );
+  },
+
+  getEdgeInfo: () => {
+    utils.log('trace', 'getEdgeInfo');
+    let edgeVersion;
+    if (process.platform.startsWith('win') && os.release().split('.')[0] === '10') {
+      edgeVersion = utils
+        .run('powershell get-appxpackage Microsoft.MicrosoftEdge')
+        .then(utils.findVersion);
+    } else {
+      edgeVersion = Promise.resolve(NA);
+    }
+    return edgeVersion.then(v => utils.determineFound('Edge', v, NA));
+  },
+
+  getInternetExplorerInfo: () => {
+    utils.log('trace', 'getInternetExplorerInfo');
+    let explorerVersion;
+    if (process.platform.startsWith('win')) {
+      const explorerPath = [
+        process.env.SYSTEMDRIVE || 'C:',
+        'Program Files',
+        'Internet Explorer',
+        'iexplore.exe',
+      ].join('\\\\');
+      explorerVersion = utils
+        .run(`wmic datafile where "name='${explorerPath}'" get Version`)
+        .then(utils.findVersion);
+    } else {
+      explorerVersion = Promise.resolve(NA);
+    }
+    return explorerVersion.then(v => utils.determineFound('Internet Explorer', v, NA));
   },
 
   getChromeInfo: () => {
