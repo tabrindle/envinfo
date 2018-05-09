@@ -259,7 +259,7 @@ module.exports = Object.assign({}, utils, packages, {
         utils.which(shell),
       ]).then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
     }
-    return Promise.resolve(['Shell', 'N/A']);
+    return Promise.resolve(['Shell', NA]);
   },
 
   getOSInfo: () => {
@@ -289,10 +289,10 @@ module.exports = Object.assign({}, utils, packages, {
       return Promise.all([utils.fileExists('/.dockerenv'), utils.readFile('/proc/self/cgroup')])
         .then(results => {
           utils.log('trace', 'getContainerInfoThen', results);
-          return Promise.resolve(['Container', results[0] || results[1] ? 'Yes' : 'No']);
+          return Promise.resolve(['Container', results[0] || results[1] ? 'Yes' : NA]);
         })
         .catch(err => utils.log('trace', 'getContainerInfoCatch', err));
-    return Promise.resolve(['Container', 'N/A']);
+    return Promise.resolve(['Container', NA]);
   },
 
   getWatchmanInfo: () => {
