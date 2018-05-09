@@ -29,7 +29,11 @@ function getnpmPackages(packages, options) {
     utils
       .getPackageJsonByPath('package.json')
       .then(packageJson =>
-        Object.assign({}, packageJson.devDependencies || {}, packageJson.dependencies || {})
+        Object.assign(
+          {},
+          (packageJson || {}).devDependencies || {},
+          (packageJson || {}).dependencies || {}
+        )
       )
       // determine which paths to get
       .then(packageJsonDependencies => {
