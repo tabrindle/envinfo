@@ -17,10 +17,11 @@
     "check:format": "prettier -l src/*.js",
     "compress": "gzexe envinfo-* && upx envinfo-win.exe",
     "postcompress": "tar -czvf envinfo-linux.tar.gz envinfo-linux && tar -czvf envinfo-macos.tar.gz envinfo-macos && zip -r -X envinfo-win.zip envinfo-win.exe",
-    "executable": "yarn webpack && pkg package.json",
+    "executable": "pkg package.json",
     "format": "prettier --write src/*.js",
     "lint": "eslint src",
     "preversion": "npm run test && webpack && git add .",
+    "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
     "start": "node src/cli.js",
     "test": "jest && npm run lint && npm run check:format"
