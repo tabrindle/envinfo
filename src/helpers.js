@@ -205,7 +205,18 @@ module.exports = Object.assign({}, utils, packages, {
     return Promise.all([
       utils.run('subl --version').then(version => utils.findVersion(version, /\d+/)),
       utils.which('subl'),
-    ]).then(v => utils.determineFound('Sublime Text', v[0], v[1]));
+    ])
+      .then(v => {
+        if (v[0] === '' && macos) {
+          utils.log('trace', 'getSublimeTextInfo using plist');
+          return Promise.all([
+            utils.getDarwinApplicationVersion(utils.ideBundleIdentifiers['Sublime Text']),
+            NA,
+          ]);
+        }
+        return v;
+      })
+      .then(v => utils.determineFound('Sublime Text', v[0], v[1]));
   },
 
   getHomeBrewInfo: () => {
