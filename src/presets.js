@@ -2,10 +2,12 @@ module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Utilities: ['CMake', 'Make', 'GCC', 'Git'],
+    Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
     SDKs: ['iOS SDK', 'Android SDK'],
-    IDEs: ['Android Studio', 'Atom', 'VSCode', 'Sublime Text', 'Xcode'],
-    Languages: ['Bash', 'Go', 'Elixir', 'PHP', 'Python', 'Ruby'],
+    IDEs: ['Android Studio', 'Atom', 'Emacs', 'Nano', 'Sublime Text', 'Vim', 'VSCode', 'Xcode'],
+    Languages: ['Bash', 'Go', 'Elixir', 'Java', 'PHP', 'Python', 'Ruby', 'Rust', 'Scala'],
     Databases: ['MongoDB', 'MySQL', 'PostgreSQL', 'SQLite'],
     Browsers: [
       'Chrome',
