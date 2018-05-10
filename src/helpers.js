@@ -6,10 +6,13 @@ const utils = require('./utils');
 
 const NA = 'N/A';
 const NotFound = 'Not Found';
+const macos = process.platform === 'darwin';
+const linux = process.platform === 'linux';
+const windows = process.platform.startsWith('win');
 
 module.exports = Object.assign({}, utils, packages, {
   getiOSSDKInfo: () => {
-    if (process.platform === 'darwin') {
+    if (macos) {
       return utils
         .run('xcodebuild -showsdks')
         .then(sdks => sdks.match(/[\w]+\s[\d|.]+/g))
@@ -56,7 +59,7 @@ module.exports = Object.assign({}, utils, packages, {
 
   getAndroidStudioInfo: () => {
     let androidStudioVersion;
-    if (process.platform === 'darwin') {
+    if (macos) {
       androidStudioVersion = utils
         .run(
           utils.generatePlistBuddyCommand(
@@ -65,7 +68,7 @@ module.exports = Object.assign({}, utils, packages, {
           )
         )
         .then(version => version.split('\n').join(' '));
-    } else if (process.platform === 'linux') {
+    } else if (linux) {
       androidStudioVersion = Promise.all([
         utils
           .run('cat /opt/android-studio/bin/studio.sh | grep "$Home/.AndroidStudio" | head -1')
@@ -76,7 +79,7 @@ module.exports = Object.assign({}, utils, packages, {
         const linuxBuildNumber = tasks[1];
         return `${linuxVersion} ${linuxBuildNumber}`.trim() || NotFound;
       });
-    } else if (process.platform.startsWith('win')) {
+    } else if (windows) {
       androidStudioVersion = Promise.all([
         utils
           .run(
@@ -207,7 +210,7 @@ module.exports = Object.assign({}, utils, packages, {
   getHomeBrewInfo: () => {
     utils.log('trace', 'getHomeBrewInfo');
     var homeBrewVersion;
-    if (process.platform === 'darwin') {
+    if (macos) {
       homeBrewVersion = Promise.all([
         'Homebrew',
         utils.run('brew --version').then(utils.findVersion),
@@ -251,7 +254,7 @@ module.exports = Object.assign({}, utils, packages, {
 
   getShellInfo: () => {
     utils.log('trace', 'getShellInfo', process.env);
-    if (process.platform === 'darwin' || process.platform === 'linux') {
+    if (macos || linux) {
       const shell =
         process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
       return Promise.all([
@@ -265,9 +268,9 @@ module.exports = Object.assign({}, utils, packages, {
   getOSInfo: () => {
     utils.log('trace', 'getOSInfo');
     let version;
-    if (process.platform === 'darwin') {
+    if (macos) {
       version = utils.run('sw_vers -productVersion ');
-    } else if (process.platform === 'linux') {
+    } else if (linux) {
       version = utils.run('cat /etc/os-release').then(v => {
         const distro = (v || '').match(/NAME="(.+)"/);
         const versionInfo = (v || '').match(/VERSION="(.+)"/);
@@ -285,7 +288,7 @@ module.exports = Object.assign({}, utils, packages, {
 
   getContainerInfo: () => {
     utils.log('trace', 'getContainerInfo');
-    if (process.platform === 'linux')
+    if (linux)
       return Promise.all([utils.fileExists('/.dockerenv'), utils.readFile('/proc/self/cgroup')])
         .then(results => {
           utils.log('trace', 'getContainerInfoThen', results);
@@ -338,12 +341,12 @@ module.exports = Object.assign({}, utils, packages, {
 
   getXcodeInfo: () => {
     utils.log('trace', 'getXcodeInfo');
-    if (process.platform === 'darwin') {
+    if (macos) {
       return Promise.all([
         utils
           .which('xcodebuild')
           .then(xcodePath => utils.run(xcodePath + ' -version'))
-          .then(version => `${utils.findVersion(version)} - ${version.split('Build version ')[1]}`),
+          .then(version => `${utils.findVersion(version)}/${version.split('Build version ')[1]}`),
         utils.which('xcodebuild'),
       ]).then(v => utils.determineFound('Xcode', v[0], v[1]));
     }
@@ -360,7 +363,7 @@ module.exports = Object.assign({}, utils, packages, {
   getEdgeInfo: () => {
     utils.log('trace', 'getEdgeInfo');
     let edgeVersion;
-    if (process.platform.startsWith('win') && os.release().split('.')[0] === '10') {
+    if (windows && os.release().split('.')[0] === '10') {
       edgeVersion = utils
         .run('powershell get-appxpackage Microsoft.MicrosoftEdge')
         .then(utils.findVersion);
@@ -373,7 +376,7 @@ module.exports = Object.assign({}, utils, packages, {
   getInternetExplorerInfo: () => {
     utils.log('trace', 'getInternetExplorerInfo');
     let explorerVersion;
-    if (process.platform.startsWith('win')) {
+    if (windows) {
       const explorerPath = [
         process.env.SYSTEMDRIVE || 'C:',
         'Program Files',
@@ -392,11 +395,11 @@ module.exports = Object.assign({}, utils, packages, {
   getChromeInfo: () => {
     utils.log('trace', 'getChromeInfo');
     let chromeVersion;
-    if (process.platform === 'linux') {
+    if (linux) {
       chromeVersion = utils
         .run('google-chrome --version')
         .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
-    } else if (process.platform === 'darwin') {
+    } else if (macos) {
       chromeVersion = utils
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
         .then(utils.findVersion);
@@ -443,9 +446,9 @@ module.exports = Object.assign({}, utils, packages, {
   getFirefoxInfo: () => {
     utils.log('trace', 'getFirefoxInfo');
     let firefoxVersion;
-    if (process.platform === 'linux') {
+    if (linux) {
       firefoxVersion = utils.run('firefox --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
-    } else if (process.platform === 'darwin') {
+    } else if (macos) {
       firefoxVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Firefox);
     } else {
       firefoxVersion = Promise.resolve(NA);
@@ -456,11 +459,11 @@ module.exports = Object.assign({}, utils, packages, {
   getFirefoxNightlyInfo: () => {
     utils.log('trace', 'getFirefoxNightlyInfo');
     let firefoxNightlyVersion;
-    if (process.platform === 'linux') {
+    if (linux) {
       firefoxNightlyVersion = utils
         .run('firefox-trunk --version')
         .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
-    } else if (process.platform === 'darwin') {
+    } else if (macos) {
       firefoxNightlyVersion = utils.getDarwinApplicationVersion(
         utils.browserBundleIdentifiers['Firefox Nightly']
       );
@@ -470,4 +473,136 @@ module.exports = Object.assign({}, utils, packages, {
 
     return firefoxNightlyVersion.then(v => utils.determineFound('Firefox Nightly', v, NA));
   },
+
+  getGitInfo: () => {
+    utils.log('trace', 'getGitInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('git --version').then(utils.findVersion),
+        utils.run('which git'),
+      ]).then(v => utils.determineFound('Git', v[0], v[1]));
+    }
+    return Promise.resolve(['Git', NA]);
+  },
+
+  getMakeInfo: () => {
+    utils.log('trace', 'getMakeInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('make --version').then(utils.findVersion),
+        utils.run('which make'),
+      ]).then(v => utils.determineFound('Make', v[0], v[1]));
+    }
+    return Promise.resolve(['Make', NA]);
+  },
+
+  getCMakeInfo: () => {
+    utils.log('trace', 'getCMakeInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('cmake --version').then(utils.findVersion),
+        utils.run('which cmake'),
+      ]).then(v => utils.determineFound('CMake', v[0], v[1]));
+    }
+    return Promise.resolve(['CMake', NA]);
+  },
+
+  getGCCInfo: () => {
+    utils.log('trace', 'getGCCInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('gcc -v 2>&1').then(utils.findVersion),
+        utils.run('which gcc'),
+      ]).then(v => utils.determineFound('GCC', v[0], v[1]));
+    }
+    return Promise.resolve(['GCC', NA]);
+  },
+
+  getNanoInfo: () => {
+    utils.log('trace', 'getNanoInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('nano --version').then(utils.findVersion),
+        utils.run('which nano'),
+      ]).then(v => utils.determineFound('Nano', v[0], v[1]));
+    }
+    return Promise.resolve(['Nano', NA]);
+  },
+
+  getEmacsInfo: () => {
+    utils.log('trace', 'getEmacsInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('emacs --version').then(utils.findVersion),
+        utils.run('which emacs'),
+      ]).then(v => utils.determineFound('Emacs', v[0], v[1]));
+    }
+    return Promise.resolve(['Emacs', NA]);
+  },
+
+  getVimInfo: () => {
+    utils.log('trace', 'getVimInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('vim --version').then(utils.findVersion),
+        utils.run('which vim'),
+      ]).then(v => utils.determineFound('Vim', v[0], v[1]));
+    }
+    return Promise.resolve(['Vim', NA]);
+  },
+
+  getRustInfo: () => {
+    utils.log('trace', 'getRustInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('rustup --version').then(utils.findVersion),
+        utils.run('which rustup'),
+      ]).then(v => utils.determineFound('Rust', v[0], v[1]));
+    }
+    return Promise.resolve(['Rust', NA]);
+  },
+
+  getScalaInfo: () => {
+    utils.log('trace', 'getScalaInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('scalac -version').then(utils.findVersion),
+        utils.run('which scalac'),
+      ]).then(v => utils.determineFound('Scala', v[0], v[1]));
+    }
+    return Promise.resolve(['Scala', NA]);
+  },
+
+  getJavaInfo: () => {
+    utils.log('trace', 'getJavaInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('javac -version 2>&1').then(utils.findVersion),
+        utils.run('which javac'),
+      ]).then(v => utils.determineFound('Java', v[0], v[1]));
+    }
+    return Promise.resolve(['Java', NA]);
+  },
+
+  getApacheInfo: () => {
+    utils.log('trace', 'getApacheInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('apachectl -v').then(utils.findVersion),
+        utils.run('which apachectl'),
+      ]).then(v => utils.determineFound('Apache', v[0], v[1]));
+    }
+    return Promise.resolve(['Apache', NA]);
+  },
+
+  getNginxInfo: () => {
+    utils.log('trace', 'getNginxInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('nginx -v 2>&1').then(utils.findVersion),
+        utils.run('which nginx'),
+      ]).then(v => utils.determineFound('Nginx', v[0], v[1]));
+    }
+    return Promise.resolve(['Nginx', NA]);
+  }
 });
