@@ -100,9 +100,10 @@ module.exports = Object.assign({}, utils, packages, {
 
   getAtomInfo: () => {
     utils.log('trace', 'getAtomInfo');
-    return Promise.all([utils.getDarwinApplicationVersion('com.github.atom'), NA]).then(v =>
-      utils.determineFound('Atom', v[0], v[1])
-    );
+    return Promise.all([
+      utils.getDarwinApplicationVersion(utils.ideBundleIdentifiers.Atom),
+      NA,
+    ]).then(v => utils.determineFound('Atom', v[0], v[1]));
   },
 
   getMySQLInfo: () => {
