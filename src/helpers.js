@@ -604,5 +604,5 @@ module.exports = Object.assign({}, utils, packages, {
       ]).then(v => utils.determineFound('Nginx', v[0], v[1]));
     }
     return Promise.resolve(['Nginx', NA]);
-  }
+  },
 });
