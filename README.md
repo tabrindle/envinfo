@@ -64,8 +64,14 @@ SDKs:
 IDEs:
   Android Studio: 3.0 AI-171.4443003
   Atom: 1.23.3
-  VSCode: 1.20.1
+  Emacs: 22.1.1 - /usr/bin/emacs
+  IntelliJ: 2018.1.3
+  Nano: 2.0.6 - /usr/bin/nano
+  PhpStorm: 2018.1.3
   Sublime Text: Build 3143
+  Vim: 8.0 - /usr/bin/vim
+  VSCode: 1.20.1
+  WebStorm: 2017.3.4
   Xcode: Xcode 9.0 Build version 9A235
 Languages:
   Bash: 4.4.12

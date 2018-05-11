@@ -328,6 +328,27 @@ module.exports = Object.assign({}, utils, packages, {
     ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
+  getIntelliJInfo: () => {
+    utils.log('trace', 'getIntelliJInfo');
+    return utils
+      .getDarwinApplicationVersion(utils.ideBundleIdentifiers.IntelliJ)
+      .then(v => utils.determineFound('IntelliJ', v));
+  },
+
+  getPhpStormInfo: () => {
+    utils.log('trace', 'getPhpStormInfo');
+    return utils
+      .getDarwinApplicationVersion(utils.ideBundleIdentifiers.PhpStorm)
+      .then(v => utils.determineFound('PhpStorm', v));
+  },
+
+  getWebStormInfo: () => {
+    utils.log('trace', 'getWebStormInfo');
+    return utils
+      .getDarwinApplicationVersion(utils.ideBundleIdentifiers.WebStorm)
+      .then(v => utils.determineFound('WebStorm', v));
+  },
+
   getVirtualBoxInfo: () => {
     utils.log('trace', 'getVirtualBoxInfo');
     return Promise.all([
