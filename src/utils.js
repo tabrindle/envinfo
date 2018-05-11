@@ -86,6 +86,11 @@ module.exports = {
     'Safari Technology Preview': 'com.apple.SafariTechnologyPreview',
   },
 
+  ideBundleIdentifiers: {
+    Atom: 'com.github.atom',
+    'Sublime Text': 'com.sublimetext.3',
+  },
+
   runSync: cmd => {
     return (
       childProcess
