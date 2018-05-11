@@ -1,0 +1,83 @@
+{
+  "projectName": "envinfo",
+  "projectOwner": "tabrindle",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "tabrindle",
+      "name": "Trevor Brindle",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2925048?v=4",
+      "profile": "http://trevorbrindle.com",
+      "contributions": [
+        "question",
+        "blog",
+        "bug",
+        "code",
+        "doc",
+        "example",
+        "ideas",
+        "review",
+        "talk",
+        "test"
+      ]
+    },
+    {
+      "login": "GantMan",
+      "name": "Gant Laborde",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/997157?v=4",
+      "profile": "http://gantlaborde.com/",
+      "contributions": [
+        "blog",
+        "bug",
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "antonfisher",
+      "name": "Anton Fisher",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/599352?v=4",
+      "profile": "http://antonfisher.com",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "ahmadawais",
+      "name": "Ahmad Awais ⚡️",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/960133?v=4",
+      "profile": "https://AhmadAwais.com/",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "LEQADA",
+      "name": "Hasan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9251453?v=4",
+      "profile": "https://github.com/LEQADA",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "ErnestoR",
+      "name": "Ernesto Ramírez",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1232725?v=4",
+      "profile": "http://twitter.com/_ErnestoR",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    }
+  ]
+}

@@ -45,6 +45,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "all-contributors-cli": "^4.11.1",
     "array-includes": "^3.0.3",
     "clipboardy": "^1.2.2",
     "eslint": "^4.10.0",

@@ -5,6 +5,7 @@
 </p>
 
 [![Build Status](https://travis-ci.org/tabrindle/envinfo.svg?branch=master)](https://travis-ci.org/tabrindle/envinfo) [![npm version](https://badge.fury.io/js/envinfo.svg)](https://badge.fury.io/js/envinfo) [![npm downloads per month](https://img.shields.io/npm/dm/envinfo.svg?maxAge=86400)](https://www.npmjs.com/package/envinfo) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
 
 ## The problem
 - It works on my computer
@@ -206,17 +207,30 @@ envinfo is used in the ISSUE_TEMPLATE of:
 *   [styled-components](https://github.com/styled-components/styled-components)
 *   [Jest](https://github.com/facebook/jest)
 
-## Contributing
-
-PRs for additional features are welcome! Run `npm run lint && npm run format` before committing.
-
-This project came out of a [PR](https://github.com/facebook/react-native/pull/14428) to the React Native CLI tool - issues are reported frequently without important environment information, like Node/npm versions.
-
 ## Alternatives
-- type `$ command -v` until you smash your computer
+- type `command -v` until you smash your computer
+- [specs](https://github.com/mcandre/specs) - an excellent ruby gem that runs `command -v` for you on :all-the-things: Great for raw info.
 - [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
 - [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
 - write your own
 
 ## License
 MIT
+
+## Contributing
+
+PRs for additional features are welcome! Run `npm run lint && npm run format` before committing.
+
+This project came out of a [PR](https://github.com/facebook/react-native/pull/14428) to the React Native CLI tool - issues are reported frequently without important environment information, like Node/npm versions.
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars1.githubusercontent.com/u/2925048?v=4" width="100px;"/><br /><sub><b>Trevor Brindle</b></sub>](http://trevorbrindle.com)<br />[💬](#question-tabrindle "Answering Questions") [📝](#blog-tabrindle "Blogposts") [🐛](https://github.com/tabrindle/envinfo/issues?q=author%3Atabrindle "Bug reports") [💻](https://github.com/tabrindle/envinfo/commits?author=tabrindle "Code") [📖](https://github.com/tabrindle/envinfo/commits?author=tabrindle "Documentation") [💡](#example-tabrindle "Examples") [🤔](#ideas-tabrindle "Ideas, Planning, & Feedback") [👀](#review-tabrindle "Reviewed Pull Requests") [📢](#talk-tabrindle "Talks") [⚠️](https://github.com/tabrindle/envinfo/commits?author=tabrindle "Tests") | [<img src="https://avatars0.githubusercontent.com/u/997157?v=4" width="100px;"/><br /><sub><b>Gant Laborde</b></sub>](http://gantlaborde.com/)<br />[📝](#blog-GantMan "Blogposts") [🐛](https://github.com/tabrindle/envinfo/issues?q=author%3AGantMan "Bug reports") [💻](https://github.com/tabrindle/envinfo/commits?author=GantMan "Code") [🤔](#ideas-GantMan "Ideas, Planning, & Feedback") | [<img src="https://avatars1.githubusercontent.com/u/599352?v=4" width="100px;"/><br /><sub><b>Anton Fisher</b></sub>](http://antonfisher.com)<br />[🐛](https://github.com/tabrindle/envinfo/issues?q=author%3Aantonfisher "Bug reports") [💻](https://github.com/tabrindle/envinfo/commits?author=antonfisher "Code") | [<img src="https://avatars1.githubusercontent.com/u/960133?v=4" width="100px;"/><br /><sub><b>Ahmad Awais ⚡️</b></sub>](https://AhmadAwais.com/)<br />[🐛](https://github.com/tabrindle/envinfo/issues?q=author%3Aahmadawais "Bug reports") [💻](https://github.com/tabrindle/envinfo/commits?author=ahmadawais "Code") | [<img src="https://avatars2.githubusercontent.com/u/9251453?v=4" width="100px;"/><br /><sub><b>Hasan</b></sub>](https://github.com/LEQADA)<br />[🐛](https://github.com/tabrindle/envinfo/issues?q=author%3ALEQADA "Bug reports") [💻](https://github.com/tabrindle/envinfo/commits?author=LEQADA "Code") | [<img src="https://avatars3.githubusercontent.com/u/1232725?v=4" width="100px;"/><br /><sub><b>Ernesto Ramírez</b></sub>](http://twitter.com/_ErnestoR)<br />[🐛](https://github.com/tabrindle/envinfo/issues?q=author%3AErnestoR "Bug reports") [💻](https://github.com/tabrindle/envinfo/commits?author=ErnestoR "Code") |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
