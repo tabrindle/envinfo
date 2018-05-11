@@ -89,6 +89,7 @@ module.exports = {
   ideBundleIdentifiers: {
     Atom: 'com.github.atom',
     'Sublime Text': 'com.sublimetext.3',
+    WebStorm: 'com.jetbrains.WebStorm',
   },
 
   runSync: cmd => {
