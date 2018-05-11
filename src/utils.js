@@ -88,6 +88,7 @@ module.exports = {
 
   ideBundleIdentifiers: {
     Atom: 'com.github.atom',
+    IntelliJ: 'com.jetbrains.intellij',
     'Sublime Text': 'com.sublimetext.3',
     WebStorm: 'com.jetbrains.WebStorm',
   },

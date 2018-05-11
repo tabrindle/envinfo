@@ -10,6 +10,7 @@ module.exports = {
       'Android Studio',
       'Atom',
       'Emacs',
+      'IntelliJ',
       'Nano',
       'Sublime Text',
       'Vim',

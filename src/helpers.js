@@ -328,6 +328,13 @@ module.exports = Object.assign({}, utils, packages, {
     ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
+  getIntelliJInfo: () => {
+    utils.log('trace', 'getIntelliJInfo');
+    return utils
+      .getDarwinApplicationVersion(utils.ideBundleIdentifiers.IntelliJ)
+      .then(v => utils.determineFound('IntelliJ', v));
+  },
+
   getWebStormInfo: () => {
     utils.log('trace', 'getWebStormInfo');
     return utils
