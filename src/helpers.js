@@ -335,6 +335,13 @@ module.exports = Object.assign({}, utils, packages, {
       .then(v => utils.determineFound('IntelliJ', v));
   },
 
+  getPhpStormInfo: () => {
+    utils.log('trace', 'getPhpStormInfo');
+    return utils
+      .getDarwinApplicationVersion(utils.ideBundleIdentifiers.PhpStorm)
+      .then(v => utils.determineFound('PhpStorm', v));
+  },
+
   getWebStormInfo: () => {
     utils.log('trace', 'getWebStormInfo');
     return utils

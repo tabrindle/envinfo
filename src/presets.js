@@ -12,6 +12,7 @@ module.exports = {
       'Emacs',
       'IntelliJ',
       'Nano',
+      'PhpStorm',
       'Sublime Text',
       'Vim',
       'VSCode',
