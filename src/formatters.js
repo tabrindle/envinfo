@@ -162,6 +162,7 @@ function formatToYaml(data, options) {
     formatPackages,
     serializeArrays,
     serializeVersionsAndPaths,
+    options.title ? d => ({ [options.title]: d }) : utils.noop,
     yaml,
     options.console ? formatHeaders : utils.noop,
   ])(data, options);
@@ -176,6 +177,7 @@ function formatToMarkdown(data, options) {
     serializeVersionsAndPaths,
     yaml,
     markdown,
+    options.title ? d => `\n# ${options.title}${d}` : utils.noop,
   ])(data, options);
 }
 
@@ -183,7 +185,11 @@ function formatToJson(data, options) {
   utils.log('trace', 'formatToJson');
   if (!options) options = {};
 
-  data = utils.pipe([() => clean(data, options), json])(data);
+  data = utils.pipe([
+    () => clean(data, options),
+    options.title ? d => ({ [options.title]: d }) : utils.noop,
+    json,
+  ])(data);
   data = options.console ? `\n${data}\n` : data;
 
   return data;

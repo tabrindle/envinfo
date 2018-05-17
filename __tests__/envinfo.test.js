@@ -128,4 +128,34 @@ describe('Running the programmatic interface', () => {
       });
     });
   });
+
+  test('returns expected title in json', () => {
+    return envinfo
+      .run({ Binaries: ['Node'] }, { title: 'envinfo rocks!', json: true })
+      .then(data => {
+        return expect(JSON.parse(data)).toEqual({
+          'envinfo rocks!': {
+            Binaries: {
+              Node: {
+                version: '10.0.0',
+                path: '/usr/local/bin/node',
+              },
+            },
+          },
+        });
+      });
+  });
+
+  test('returns expected title in yaml', () => {
+    return envinfo.run({ Binaries: ['Node'] }, { title: 'envinfo rocks!' }).then(data => {
+      // prettier-ignore
+      return expect(data).toEqual(
+`
+  envinfo rocks!:
+    Binaries:
+      Node: 10.0.0 - /usr/local/bin/node
+`
+      );
+    });
+  });
 });
