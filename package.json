@@ -1,11 +1,13 @@
 {
   "name": "envinfo",
-  "version": "5.7.0",
+  "version": "5.8.0",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
   "license": "MIT",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "main": "dist/envinfo.js",
   "bin": {
     "envinfo": "dist/cli.js"
