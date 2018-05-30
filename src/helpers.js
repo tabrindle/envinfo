@@ -159,6 +159,13 @@ module.exports = Object.assign({}, utils, packages, {
     ]).then(v => utils.determineFound('Bash', v[0], v[1]));
   },
 
+  getPerlInfo: () => {
+    utils.log('trace', 'getPerlInfo');
+    return Promise.all([utils.run('perl -v').then(utils.findVersion), utils.which('perl')]).then(
+      v => utils.determineFound('Perl', v[0], v[1])
+    );
+  },
+
   getPHPInfo: () => {
     utils.log('trace', 'getPHPInfo');
     return Promise.all([utils.run('php -v').then(utils.findVersion), utils.which('php')]).then(v =>
