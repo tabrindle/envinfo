@@ -192,9 +192,9 @@ module.exports = {
   },
 
   determineFound: (name, version, appPath) => {
-    log('trace', 'clean', name, version, appPath);
+    log('trace', 'determineFound', name, version, appPath);
     if (!version || version === 'N/A' || (version === 'N/A' && appPath === 'N/A'))
-      return Promise.resolve([name, 'Not Found']);
+      return Promise.resolve([name, 'N/A']);
     if (!appPath) return Promise.resolve([name, version]);
     return Promise.resolve([name, version, appPath]);
   },
