@@ -232,6 +232,7 @@ envinfo is live in:
 *   [Expo](https://github.com/expo/exp) (`exp diagnostics`)
 *   [Webpack](https://github.com/webpack/webpack-cli) (`webpack-cli info`)
 *   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
+*   [Gatsby](https://github.com/gatsbyjs/gatsby) (`gatsby info`)
 
 envinfo is used in the ISSUE_TEMPLATE of:
 *   [styled-components](https://github.com/styled-components/styled-components)
