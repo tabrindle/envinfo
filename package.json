@@ -27,7 +27,7 @@
     "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
     "start": "node src/cli.js",
-    "test": "jest && npm run lint && npm run check:format"
+    "test": "jest --env=node && npm run lint && npm run check:format"
   },
   "keywords": [
     "development",
