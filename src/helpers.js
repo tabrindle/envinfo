@@ -292,7 +292,7 @@ module.exports = Object.assign({}, utils, packages, {
     } else if (linux) {
       version = utils.run('cat /etc/os-release').then(v => {
         const distro = (v || '').match(/NAME="(.+)"/);
-        const versionInfo = (v || '').match(/VERSION="(.+)"/);
+        const versionInfo = (v || '').match(/VERSION="(.+)"/) || [];
         return `${distro[1]} ${versionInfo[1]}`.trim() || '';
       });
     } else {
