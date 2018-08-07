@@ -591,6 +591,17 @@ module.exports = Object.assign({}, utils, packages, {
     return Promise.resolve(['Vim', NA]);
   },
 
+  getNvimInfo: () => {
+    utils.log('trace', 'getNvimInfo');
+    if (macos || linux) {
+      return Promise.all([
+        utils.run('nvim --version').then(utils.findVersion),
+        utils.run('which nvim'),
+      ]).then(v => utils.determineFound('Nvim', v[0], v[1]));
+    }
+    return Promise.resolve(['Vim', NA]);
+  },
+
   getRustInfo: () => {
     utils.log('trace', 'getRustInfo');
     if (macos || linux) {
