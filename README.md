@@ -187,19 +187,15 @@ returns:
 All of envinfo's helpers are also exported for use. You can use envinfo as a whole, or just the parts that you need, like this:
 
 ```javascript
-import { helpers } from 'envinfo';
+const envinfo = require('envinfo');
 
-const OS = await helpers.getOperatingSystemInfo();
-const docker = await helpers.getDockerVersion();
+// each helper returns a promise
+const node = await envinfo.helpers.getNodeInfo();
 
-console.log({ OS, docker });
-```
+// The promises resolve to an array of values: ["Name", "Version", "Path"]
+// e.g. ["Node", "10.9.0", "/usr/local/bin/node"]
 
-```
-{
- OS: 'macOS High Sierra 10.13'
- docker: '17.12.0-ce, build c97c6d6'
-}
+console.log(`Node: ${node[1]}`); // "Node: 10.9.0"
 ```
 
 ## CLI Options
