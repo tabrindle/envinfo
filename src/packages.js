@@ -2,8 +2,8 @@ const glob = require('glob');
 const path = require('path');
 const utils = require('./utils');
 
-const parsePackagePath = path => {
-  const split = path.split('node_modules/');
+const parsePackagePath = packagePath => {
+  const split = packagePath.split('node_modules/');
   const tree = split[split.length - 1];
   if (tree.charAt(0) === '@') return [tree.split('/')[0], tree.split('/')[1]].join('/');
   return tree.split('/')[0];
