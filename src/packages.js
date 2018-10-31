@@ -2,6 +2,13 @@ const glob = require('glob');
 const path = require('path');
 const utils = require('./utils');
 
+const parsePackagePath = path => {
+  const split = path.split('node_modules/');
+  const tree = split[split.length - 1];
+  if (tree.charAt(0) === '@') return [tree.split('/')[0], tree.split('/')[1]].join('/');
+  return tree.split('/')[0];
+};
+
 function getnpmPackages(packages, options) {
   utils.log('trace', 'getnpmPackages');
   if (!options) options = {};
@@ -52,13 +59,13 @@ function getnpmPackages(packages, options) {
         if ((packageGlob || typeof packages === 'boolean') && !options.fullTree) {
           return Promise.resolve(
             (packageJsonPaths || []).filter(p =>
-              Object.keys(tld || []).includes(p.split('/').slice(-2)[0])
+              Object.keys(tld || []).includes(parsePackagePath(p))
             )
           );
         }
         if (Array.isArray(packages)) {
           return Promise.resolve(
-            (packageJsonPaths || []).filter(p => packages.includes(p.split('/').slice(-2)[0]))
+            (packageJsonPaths || []).filter(p => packages.includes(parsePackagePath(p)))
           );
         }
         return Promise.resolve(packageJsonPaths);
@@ -96,7 +103,7 @@ function getnpmPackages(packages, options) {
         }, {});
       })
       .then(versions => {
-        if (options.showNotFound) {
+        if (options.showNotFound && Array.isArray(packages)) {
           packages.forEach(p => {
             if (!versions[p]) {
               versions[p] = 'Not Found';
@@ -172,7 +179,7 @@ function getnpmGlobalPackages(packages, options) {
         )
       )
       .then(versions => {
-        if (options.showNotFound) {
+        if (options.showNotFound && Array.isArray(packages)) {
           packages.forEach(p => {
             if (!versions[p]) {
               versions[p] = 'Not Found';
