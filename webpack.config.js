@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -7,10 +8,11 @@ module.exports = {
     cli: './src/cli.js',
   },
   target: 'node',
+  mode: 'production',
   output: {
     libraryTarget: 'commonjs2',
     filename: '[name].js',
-    path: __dirname + '/dist',
+    path: path.join(__dirname, '/dist'),
   },
   plugins: [
     new UglifyJSPlugin(),
@@ -20,5 +22,6 @@ module.exports = {
       raw: true,
       include: 'cli',
     }),
+    new webpack.IgnorePlugin(/spawn-sync/),
   ],
 };
