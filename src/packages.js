@@ -149,7 +149,7 @@ function getnpmGlobalPackages(packages, options) {
           new Promise((resolve, reject) =>
             glob(
               // sub packageGlob in to only get globbed packages if not null
-              path.join(prefix, 'lib', 'node_modules', packageGlob || '*', 'package.json'),
+              path.join(prefix, 'lib', 'node_modules', packageGlob || '{*,@*/*}', 'package.json'),
               (err, files) => {
                 if (!err) resolve(files);
                 reject(err);
@@ -165,7 +165,7 @@ function getnpmGlobalPackages(packages, options) {
               globbedPath =>
                 typeof packages === 'boolean' ||
                 packageGlob !== null ||
-                packages.includes(globbedPath.split('/').slice(-2)[0])
+                packages.includes(parsePackagePath(globbedPath))
             )
             // get all the package.json by path, return promises
             .map(packageJson => utils.getPackageJsonByFullPath(packageJson))
