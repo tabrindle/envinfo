@@ -91,3 +91,23 @@ describe('Matching version strings against real world cases', () => {
       ))
   );
 });
+
+describe('Extracting info from sdkmanager', () => {
+  const output = `
+    Path                                                                              | Version | Description                                     | Location
+    -------                                                                           | ------- | -------                                         | -------
+    build-tools;28.0.3                                                                | 28.0.3  | Android SDK Build-Tools 28.0.3                  | build-tools/28.0.3/
+    platform-tools                                                                    | 28.0.1  | Android SDK Platform-Tools                      | platform-tools/
+    platforms;android-28                                                              | 6       | Android SDK Platform 28                         | platforms/android-28/
+    sources;android-28                                                                | 1       | Sources for Android 28                          | sources/android-28/
+    system-images;android-28;google_apis_playstore;x86                                | 5       | Google Play Intel x86 Atom System Image         | system-images/android-28/google_apis_playstore/x86/
+    tools                                                                             | 26.1.1  | Android SDK Tools                               | tools/
+
+  Available Packages:
+  `;
+  const sdkmanager = utils.parseSDKManagerOutput(output);
+
+  expect(sdkmanager.apiLevels).toEqual(['28']);
+  expect(sdkmanager.buildTools).toEqual(['28.0.3']);
+  expect(sdkmanager.systemImages).toEqual(['android-28 | Google Play Intel x86 Atom']);
+});

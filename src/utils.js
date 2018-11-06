@@ -3,6 +3,7 @@ const fs = require('fs');
 const childProcess = require('child_process');
 const libWhich = require('which');
 const glob = require('glob');
+const matchers = require('./matchers');
 
 const run = cmd => {
   return new Promise(resolve => {
@@ -62,6 +63,31 @@ const generatePlistBuddyCommand = (appPath, options) => {
     .join(' ');
 };
 
+const matchAll = (regex, text) => {
+  const matches = [];
+  let match = null;
+  // eslint-disable-next-line no-cond-assign
+  while ((match = regex.exec(text)) !== null) {
+    matches.push(match);
+  }
+  return matches;
+};
+
+const parseSDKManagerOutput = output => {
+  const installed = output.split('Available')[0];
+  const apiLevels = matchAll(matchers.androidAPILevels, installed).map(m => m[1]);
+  const buildTools = matchAll(matchers.androidBuildTools, installed).map(m => m[1]);
+  const systemImages = matchAll(matchers.androidSystemImages, installed)
+    .map(m => m[1].split('|').map(s => s.trim()))
+    .map(image => image[0].split(';')[0] + ' | ' + image[2].split(' System Image')[0]);
+
+  return {
+    apiLevels: apiLevels,
+    buildTools: buildTools,
+    systemImages: systemImages,
+  };
+};
+
 module.exports = {
   run: run,
   log: log,
@@ -71,6 +97,8 @@ module.exports = {
   versionRegex: versionRegex,
   findDarwinApplication: findDarwinApplication,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
+  matchAll: matchAll,
+  parseSDKManagerOutput: parseSDKManagerOutput,
 
   isObject: val => typeof val === 'object' && !Array.isArray(val),
   noop: d => d,

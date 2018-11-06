@@ -26,31 +26,28 @@ module.exports = Object.assign({}, utils, packages, {
   },
 
   getAndroidSDKInfo: () => {
-    var buildTools = [];
-    var androidAPIs = [];
     return utils
       .run(
         process.env.ANDROID_HOME ? '$ANDROID_HOME/tools/bin/sdkmanager --list' : 'sdkmanager --list'
       )
       .then(output => {
-        const installed = output.split('Available')[0];
-        const getBuildVersions = /build-tools;([\d|.]+)[\S\s]/g;
-        const getAPIVersions = /platforms;android-(\d+)[\S\s]/g;
-        let matcher;
-        // eslint-disable-next-line
-        while ((matcher = getBuildVersions.exec(installed))) {
-          buildTools.push(matcher[1]);
-        }
-        // eslint-disable-next-line
-        while ((matcher = getAPIVersions.exec(installed))) {
-          androidAPIs.push(matcher[1]);
-        }
-        if (buildTools.length || androidAPIs.length)
+        if (!output && macos) return utils.run('~/Library/Android/sdk/tools/bin/sdkmanager --list');
+        return output;
+      })
+      .then(output => {
+        const sdkmanager = utils.parseSDKManagerOutput(output);
+
+        if (
+          sdkmanager.buildTools.length ||
+          sdkmanager.apiLevels.length ||
+          sdkmanager.systemImages.length
+        )
           return Promise.resolve([
             'Android SDK',
             {
-              'Build Tools': buildTools || NotFound,
-              'API Levels': androidAPIs || NotFound,
+              'API Levels': sdkmanager.apiLevels || NotFound,
+              'Build Tools': sdkmanager.buildTools || NotFound,
+              'System Images': sdkmanager.systemImages || NotFound,
             },
           ]);
         return Promise.resolve(['Android SDK', NotFound]);
