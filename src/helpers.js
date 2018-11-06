@@ -144,7 +144,8 @@ module.exports = Object.assign({}, utils, packages, {
     utils.log('trace', 'getCPUInfo');
     let info;
     try {
-      info = os.arch() + ' ' + os.cpus()[0].model;
+      const cpus = os.cpus();
+      info = '(' + cpus.length + ') ' + os.arch() + ' ' + cpus[0].model;
     } catch (err) {
       info = 'Unknown';
     }
