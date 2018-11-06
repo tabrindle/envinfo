@@ -22,7 +22,7 @@ const run = cmd => {
 const log = function log(level) {
   const args = Object.values(Array.prototype.slice.call(arguments).slice(1));
   if ((process.env.ENVINFO_DEBUG || '').toLowerCase() === level)
-    console.log(level, JSON.stringify(args));
+    console.log(level, JSON.stringify(args)); // eslint-disable-line no-console
 };
 
 const fileExists = filePath => {

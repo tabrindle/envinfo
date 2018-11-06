@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const packageJson = require('./package.json');
 
 module.exports = {
   entry: {
@@ -9,18 +9,23 @@ module.exports = {
   },
   target: 'node',
   mode: 'production',
+  optimization: {
+    minimize: true,
+  },
   output: {
     libraryTarget: 'commonjs2',
     filename: '[name].js',
     path: path.join(__dirname, '/dist'),
   },
   plugins: [
-    new UglifyJSPlugin(),
     new webpack.BannerPlugin({
       banner: `#!/usr/bin/env node
       "use strict"`,
       raw: true,
       include: 'cli',
+    }),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(packageJson.version),
     }),
     new webpack.IgnorePlugin(/spawn-sync/),
   ],

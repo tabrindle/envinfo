@@ -1,6 +1,6 @@
-const packageJson = require('../package.json');
 const envinfo = require('./envinfo.js');
 const argv = require('minimist')(process.argv.slice(2));
+const version = __VERSION__ || ''; // eslint-disable-line
 
 argv.console = true;
 
@@ -18,7 +18,7 @@ if (argv.help || argv._.indexOf('help') > -1) {
  ,,,                                                                       ,,,
   ,,,'                                                                  ',,,
 
-  VERSION: ${packageJson.version}
+  VERSION: ${version}
 
   USAGE:
 
@@ -47,7 +47,7 @@ if (argv.help || argv._.indexOf('help') > -1) {
   `);
   process.exit(0);
 } else if (argv.version || argv.v || argv._.indexOf('version') > -1) {
-  console.log(packageJson.version);
+  console.log(version); // eslint-disable-line no-console
   process.exit(0);
 }
 

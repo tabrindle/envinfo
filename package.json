@@ -65,8 +65,7 @@
     "os-name": "^2.0.1",
     "pkg": "^4.3.4",
     "prettier-eslint-cli": "^4.1.1",
-    "uglifyjs-webpack-plugin": "^1.2.1",
-    "webpack": "^4.5.0",
+    "webpack": "^4.25.1",
     "webpack-cli": "^2.0.14",
     "which": "^1.2.14",
     "yamlify-object": "^0.4.5"
