@@ -135,6 +135,7 @@ function cli(options) {
 // require('envinfo);
 // envinfo.run({ system: [os, cpu]}, {fullTree: true })
 function run(args, options) {
+  if (typeof args.preset === 'string') return main(presets[args.preset], options);
   return main(args, options);
 }
 
