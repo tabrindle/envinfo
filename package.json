@@ -46,6 +46,9 @@
       "win"
     ]
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {},
   "devDependencies": {
     "all-contributors-cli": "^4.11.1",
