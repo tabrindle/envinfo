@@ -17,9 +17,8 @@ module.exports = Object.assign({}, utils, packages, {
         .run('xcodebuild -showsdks')
         .then(sdks => sdks.match(/[\w]+\s[\d|.]+/g))
         .then(utils.uniq)
-        .then(
-          platforms =>
-            platforms.length ? ['iOS SDK', { Platforms: platforms }] : ['iOS SDK', NotFound]
+        .then(platforms =>
+          platforms.length ? ['iOS SDK', { Platforms: platforms }] : ['iOS SDK', NotFound]
         );
     }
     return Promise.resolve(['iOS SDK', NA]);

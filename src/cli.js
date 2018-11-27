@@ -1,6 +1,6 @@
 const envinfo = require('./envinfo.js');
 const argv = require('minimist')(process.argv.slice(2));
-const version = __VERSION__ || ''; // eslint-disable-line
+// const version = __VERSION__ || ''; // eslint-disable-line
 
 argv.console = true;
 
@@ -41,9 +41,10 @@ if (argv.help || argv._.indexOf('help') > -1) {
     --markdown             Print output in markdown format
     --json                 Print output in JSON format
     --console              Print to console (defaults to on for CLI usage, off for programmatic usage)
-    --clipboard            Copy output to your system clipboard
     --showNotFound         Don't filter out values marked 'Not Found'
     --title                Give your report a top level title ie 'Environment Report'
+
+    --clipboard            *Removed - use clipboardy or clipboard-cli directly*
   `);
   process.exit(0);
 } else if (argv.version || argv.v || argv._.indexOf('version') > -1) {

@@ -68,7 +68,6 @@ module.exports = {
     npmPackages: ['react', 'react-dom', 'react-scripts'],
     npmGlobalPackages: ['create-react-app'],
     options: {
-      clipboard: true,
       duplicates: true,
       showNotFound: true,
     },

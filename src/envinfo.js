@@ -1,6 +1,5 @@
 'use strict';
 
-const copypasta = require('clipboardy');
 const helpers = require('./helpers');
 const formatters = require('./formatters');
 const presets = require('./presets');
@@ -23,15 +22,16 @@ function format(data, options) {
 
   if (options.console) console.log(formatter(data, Object.assign({}, options, { console: true }))); // eslint-disable-line no-console
 
-  // call the formatter with console option off first to return, or pipe to clipboard
+  // call the formatter with console option off first to return
   const formatted = formatter(data, Object.assign({}, options, { console: false }));
-  if (options.clipboard) copypasta.writeSync(formatted);
 
   return formatted;
 }
 
 function main(props, options) {
   options = options || {};
+  if (options.clipboard)
+    console.log('\n*** Clipboard option removed - use clipboardy or clipboard-cli directly ***\n');
   // set props to passed in props or default to presets.defaults
   const defaults = Object.keys(props).length > 0 ? props : presets.defaults;
   // collect a list of promises of helper functions
@@ -100,7 +100,7 @@ function cli(options) {
       helpers[`get${options.helper}`] ||
       helpers[`get${options.helper}Info`] ||
       helpers[options.helper];
-    return helper ? helper().then(console.log) : console.error('Not Found');
+    return helper ? helper().then(console.log) : console.error('Not Found'); // eslint-disable-line no-console
   }
   // generic function to make sure passed option exists in presets.defaults list
   // TODO: This will eventually be replaced with a better fuzzy finder.
@@ -118,13 +118,13 @@ function cli(options) {
   }, {});
   // if there is a preset, merge that with the parsed props and options
   if (options.preset) {
-    if (!presets[options.preset]) console.error(`\nNo "${options.preset}" preset found.`);
+    if (!presets[options.preset]) console.error(`\nNo "${options.preset}" preset found.`); // eslint-disable-line no-console
     return main(
       Object.assign({}, utils.omit(presets[options.preset], ['options']), props),
       Object.assign(
         {},
         presets[options.preset].options,
-        utils.pick(options, ['duplicates', 'fullTree', 'json', 'markdown', 'console', 'clipboard'])
+        utils.pick(options, ['duplicates', 'fullTree', 'json', 'markdown', 'console'])
       )
     );
   }
