@@ -216,7 +216,6 @@ console.log(`Node: ${node[1]}`); // "Node: 10.9.0"
     --markdown             Print output in markdown format
     --json                 Print output in JSON format
     --console              Print to console (defaults to on for CLI usage, off for programmatic usage)
-    --clipboard            Copy output to your system clipboard (uses clipboardy)
 ```
 
 ## Integration
