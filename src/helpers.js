@@ -253,10 +253,12 @@ module.exports = Object.assign({}, utils, packages, {
   getNodeInfo: () => {
     utils.log('trace', 'getNodeInfo');
     return Promise.all([
-      utils
-        .which('node')
-        .then(nodePath => (nodePath ? utils.run(nodePath + ' -v') : Promise.resolve('')))
-        .then(v => v.replace('v', '')),
+      windows
+        ? utils.run('node -v').then(utils.findVersion)
+        : utils
+            .which('node')
+            .then(nodePath => (nodePath ? utils.run(nodePath + ' -v') : Promise.resolve('')))
+            .then(utils.findVersion),
       utils.which('node').then(utils.condensePath),
     ]).then(v => utils.determineFound('Node', v[0], v[1]));
   },
