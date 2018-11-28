@@ -25,7 +25,7 @@ module.exports = {
       include: 'cli',
     }),
     new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(packageJson.version),
+      'global.__VERSION__': JSON.stringify(packageJson.version),
     }),
     new webpack.IgnorePlugin(/spawn-sync/),
   ],
