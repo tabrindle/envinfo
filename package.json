@@ -1,6 +1,6 @@
 {
   "name": "envinfo",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
