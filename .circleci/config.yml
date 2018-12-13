@@ -3,7 +3,7 @@ aliases:
   - &install-curl
     name: Install curl
     command: |
-      apt update && apt install curl -y
+      apt update && apt install curl build-essential -y
   - &setup-nodejs
     name: setup nodejs
     command: |
@@ -38,7 +38,7 @@ jobs:
       - image: centos
     steps:
       - checkout
-      - run: yum install nodejs -y
+      - run: yum install curl && curl -sL https://rpm.nodesource.com/setup_11.x | bash - && yum install nodejs
       - run: npm install
       - run: npm run test
 
