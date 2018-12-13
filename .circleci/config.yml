@@ -7,7 +7,7 @@ jobs:
       - image: ubuntu
     steps:
       - checkout
-      - apt update && apt upgrade && apt install npm && npm install -g n && n latest
+      - run: apt update && apt upgrade && apt install npm && npm install -g n && n latest
       - run: yarn install
       - run: yarn run test
   debian-test:
@@ -16,7 +16,7 @@ jobs:
       - image: ubuntu
     steps:
       - checkout
-      - apt update && apt upgrade && apt install npm && npm install -g n && n latest
+      - run: apt update && apt upgrade && apt install npm && npm install -g n && n latest
       - run: yarn install
       - run: yarn run test
 
