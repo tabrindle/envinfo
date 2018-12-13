@@ -7,16 +7,16 @@ jobs:
       - image: ubuntu
     steps:
       - checkout
-      - run: apt update && apt upgrade && apt install npm && npm install -g n && n latest
+      - run: apt update && apt upgrade && apt install npm -y && npm install -g n && n latest
       - run: yarn install
       - run: yarn run test
   debian-test:
     working_directory: ~/repo
     docker:
-      - image: ubuntu
+      - image: debian
     steps:
       - checkout
-      - run: apt update && apt upgrade && apt install npm && npm install -g n && n latest
+      - run: apt update && apt upgrade && apt install npm -y && npm install -g n && n latest
       - run: yarn install
       - run: yarn run test
 
