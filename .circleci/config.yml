@@ -1,0 +1,28 @@
+version: 2
+
+jobs:
+  ubuntu-test:
+    working_directory: ~/repo
+    docker:
+      - image: ubuntu
+    steps:
+      - checkout
+      - apt update && apt upgrade && apt install npm && npm install -g n && n latest
+      - run: yarn install
+      - run: yarn run test
+  debian-test:
+    working_directory: ~/repo
+    docker:
+      - image: ubuntu
+    steps:
+      - checkout
+      - apt update && apt upgrade && apt install npm && npm install -g n && n latest
+      - run: yarn install
+      - run: yarn run test
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - ubuntu-test
+      - debian-test
