@@ -1,4 +1,11 @@
 version: 2
+aliases:
+  - &setup-nodejs
+    name: setup nodejs
+    command: |
+      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+      source ~/.bashrc
+      nvm install --lts
 
 jobs:
   ubuntu-test:
@@ -7,18 +14,27 @@ jobs:
       - image: ubuntu
     steps:
       - checkout
-      - run: apt update && apt upgrade && apt install npm -y && npm install -g n && n latest
-      - run: yarn install
-      - run: yarn run test
+      - run: *setup-nodejs
+      - run: npm install
+      - run: npm run test
   debian-test:
     working_directory: ~/repo
     docker:
       - image: debian
     steps:
       - checkout
-      - run: apt update && apt upgrade && apt install npm -y && npm install -g n && n latest
-      - run: yarn install
-      - run: yarn run test
+      - run: *setup-nodejs
+      - run: npm install
+      - run: npm run test
+  centos-test:
+    working_directory: ~/repo
+    docker:
+      - image: centos
+    steps:
+      - checkout
+      - run: *setup-nodejs
+      - run: npm install
+      - run: npm run test
 
 workflows:
   version: 2
@@ -26,3 +42,4 @@ workflows:
     jobs:
       - ubuntu-test
       - debian-test
+      - centos-test
