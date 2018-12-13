@@ -7,9 +7,8 @@ aliases:
   - &setup-nodejs
     name: setup nodejs
     command: |
-      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-      source ~/.bashrc
-      nvm install --lts
+      curl -sL https://deb.nodesource.com/setup_11.x | bash -
+      apt-get install -y nodejs
 
 jobs:
   ubuntu-test:
@@ -39,8 +38,7 @@ jobs:
       - image: centos
     steps:
       - checkout
-      - run: yum install curl
-      - run: *setup-nodejs
+      - run: yum install nodejs -y
       - run: npm install
       - run: npm run test
 
