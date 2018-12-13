@@ -1,5 +1,9 @@
 version: 2
 aliases:
+  - &install-curl
+    name: Install curl
+    command: |
+      apt update && apt install curl -y
   - &setup-nodejs
     name: setup nodejs
     command: |
@@ -14,6 +18,7 @@ jobs:
       - image: ubuntu
     steps:
       - checkout
+      - run: *install-curl
       - run: *setup-nodejs
       - run: npm install
       - run: npm run test
@@ -23,6 +28,8 @@ jobs:
       - image: debian
     steps:
       - checkout
+      - run: *install-curl
+      - run: *setup-nodejs
       - run: *setup-nodejs
       - run: npm install
       - run: npm run test
@@ -32,6 +39,7 @@ jobs:
       - image: centos
     steps:
       - checkout
+      - run: yum install curl
       - run: *setup-nodejs
       - run: npm install
       - run: npm run test
