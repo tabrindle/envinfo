@@ -31,4 +31,4 @@ function getNdkVersionFromPath(ndkDir) {
   return undefined
 }
 
-export.getNdk = getNdk
+exports.getNdk = getNdk
