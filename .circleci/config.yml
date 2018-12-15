@@ -10,7 +10,7 @@ aliases:
       curl -sL https://deb.nodesource.com/setup_11.x | bash -
       apt-get install -y nodejs
   - &link-and-execute
-    name: setup nodejs
+    name: link and execute
     command: |
       npm link
       envinfo
