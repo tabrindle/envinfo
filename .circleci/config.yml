@@ -1,6 +1,6 @@
 version: 2
 aliases:
-  - &install-curl
+  - &install-essential
     name: Install curl
     command: |
       apt update && apt install curl build-essential -y
@@ -9,6 +9,11 @@ aliases:
     command: |
       curl -sL https://deb.nodesource.com/setup_11.x | bash -
       apt-get install -y nodejs
+  - &link-and-execute
+    name: setup nodejs
+    command: |
+      npm link
+      envinfo
 
 jobs:
   ubuntu-test:
@@ -17,21 +22,23 @@ jobs:
       - image: ubuntu
     steps:
       - checkout
-      - run: *install-curl
+      - run: *install-essential
       - run: *setup-nodejs
       - run: npm install
       - run: npm run test
+      - run: *link-and-execute
   debian-test:
     working_directory: ~/repo
     docker:
       - image: debian
     steps:
       - checkout
-      - run: *install-curl
+      - run: *install-essential
       - run: *setup-nodejs
       - run: *setup-nodejs
       - run: npm install
       - run: npm run test
+      - run: *link-and-execute
   centos-test:
     working_directory: ~/repo
     docker:
@@ -41,6 +48,7 @@ jobs:
       - run: yum install curl && curl -sL https://rpm.nodesource.com/setup_11.x | bash - && yum install nodejs -y
       - run: npm install
       - run: npm run test
+      - run: *link-and-execute
 
 workflows:
   version: 2
