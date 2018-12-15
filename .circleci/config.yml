@@ -10,7 +10,7 @@ aliases:
       curl -sL https://deb.nodesource.com/setup_11.x | bash -
       apt-get install -y nodejs
   - &link-and-execute
-    name: link and execute
+    name: Run envinfo
     command: |
       npm link
       envinfo
@@ -34,7 +34,6 @@ jobs:
     steps:
       - checkout
       - run: *install-essential
-      - run: *setup-nodejs
       - run: *setup-nodejs
       - run: npm install
       - run: npm run test
