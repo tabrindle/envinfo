@@ -1,10 +1,9 @@
-import { getNdk } from './packages/get-ndk';
-
 const os = require('os');
 const osName = require('os-name');
 const path = require('path');
 const packages = require('./packages');
 const utils = require('./utils');
+const { getNdk } = require('./packages/get-ndk');
 
 const NA = 'N/A';
 const NotFound = 'Not Found';
