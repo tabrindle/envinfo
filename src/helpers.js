@@ -1,3 +1,5 @@
+import { getNdk } from './packages/get-ndk';
+
 const os = require('os');
 const osName = require('os-name');
 const path = require('path');
@@ -35,11 +37,13 @@ module.exports = Object.assign({}, utils, packages, {
       })
       .then(output => {
         const sdkmanager = utils.parseSDKManagerOutput(output);
+        const ndkVersion = getNdk();
 
         if (
           sdkmanager.buildTools.length ||
           sdkmanager.apiLevels.length ||
-          sdkmanager.systemImages.length
+          sdkmanager.systemImages.length ||
+          ndkVersion
         )
           return Promise.resolve([
             'Android SDK',
@@ -47,6 +51,7 @@ module.exports = Object.assign({}, utils, packages, {
               'API Levels': sdkmanager.apiLevels || NotFound,
               'Build Tools': sdkmanager.buildTools || NotFound,
               'System Images': sdkmanager.systemImages || NotFound,
+              'Android NDK': ndkVersion || NotFound,
             },
           ]);
         return Promise.resolve(['Android SDK', NotFound]);
