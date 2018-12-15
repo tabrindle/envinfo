@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-export function getNdk() {
+function getNdk() {
   if (process.env.ANDROID_NDK) {
     return getNdkVersionFromPath(process.env.ANDROID_NDK)
   }
@@ -13,7 +13,7 @@ export function getNdk() {
   return undefined
 }
 
-export function getNdkVersionFromPath(ndkDir) {
+function getNdkVersionFromPath(ndkDir) {
   const metaPath = path.join(ndkDir, 'source.properties')
   if (fs.existsSync(metaPath)) {
     const contents = fs.readFileSync(metaPath).toString();
@@ -30,3 +30,5 @@ export function getNdkVersionFromPath(ndkDir) {
 
   return undefined
 }
+
+export.getNdk = getNdk
