@@ -30,11 +30,9 @@ jobs:
   debian-test:
     working_directory: ~/repo
     docker:
-      - image: debian
+      - image: node:lts
     steps:
       - checkout
-      - run: *install-essential
-      - run: *setup-nodejs
       - run: npm install
       - run: npm run test
       - run: *link-and-execute
