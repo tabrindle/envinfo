@@ -1,5 +1,6 @@
 const os = require('os');
 const osName = require('os-name');
+const fs = require('fs');
 const path = require('path');
 const packages = require('./packages');
 const utils = require('./utils');
@@ -23,6 +24,35 @@ module.exports = Object.assign({}, utils, packages, {
     }
     return Promise.resolve(['iOS SDK', NA]);
   },
+  getNdkVersionFromPath: ndkDir => {
+    const metaPath = path.join(ndkDir, 'source.properties');
+    if (fs.existsSync(metaPath)) {
+      const contents = fs.readFileSync(metaPath).toString();
+      const split = contents.split('\n');
+      for (let i = 0; i < split.length; i += 1) {
+        const splits = split[i].split('=');
+        if (splits.length === 2) {
+          if (splits[0].trim() === 'Pkg.Revision') {
+            return splits[1].trim();
+          }
+        }
+      }
+    }
+
+    return undefined;
+  },
+
+  getNdk: () => {
+    if (process.env.ANDROID_NDK) {
+      return this.getNdkVersionFromPath(process.env.ANDROID_NDK);
+    }
+
+    if (process.env.ANDROID_HOME) {
+      return this.getNdkVersionFromPath(path.join(process.env.ANDROID_HOME, 'ndk-bundle'));
+    }
+
+    return undefined;
+  },
 
   getAndroidSDKInfo: () => {
     return utils
@@ -35,11 +65,13 @@ module.exports = Object.assign({}, utils, packages, {
       })
       .then(output => {
         const sdkmanager = utils.parseSDKManagerOutput(output);
+        const ndkVersion = this.getNdk();
 
         if (
           sdkmanager.buildTools.length ||
           sdkmanager.apiLevels.length ||
-          sdkmanager.systemImages.length
+          sdkmanager.systemImages.length ||
+          ndkVersion
         )
           return Promise.resolve([
             'Android SDK',
@@ -47,6 +79,7 @@ module.exports = Object.assign({}, utils, packages, {
               'API Levels': sdkmanager.apiLevels || NotFound,
               'Build Tools': sdkmanager.buildTools || NotFound,
               'System Images': sdkmanager.systemImages || NotFound,
+              'Android NDK': ndkVersion || NotFound,
             },
           ]);
         return Promise.resolve(['Android SDK', NotFound]);
