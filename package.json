@@ -13,7 +13,7 @@
     "envinfo": "dist/cli.js"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "scripts": {
     "build": "webpack",
@@ -23,6 +23,7 @@
     "executable": "pkg package.json",
     "format": "prettier --write src/*.js",
     "lint": "eslint src",
+    "lint-fix": "eslint src --fix",
     "preversion": "npm run test && webpack && git add .",
     "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
@@ -51,8 +52,13 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.2.3",
     "all-contributors-cli": "^4.11.1",
     "array-includes": "^3.0.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "23.6.0",
+    "babel-loader": "^8.0.4",
     "clipboardy": "^1.2.2",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",

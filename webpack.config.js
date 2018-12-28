@@ -17,6 +17,15 @@ module.exports = {
     filename: '[name].js',
     path: path.join(__dirname, '/dist'),
   },
+  module: {
+    rules: [
+      {
+        use: 'babel-loader',
+        exclude: /(node_modules)/,
+        test: /\.js$/,
+      },
+    ],
+  },
   plugins: [
     new webpack.BannerPlugin({
       banner: `#!/usr/bin/env node
