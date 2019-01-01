@@ -12,6 +12,7 @@ aliases:
   - &link-and-execute
     name: Run envinfo
     command: |
+      npm run build
       npm link
       envinfo
 
@@ -46,6 +47,15 @@ jobs:
       - run: npm install
       - run: npm run test
       - run: *link-and-execute
+  react-native-test:
+    working_directory: ~/repo
+    docker:
+      - image: reactnativecommunity/react-native-android
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+      - run: *link-and-execute
 
 workflows:
   version: 2
@@ -54,3 +64,4 @@ workflows:
       - ubuntu-test
       - debian-test
       - centos-test
+      - react-native-test

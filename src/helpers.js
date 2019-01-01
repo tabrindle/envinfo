@@ -24,35 +24,6 @@ module.exports = Object.assign({}, utils, packages, {
     }
     return Promise.resolve(['iOS SDK', NA]);
   },
-  getNdkVersionFromPath: ndkDir => {
-    const metaPath = path.join(ndkDir, 'source.properties');
-    if (fs.existsSync(metaPath)) {
-      const contents = fs.readFileSync(metaPath).toString();
-      const split = contents.split('\n');
-      for (let i = 0; i < split.length; i += 1) {
-        const splits = split[i].split('=');
-        if (splits.length === 2) {
-          if (splits[0].trim() === 'Pkg.Revision') {
-            return splits[1].trim();
-          }
-        }
-      }
-    }
-
-    return undefined;
-  },
-
-  getNdk: () => {
-    if (process.env.ANDROID_NDK) {
-      return this.getNdkVersionFromPath(process.env.ANDROID_NDK);
-    }
-
-    if (process.env.ANDROID_HOME) {
-      return this.getNdkVersionFromPath(path.join(process.env.ANDROID_HOME, 'ndk-bundle'));
-    }
-
-    return undefined;
-  },
 
   getAndroidSDKInfo: () => {
     return utils
@@ -65,7 +36,40 @@ module.exports = Object.assign({}, utils, packages, {
       })
       .then(output => {
         const sdkmanager = utils.parseSDKManagerOutput(output);
-        const ndkVersion = this.getNdk();
+        const getNdkVersionFromPath = ndkDir => {
+          const metaPath = path.join(ndkDir, 'source.properties');
+          if (fs.existsSync(metaPath)) {
+            const contents = fs.readFileSync(metaPath).toString();
+            const split = contents.split('\n');
+            for (let i = 0; i < split.length; i += 1) {
+              const splits = split[i].split('=');
+              if (splits.length === 2) {
+                if (splits[0].trim() === 'Pkg.Revision') {
+                  return splits[1].trim();
+                }
+              }
+            }
+          }
+
+          return undefined;
+        };
+
+        const getNdk = () => {
+          if (process.env.ANDROID_NDK) {
+            return getNdkVersionFromPath(process.env.ANDROID_NDK);
+          }
+
+          if (process.env.ANDROID_NDK_HOME) {
+            return getNdkVersionFromPath(process.env.ANDROID_NDK_HOME);
+          }
+
+          if (process.env.ANDROID_HOME) {
+            return getNdkVersionFromPath(path.join(process.env.ANDROID_HOME, 'ndk-bundle'));
+          }
+
+          return undefined;
+        };
+        const ndkVersion = getNdk();
 
         if (
           sdkmanager.buildTools.length ||
