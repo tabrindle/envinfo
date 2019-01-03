@@ -69,8 +69,6 @@
     "glob": "^7.1.2",
     "jest": "^22.4.3",
     "minimist": "^1.2.0",
-    "object.entries": "^1.0.4",
-    "object.values": "^1.0.4",
     "os-name": "^2.0.1",
     "pkg": "^4.3.4",
     "prettier-eslint-cli": "^4.1.1",
