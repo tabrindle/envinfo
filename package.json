@@ -48,7 +48,7 @@
     ]
   },
   "jest": {
-    "setupFiles": ["./__tests__/setup.js"],
+    "setupFiles": ["./setup.js"],
     "testEnvironment": "node"
   },
   "dependencies": {},
