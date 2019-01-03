@@ -17,7 +17,7 @@ aliases:
       envinfo
 
 jobs:
-  node6:
+  node6-test:
     working_directory: ~/repo
     docker:
       - image: node:6
@@ -70,6 +70,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - node6-test
       - ubuntu-test
       - debian-test
       - centos-test
