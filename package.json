@@ -53,6 +53,7 @@
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "7.2.2",
+    "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "7.2.3",
     "all-contributors-cli": "^4.11.1",
     "array-includes": "^3.0.3",
