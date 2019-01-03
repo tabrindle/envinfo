@@ -1,5 +1,6 @@
 'use strict';
 
+import '@babel/polyfill';
 const helpers = require('./helpers');
 const formatters = require('./formatters');
 const presets = require('./presets');
