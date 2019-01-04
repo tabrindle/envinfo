@@ -282,9 +282,10 @@ module.exports = Object.assign({}, utils, packages, {
 
   getRubyInfo: () => {
     utils.log('trace', 'getRubyInfo');
-    return Promise.all([utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]).then(
-      v => utils.determineFound('Ruby', v[0], v[1])
-    );
+    return Promise.all([
+      utils.run('ruby -v').then(v => utils.findVersion(v, /\d+\.[\d+|.|p]+/)),
+      utils.which('ruby'),
+    ]).then(v => utils.determineFound('Ruby', v[0], v[1]));
   },
 
   getNodeInfo: () => {

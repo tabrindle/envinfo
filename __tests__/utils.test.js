@@ -64,8 +64,9 @@ const cases = {
     version: '10.3',
   },
   ruby: {
-    string: 'ruby 2.3.3p222 (2016-11-21 revision 56859) [universal.x86_64-darwin17]',
-    version: '2.3.3',
+    regex: /\d+\.[\d+|.|p]+/,
+    string: 'ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]',
+    version: '2.3.7p456',
   },
   sqlite: {
     string:
