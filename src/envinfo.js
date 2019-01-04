@@ -31,7 +31,7 @@ function format(data, options) {
 function main(props, options) {
   options = options || {};
   if (options.clipboard)
-    console.log('\n*** Clipboard option removed - use clipboardy or clipboard-cli directly ***\n');
+    console.log('\n*** Clipboard option removed - use clipboardy or clipboard-cli directly ***\n'); // eslint-disable-line no-console
   // set props to passed in props or default to presets.defaults
   const defaults = Object.keys(props).length > 0 ? props : presets.defaults;
   // collect a list of promises of helper functions
