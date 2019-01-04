@@ -19,6 +19,8 @@
     "build": "webpack",
     "check:format": "prettier -l src/*.js",
     "compress": "gzexe envinfo-* && upx envinfo-win.exe",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate",
     "postcompress": "tar -czvf envinfo-linux.tar.gz envinfo-linux && tar -czvf envinfo-macos.tar.gz envinfo-macos && zip -r -X envinfo-win.zip envinfo-win.exe",
     "executable": "pkg package.json",
     "format": "prettier --write src/*.js",
