@@ -78,6 +78,48 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "gengjiawen",
+      "name": "Jiawen Geng",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/3759816?v=4",
+      "profile": "https://www.gengjiawen.com",
+      "contributions": [
+        "bug",
+        "code",
+        "ideas",
+        "test"
+      ]
+    },
+    {
+      "login": "zacanger",
+      "name": "Zac Anger",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/12520493?v=4",
+      "profile": "https://zacanger.com",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "fson",
+      "name": "Ville Immonen",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/497214?v=4",
+      "profile": "https://twitter.com/VilleImmonen",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "ibolmo",
+      "name": "Olmo Maldonado",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/27246?v=4",
+      "profile": "http://ibolmo.com",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
