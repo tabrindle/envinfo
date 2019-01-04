@@ -38,6 +38,11 @@ const cases = {
     string: 'go version go1.9.3 darwin/amd64',
     version: '1.9.3',
   },
+  java: {
+    regex: /\d+\.[\d+|.|_]+/,
+    string: 'javac 1.8.0_192',
+    version: '1.8.0_192',
+  },
   mariadb: {
     index: 1,
     string: 'mysql  Ver 15.1 Distrib 10.2.14-MariaDB, for osx10.13 (x86_64) using readline 5.1',

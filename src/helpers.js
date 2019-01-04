@@ -664,7 +664,7 @@ module.exports = Object.assign({}, utils, packages, {
     utils.log('trace', 'getJavaInfo');
     if (macos || linux) {
       return Promise.all([
-        utils.run('javac -version 2>&1').then(utils.findVersion),
+        utils.run('javac -version 2>&1').then(v => utils.findVersion(v, /\d+\.[\d+|.|_]+/)),
         utils.run('which javac'),
       ]).then(v => utils.determineFound('Java', v[0], v[1]));
     }
