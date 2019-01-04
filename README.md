@@ -8,17 +8,19 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 
 ## The problem
-- It works on my computer
-- "command not found"
-- what version of "command" are you running?
-- what version of "different command" are you running?
-- do you have "insert obscure android sdk version"?
-- every github issue reporting template ever:
+
+-   It works on my computer
+-   "command not found"
+-   what version of "command" are you running?
+-   what version of "different command" are you running?
+-   do you have "insert obscure android sdk version"?
+-   every github issue reporting template ever:
 
 **Please mention other relevant information such as the browser version, Node.js version, Operating System and programming language.**
 
 ## This solution
-- Gather all of this information in one spot, quickly, and painlessly.
+
+-   Gather all of this information in one spot, quickly, and painlessly.
 
 ## Installation
 
@@ -71,6 +73,7 @@ npm install envinfo || yarn add envinfo
     Android SDK:
       Build Tools: 27.0.3
       API Levels: 26
+      System Images: android-28 | Google Play Intel x86 Atom
   IDEs:
     Android Studio: 3.0 AI-171.4443003
     Atom: 1.23.3
@@ -83,7 +86,7 @@ npm install envinfo || yarn add envinfo
     Bash: 4.4.12 - /usr/local/bin/bash
     Go: 1.9.3 - /usr/local/bin/go
     Elixir: 1.6.2 - /usr/local/bin/elixir
-    Java: 1.8.0 - /usr/bin/javac
+    Java: 1.8.0_192 - /usr/bin/javac
     Perl: 5.18.2 - /usr/bin/perl
     PHP: 7.1.7 - /usr/bin/php
     Python: 2.7.14 - /usr/local/bin/python
@@ -104,14 +107,14 @@ npm install envinfo || yarn add envinfo
     Safari: 11.0
     Safari Technology Preview: 11.2
   npmPackages:
-    apollo-client: ^2.3.1 => 2.3.1 
+    apollo-client: ^2.3.1 => 2.3.1
     jest: ^22.2.1 => 22.2.1
     ...
-    react: ^16.3.2 => 16.3.2 
-    react-apollo: ^2.1.4 => 2.1.4 
-    run4staged: ^1.1.1 => 1.1.1  
-    solidarity: 2.0.5 => 2.0.5 
-    styled-components: ^3.1.6 => 3.1.6 
+    react: ^16.3.2 => 16.3.2
+    react-apollo: ^2.1.4 => 2.1.4
+    run4staged: ^1.1.1 => 1.1.1
+    solidarity: 2.0.5 => 2.0.5
+    styled-components: ^3.1.6 => 3.1.6
   npmGlobalPackages:
     create-react-app: 1.5.2
     create-react-native-app: 1.0.0
@@ -132,55 +135,56 @@ Envinfo takes a configuration object and returns a string (optionally yaml, json
 import envinfo from 'envinfo';
 
 envinfo.run(
-  {
-    System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
-    Browsers: ['Chrome', 'Firefox', 'Safari'],
-    npmPackages: ['styled-components', 'babel-plugin-styled-components'],
-  },
-  { json: true, console: true, showNotFound: true }
+    {
+        System: ['OS', 'CPU'],
+        Binaries: ['Node', 'Yarn', 'npm'],
+        Browsers: ['Chrome', 'Firefox', 'Safari'],
+        npmPackages: ['styled-components', 'babel-plugin-styled-components'],
+    },
+    { json: true, console: true, showNotFound: true }
 );
+```
 
-```
 returns:
-```
+
+```json
 {
-  "System": {
-    "OS": "macOS High Sierra 10.13",
-    "CPU": "x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz"
-  },
-  "Binaries": {
-    "Node": {
-      "version": "8.11.0",
-      "path": "~/.nvm/versions/node/v8.11.0/bin/node"
+    "System": {
+        "OS": "macOS High Sierra 10.13",
+        "CPU": "x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz"
     },
-    "Yarn": {
-      "version": "1.5.1",
-      "path": "~/.yarn/bin/yarn"
+    "Binaries": {
+        "Node": {
+            "version": "8.11.0",
+            "path": "~/.nvm/versions/node/v8.11.0/bin/node"
+        },
+        "Yarn": {
+            "version": "1.5.1",
+            "path": "~/.yarn/bin/yarn"
+        },
+        "npm": {
+            "version": "5.6.0",
+            "path": "~/.nvm/versions/node/v8.11.0/bin/npm"
+        }
     },
-    "npm": {
-      "version": "5.6.0",
-      "path": "~/.nvm/versions/node/v8.11.0/bin/npm"
+    "Browsers": {
+        "Chrome": {
+            "version": "67.0.3396.62"
+        },
+        "Firefox": {
+            "version": "59.0.2"
+        },
+        "Safari": {
+            "version": "11.0"
+        }
+    },
+    "npmPackages": {
+        "styled-components": {
+            "wanted": "^3.2.1",
+            "installed": "3.2.1"
+        },
+        "babel-plugin-styled-components": "Not Found"
     }
-  },
-  "Browsers": {
-    "Chrome": {
-      "version": "67.0.3396.62"
-    },
-    "Firefox": {
-      "version": "59.0.2"
-    },
-    "Safari": {
-      "version": "11.0"
-    }
-  },
-  "npmPackages": {
-    "styled-components": {
-      "wanted": "^3.2.1",
-      "installed": "3.2.1"
-    },
-    "babel-plugin-styled-components": "Not Found"
-  }
 }
 ```
 
@@ -195,7 +199,7 @@ const node = await envinfo.helpers.getNodeInfo();
 // The promises resolve to an array of values: ["Name", "Version", "Path"]
 // e.g. ["Node", "10.9.0", "/usr/local/bin/node"]
 
-console.log(`Node: ${node[1]}`); // "Node: 10.9.0"
+console.log(`Node: ${node[1]} - ${node[2]}`); // "Node: 10.9.0 - ~/.nvm/versions/node/v8.14.0/bin/node"
 ```
 
 ## CLI Options
@@ -222,26 +226,29 @@ console.log(`Node: ${node[1]}`); // "Node: 10.9.0"
 
 envinfo is live in:
 
-*   [React Native](https://github.com/facebook/react-native) (`react-native info`)
-*   [Create React App](https://github.com/facebook/create-react-app) (`create-react-app --info`)
-*   [Expo CLI](https://github.com/expo/expo-cli) (`expo diagnostics`)
-*   [Webpack](https://github.com/webpack/webpack-cli) (`webpack-cli info`)
-*   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
-*   [Gatsby](https://github.com/gatsbyjs/gatsby) (`gatsby info`)
+-   [React Native](https://github.com/facebook/react-native) (`react-native info`)
+-   [Create React App](https://github.com/facebook/create-react-app) (`create-react-app --info`)
+-   [Expo CLI](https://github.com/expo/expo-cli) (`expo diagnostics`)
+-   [Webpack](https://github.com/webpack/webpack-cli) (`webpack-cli info`)
+-   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
+-   [Gatsby](https://github.com/gatsbyjs/gatsby) (`gatsby info`)
 
 envinfo is used in the ISSUE_TEMPLATE of:
-*   [styled-components](https://github.com/styled-components/styled-components)
-*   [Jest](https://github.com/facebook/jest)
-*   [Apollo Client](https://github.com/apollographql/apollo-client)
+
+-   [styled-components](https://github.com/styled-components/styled-components)
+-   [Jest](https://github.com/facebook/jest)
+-   [Apollo Client](https://github.com/apollographql/apollo-client)
 
 ## Alternatives
-- type `command -v` until you smash your computer
-- [specs](https://github.com/mcandre/specs) - an excellent ruby gem that runs `command -v` for you on :all-the-things: Great for raw info.
-- [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
-- [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
-- write your own
+
+-   type `command -v` until you smash your computer
+-   [specs](https://github.com/mcandre/specs) - an excellent ruby gem that runs `command -v` for you on :all-the-things: Great for raw info.
+-   [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
+-   [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
+-   write your own
 
 ## License
+
 MIT
 
 ## Contributing

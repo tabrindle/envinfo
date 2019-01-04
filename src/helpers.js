@@ -282,9 +282,10 @@ module.exports = Object.assign({}, utils, packages, {
 
   getRubyInfo: () => {
     utils.log('trace', 'getRubyInfo');
-    return Promise.all([utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]).then(
-      v => utils.determineFound('Ruby', v[0], v[1])
-    );
+    return Promise.all([
+      utils.run('ruby -v').then(v => utils.findVersion(v, /\d+\.[\d+|.|p]+/)),
+      utils.which('ruby'),
+    ]).then(v => utils.determineFound('Ruby', v[0], v[1]));
   },
 
   getNodeInfo: () => {
@@ -664,7 +665,7 @@ module.exports = Object.assign({}, utils, packages, {
     utils.log('trace', 'getJavaInfo');
     if (macos || linux) {
       return Promise.all([
-        utils.run('javac -version 2>&1').then(utils.findVersion),
+        utils.run('javac -version 2>&1').then(v => utils.findVersion(v, /\d+\.[\w+|.|_|-]+/)),
         utils.run('which javac'),
       ]).then(v => utils.determineFound('Java', v[0], v[1]));
     }
