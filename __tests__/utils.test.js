@@ -68,6 +68,10 @@ const cases = {
     string: 'ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]',
     version: '2.3.7p456',
   },
+  rust: {
+    string: 'rustc 1.31.1 (b6c32da9b 2018-12-18)',
+    version: '1.31.1',
+  },
   sqlite: {
     string:
       '3.19.4 2017-08-18 19:28:12 605907e73adb4533b12d22be8422f17a8dc125b5c37bb391756a11fc3a8c4d10',
