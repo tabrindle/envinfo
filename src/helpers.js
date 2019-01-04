@@ -644,7 +644,7 @@ module.exports = Object.assign({}, utils, packages, {
     if (macos || linux) {
       return Promise.all([
         utils.run('rustc --version').then(utils.findVersion),
-        utils.run('which rustc'),
+        utils.run('which rustc').then(utils.condensePath),
       ]).then(v => utils.determineFound('Rust', v[0], v[1]));
     }
     return Promise.resolve(['Rust', NA]);
