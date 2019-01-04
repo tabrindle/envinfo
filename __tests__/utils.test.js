@@ -39,9 +39,9 @@ const cases = {
     version: '1.9.3',
   },
   java: {
-    regex: /\d+\.[\d+|.|_]+/,
-    string: 'javac 1.8.0_192',
-    version: '1.8.0_192',
+    regex: /\d+\.[\w+|.|_|-]+/,
+    string: 'javac 1.8.0_192-b12',
+    version: '1.8.0_192-b12',
   },
   mariadb: {
     index: 1,
