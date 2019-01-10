@@ -311,12 +311,17 @@ module.exports = Object.assign({}, utils, packages, {
   getShellInfo: () => {
     utils.log('trace', 'getShellInfo', process.env);
     if (macos || linux) {
-      const shell =
-        process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
-      return Promise.all([
-        utils.run(`${shell} --version`).then(utils.findVersion),
-        utils.which(shell),
-      ]).then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
+      return Promise.resolve(process.env.SHELL)
+        .then(shell => {
+          if (shell) return Promise.resolve(shell);
+          return utils.run('getent passwd $LOGNAME | cut -d: -f7 | head -1');
+        })
+        .then(shell => {
+          let command = `${shell} --version 2>&1`;
+          if (shell.match('/bin/ash')) command = `${shell} --help 2>&1`;
+          return Promise.all([utils.run(command).then(utils.findVersion), utils.which(shell)]);
+        })
+        .then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
     }
     return Promise.resolve(['Shell', NA]);
   },
@@ -329,7 +334,7 @@ module.exports = Object.assign({}, utils, packages, {
     } else if (linux) {
       version = utils.run('cat /etc/os-release').then(v => {
         const distro = (v || '').match(/NAME="(.+)"/);
-        const versionInfo = (v || '').match(/VERSION="(.+)"/) || [];
+        const versionInfo = (v || '').match(/VERSION="(.+)"/) || ['', ''];
         return `${distro[1]} ${versionInfo[1]}`.trim() || '';
       });
     } else {
