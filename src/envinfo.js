@@ -4,13 +4,6 @@ const helpers = require('./helpers');
 const formatters = require('./formatters');
 const presets = require('./presets');
 const utils = require('./utils');
-const arrayIncludes = require('array-includes');
-const objectEntries = require('object.entries');
-const objectValues = require('object.values');
-
-if (!Array.prototype.includes) arrayIncludes.shim();
-if (!Object.entries) objectEntries.shim();
-if (!Object.values) objectValues.shim();
 
 function format(data, options) {
   // set the default formatter (yaml is default, similar to old table)

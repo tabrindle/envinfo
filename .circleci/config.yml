@@ -17,6 +17,15 @@ aliases:
       envinfo
 
 jobs:
+  node6-test:
+    working_directory: ~/repo
+    docker:
+      - image: node:6
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+      - run: *link-and-execute
   ubuntu-test:
     working_directory: ~/repo
     docker:
@@ -61,6 +70,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - node6-test
       - ubuntu-test
       - debian-test
       - centos-test
