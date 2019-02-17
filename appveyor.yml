@@ -1,5 +1,5 @@
 environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node $env:nodejs_version
@@ -9,6 +9,7 @@ test_script:
   - node --version
   - npm --version
   - SET ENVINFO_DEBUG=trace
+  - npm run build
   - node src/cli.js
   - node dist/cli.js
   - SET ENVINFO_DEBUG=""

@@ -668,13 +668,10 @@ module.exports = Object.assign({}, utils, packages, {
 
   getJavaInfo: () => {
     utils.log('trace', 'getJavaInfo');
-    if (macos || linux) {
-      return Promise.all([
-        utils.run('javac -version 2>&1').then(v => utils.findVersion(v, /\d+\.[\w+|.|_|-]+/)),
-        utils.run('which javac'),
-      ]).then(v => utils.determineFound('Java', v[0], v[1]));
-    }
-    return Promise.resolve(['Java', NA]);
+    return Promise.all([
+      utils.run('javac -version').then(v => utils.findVersion(v, /\d+\.[\w+|.|_|-]+/)),
+      utils.run('which javac'),
+    ]).then(v => utils.determineFound('Java', v[0], v[1]));
   },
 
   getApacheInfo: () => {

@@ -12,8 +12,9 @@ const run = cmd => {
       {
         stdio: [0, 'pipe', 'ignore'],
       },
-      (err, out) => {
-        resolve((err ? '' : out.toString() || '').trim());
+      (err, out, stderr) => {
+        const output = out.toString() + stderr.toString();
+        resolve((err ? '' : output).trim());
       }
     );
   });
