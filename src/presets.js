@@ -49,6 +49,14 @@ module.exports = {
     npmPackages: ['react', 'react-native'],
     npmGlobalPackages: ['react-native-cli'],
   },
+  nyc: {
+    System: ['OS', 'CPU', 'Memory'],
+    Binaries: ['Node', 'Yarn', 'npm'],
+    npmPackages: ['*istanbul*', 'nyc', '*babel*', 'typescript', 'ts-node', 'source-map-support'],
+    options: {
+      showNotFound: true,
+    },
+  },
   webpack: {
     System: ['OS', 'CPU'],
     Binaries: ['Node', 'Yarn', 'npm'],
