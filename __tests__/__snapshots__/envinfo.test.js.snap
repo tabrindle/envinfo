@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Running the programmatic interface filters out returned values with N/A 1`] = `
+Object {
+  "Browsers": Object {
+    "Firefox": Object {
+      "path": "/usr/local/bin/firefox",
+      "version": "10.0.0",
+    },
+  },
+}
+`;
+
+exports[`Running the programmatic interface returns expected json value 1`] = `
+Object {
+  "Binaries": Object {
+    "Node": Object {
+      "path": "/usr/local/bin/node",
+      "version": "10.0.0",
+    },
+  },
+}
+`;
+
+exports[`Running the programmatic interface returns expected json value with multiple categories 1`] = `
+Object {
+  "Binaries": Object {
+    "Node": Object {
+      "path": "/usr/local/bin/node",
+      "version": "10.0.0",
+    },
+  },
+  "Languages": Object {
+    "Bash": Object {
+      "path": "/usr/local/bin/bash",
+      "version": "10.0.0",
+    },
+  },
+}
+`;
+
+exports[`Running the programmatic interface returns expected json value with multiple values 1`] = `
+Object {
+  "Binaries": Object {
+    "Node": Object {
+      "path": "/usr/local/bin/node",
+      "version": "10.0.0",
+    },
+    "Yarn": Object {
+      "path": "/usr/local/bin/yarn",
+      "version": "10.0.0",
+    },
+    "npm": Object {
+      "path": "/usr/local/bin/npm",
+      "version": "10.0.0",
+    },
+  },
+}
+`;
+
+exports[`Running the programmatic interface returns expected markdown value 1`] = `
+"
+## Binaries:
+ - npm: 10.0.0 - /usr/local/bin/npm
+"
+`;
+
+exports[`Running the programmatic interface returns expected title in json 1`] = `
+Object {
+  "envinfo rocks!": Object {
+    "Binaries": Object {
+      "Node": Object {
+        "path": "/usr/local/bin/node",
+        "version": "10.0.0",
+      },
+    },
+  },
+}
+`;
+
+exports[`Running the programmatic interface returns expected title in yaml 1`] = `
+"
+  envinfo rocks!:
+    Binaries:
+      Node: 10.0.0 - /usr/local/bin/node
+"
+`;
+
+exports[`Running the programmatic interface returns expected yaml value 1`] = `
+"
+  Binaries:
+    Node: 10.0.0 - /usr/local/bin/node
+"
+`;
