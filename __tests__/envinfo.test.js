@@ -74,11 +74,7 @@ describe('Running the programmatic interface', () => {
     );
 
     return envinfo.run({ Browsers: ['Chrome'] }, { json: true }).then(data => {
-      return expect(JSON.parse(data)).toEqual({
-        Browsers: {
-          Chrome: { version: '65.0.3325.181' },
-        },
-      });
+      expect(JSON.parse(data)).toMatchSnapshot();
     });
   });
 

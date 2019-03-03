@@ -9,7 +9,7 @@ const parsePackagePath = packagePath => {
   return tree.split('/')[0];
 };
 
-function getnpmPackages(packages, options) {
+export function getnpmPackages(packages, options) {
   utils.log('trace', 'getnpmPackages');
   if (!options) options = {};
 
@@ -36,11 +36,7 @@ function getnpmPackages(packages, options) {
     utils
       .getPackageJsonByPath('package.json')
       .then(packageJson =>
-        Object.assign(
-          {},
-          (packageJson || {}).devDependencies || {},
-          (packageJson || {}).dependencies || {}
-        )
+        Object.assign({}, (packageJson || {}).devDependencies, (packageJson || {}).dependencies)
       )
       // determine which paths to get
       .then(packageJsonDependencies => {
@@ -48,27 +44,21 @@ function getnpmPackages(packages, options) {
         if (options.fullTree || options.duplicates || packageGlob) {
           return utils.getAllPackageJsonPaths(packageGlob);
         }
-        return Promise.resolve(
-          Object.keys(packageJsonDependencies || []).map(dep =>
-            path.join('node_modules', dep, 'package.json')
-          )
+        return Object.keys(packageJsonDependencies || []).map(dep =>
+          path.join('node_modules', dep, 'package.json')
         );
       })
       // filter by glob or selection
       .then(packageJsonPaths => {
         if ((packageGlob || typeof packages === 'boolean') && !options.fullTree) {
-          return Promise.resolve(
-            (packageJsonPaths || []).filter(p =>
-              Object.keys(tld || []).includes(parsePackagePath(p))
-            )
+          return (packageJsonPaths || []).filter(p =>
+            Object.keys(tld || []).includes(parsePackagePath(p))
           );
         }
         if (Array.isArray(packages)) {
-          return Promise.resolve(
-            (packageJsonPaths || []).filter(p => packages.includes(parsePackagePath(p)))
-          );
+          return (packageJsonPaths || []).filter(p => packages.includes(parsePackagePath(p)))
         }
-        return Promise.resolve(packageJsonPaths);
+        return packageJsonPaths;
       })
       .then(paths =>
         Promise.all([
@@ -116,7 +106,7 @@ function getnpmPackages(packages, options) {
   ]);
 }
 
-function getnpmGlobalPackages(packages, options) {
+export function getnpmGlobalPackages(packages, options) {
   utils.log('trace', 'getnpmGlobalPackages', packages);
 
   let packageGlob = null;
@@ -190,8 +180,3 @@ function getnpmGlobalPackages(packages, options) {
       }),
   ]);
 }
-
-module.exports = {
-  getnpmPackages: getnpmPackages,
-  getnpmGlobalPackages: getnpmGlobalPackages,
-};

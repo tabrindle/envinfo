@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Running the programmatic interface filters out returned path values with N/A 1`] = `
+Object {
+  "Browsers": Object {
+    "Chrome": Object {
+      "version": "65.0.3325.181",
+    },
+  },
+}
+`;
+
 exports[`Running the programmatic interface filters out returned values with N/A 1`] = `
 Object {
   "Browsers": Object {
