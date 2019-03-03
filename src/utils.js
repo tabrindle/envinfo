@@ -5,7 +5,7 @@ const libWhich = require('which');
 const glob = require('glob');
 const matchers = require('./matchers');
 
-const run = (cmd, { unify = false }) => {
+const run = (cmd, { unify = false } = {}) => {
   return new Promise(resolve => {
     childProcess.exec(
       cmd,
