@@ -5,15 +5,21 @@ const libWhich = require('which');
 const glob = require('glob');
 const matchers = require('./matchers');
 
-const run = cmd => {
+const run = (cmd, { unify = false } = {}) => {
   return new Promise(resolve => {
     childProcess.exec(
       cmd,
       {
         stdio: [0, 'pipe', 'ignore'],
       },
-      (err, out) => {
-        resolve((err ? '' : out.toString() || '').trim());
+      (err, stdout, stderr) => {
+        let output = ``;
+        if (unify) {
+          output = stdout.toString() + stderr.toString();
+        } else {
+          output = stdout.toString();
+        }
+        resolve((err ? '' : output).trim());
       }
     );
   });

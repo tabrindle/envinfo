@@ -9,6 +9,7 @@ test_script:
   - node --version
   - npm --version
   - SET ENVINFO_DEBUG=trace
+  - npm run build
   - node src/cli.js
   - node dist/cli.js
   - SET ENVINFO_DEBUG=""
