@@ -52,10 +52,7 @@ module.exports = {
   nyc: {
     System: ['OS', 'CPU', 'Memory'],
     Binaries: ['Node', 'Yarn', 'npm'],
-    npmPackages: ['*istanbul*', 'nyc', '*babel*', 'typescript', 'ts-node', 'source-map-support'],
-    options: {
-      showNotFound: true,
-    },
+    npmPackages: '/**/{*babel*,@babel/*/,*istanbul*,nyc,source-map-support,typescript,ts-node}',
   },
   webpack: {
     System: ['OS', 'CPU'],
