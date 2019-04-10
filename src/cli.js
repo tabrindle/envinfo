@@ -1,4 +1,4 @@
-const envinfo = require('./envinfo.js');
+import { cli } from './envinfo';
 const argv = require('minimist')(process.argv.slice(2));
 const version = global.__VERSION__ || ''; // eslint-disable-line
 
@@ -52,4 +52,4 @@ if (argv.help || argv._.indexOf('help') > -1) {
   process.exit(0);
 }
 
-envinfo.cli(argv);
+cli(argv);
