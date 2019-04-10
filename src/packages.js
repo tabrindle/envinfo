@@ -81,26 +81,33 @@ function getnpmPackages(packages, options) {
         const paths = result[0];
         const files = result[1];
 
-        return files.reduce((acc, d, idx) => {
+        const versions = files.reduce((acc, d, idx) => {
           // if the file is a test stub, or doesn't have a name, ignore it.
           if (!d || !d.name) return acc;
           // create object if its not already created
           if (!acc[d.name]) acc[d.name] = {};
-          // set duplicates if flag set, if version not already there, && !== installed
+          // set duplicates if flag set, if version not already there
           if (options.duplicates) {
-            if (acc[d.name].installed && acc[d.name].installed !== d.version) {
-              utils.uniq(
-                (acc[d.name].duplicates = (acc[d.name].duplicates || []).concat(d.version))
-              );
-            }
+            acc[d.name].duplicates = utils.uniq((acc[d.name].duplicates || []).concat(d.version));
           }
           // set the installed version, if its installed top level
           if ((paths[idx].match(/node_modules/g) || []).length === 1)
             acc[d.name].installed = d.version;
-          // if it is a top level dependency, get the wanted version
-          if (tld[d.name]) acc[d.name].wanted = tld[d.name];
           return acc;
         }, {});
+
+        Object.keys(versions).forEach(name => {
+          // update duplicates, only !== installed
+          if (versions[name].duplicates && versions[name].installed) {
+            versions[name].duplicates = versions[name].duplicates.filter(
+              v => v !== versions[name].installed
+            );
+          }
+          // if it is a top level dependency, get the wanted version
+          if (tld[name]) versions[name].wanted = tld[name];
+        });
+
+        return versions;
       })
       .then(versions => {
         if (options.showNotFound && Array.isArray(packages)) {

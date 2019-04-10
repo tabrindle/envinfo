@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Running the programmatic interface return expected duplicates in json 1`] = `
+Object {
+  "npmPackages": Object {
+    "b": Object {
+      "duplicates": Array [
+        "1.0.2",
+      ],
+      "installed": "1.0.0",
+      "wanted": "1.0.0",
+    },
+  },
+}
+`;
+
+exports[`Running the programmatic interface return expected duplicates in yaml 1`] = `
+"
+  npmPackages:
+    b: 1.0.0 => 1.0.0 (1.0.2)
+"
+`;
