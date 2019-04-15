@@ -26,7 +26,7 @@ module.exports = {
       },
     ],
   },
-  externals: [/envinfo$/, /semver$/],
+  externals: [/envinfo$/],
   plugins: [
     new webpack.BannerPlugin({
       banner: `#!/usr/bin/env node
