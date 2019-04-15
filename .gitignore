@@ -1,3 +1,4 @@
 node_modules
+!__tests__/packages/**/node_modules
 .DS_Store
 .idea/
