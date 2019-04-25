@@ -106,6 +106,12 @@ module.exports = {
   matchAll: matchAll,
   parseSDKManagerOutput: parseSDKManagerOutput,
 
+  isLinux: process.platform === 'linux',
+  isMacOS: process.platform === 'darwin',
+  NA: 'N/A',
+  NotFound: 'Not Found',
+  isWindows: process.platform.startsWith('win'),
+
   isObject: val => typeof val === 'object' && !Array.isArray(val),
   noop: d => d,
   pipe: fns => x => fns.reduce((v, f) => f(v), x),
