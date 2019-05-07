@@ -16,7 +16,7 @@
     "node": ">=4"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --progress",
     "check:format": "prettier -l src/*.js",
     "compress": "gzexe envinfo-* && upx envinfo-win.exe",
     "contributors:add": "all-contributors add",
@@ -29,7 +29,7 @@
     "preversion": "npm run test && webpack && git add .",
     "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
-    "start": "node src/cli.js",
+    "start": "node -r esm src/cli.js",
     "test": "jest --env=node && npm run lint && npm run check:format"
   },
   "keywords": [
@@ -69,14 +69,15 @@
     "eslint-config-prettier": "^2.7.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-prettier": "^2.3.1",
+    "esm": "^3.2.22",
     "github-release-cli": "^0.4.1",
     "glob": "^7.1.2",
     "jest": "^22.4.3",
     "minimist": "^1.2.0",
-    "os-name": "^2.0.1",
+    "os-name": "^3.1.0",
     "pkg": "^4.3.4",
     "prettier-eslint-cli": "^4.1.1",
-    "webpack": "^4.25.1",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.1.2",
     "which": "^1.2.14",
     "yamlify-object": "^0.4.5"

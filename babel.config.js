@@ -5,7 +5,6 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        debug: true,
         modules: 'commonjs',
         targets: {
           node: '4.9.1',
