@@ -10,6 +10,7 @@ const sdks = require('./sdks');
 const servers = require('./servers');
 const system = require('./system');
 const utilities = require('./utilities');
+const virtualization = require('./virtualization');
 
 module.exports = Object.assign({}, utils, packages, {
   ...binaries,
@@ -21,4 +22,5 @@ module.exports = Object.assign({}, utils, packages, {
   ...servers,
   ...system,
   ...utilities,
+  ...virtualization,
 });
