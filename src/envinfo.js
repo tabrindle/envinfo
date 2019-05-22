@@ -13,7 +13,14 @@ function format(data, options) {
     return formatters.yaml;
   })();
 
-  if (options.console) console.log(formatter(data, Object.assign({}, options, { console: true }))); // eslint-disable-line no-console
+  if (options.console) {
+    let enableConsole = false;
+    if (process.stdout.isTTY) {
+      enableConsole = true;
+    }
+
+    console.log(formatter(data, Object.assign({}, options, { console: enableConsole }))); // eslint-disable-line no-console
+  }
 
   // call the formatter with console option off first to return
   const formatted = formatter(data, Object.assign({}, options, { console: false }));

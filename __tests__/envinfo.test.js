@@ -96,3 +96,35 @@ describe('Running the programmatic interface', () => {
     });
   });
 });
+
+describe('Running the cli interface', () => {
+  test('returns expected formatted yaml value', () => {
+    const oldIsTTY = process.stdout.isTTY;
+    process.stdout.isTTY = true;
+
+    const consoleLogSpy = jest.spyOn(global.console, 'log');
+    consoleLogSpy.mockImplementation((data) => expect(data).toMatchSnapshot());
+
+    return envinfo.cli({ binaries: true, console: true }).then(() => {
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    }).finally(() => {
+      process.stdout.isTTY = oldIsTTY;
+      consoleLogSpy.mockClear();
+    });
+  });
+
+  test('returns expected unformatted yaml value', () => {
+    const oldIsTTY = process.stdout.isTTY;
+    process.stdout.isTTY = false;
+
+    const consoleLogSpy = jest.spyOn(global.console, 'log');
+    consoleLogSpy.mockImplementation((data) => expect(data).toMatchSnapshot());
+
+    return envinfo.cli({ binaries: true, console: true }).then(() => {
+      expect(consoleLogSpy).toHaveBeenCalledTimes(1);
+    }).finally(() => {
+      process.stdout.isTTY = oldIsTTY;
+      consoleLogSpy.mockClear();
+    });
+  });
+});
