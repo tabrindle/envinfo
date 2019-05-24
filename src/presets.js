@@ -2,7 +2,7 @@ module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
-    Utilities: ['CMake', 'Make', 'GCC', 'Git', 'Mercurial'],
+    Utilities: ['CMake', 'Make', 'GCC', 'Git', 'Mercurial', 'Subversion'],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
     SDKs: ['iOS SDK', 'Android SDK'],

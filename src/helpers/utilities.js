@@ -55,4 +55,15 @@ module.exports = {
     }
     return Promise.resolve(['Mercurial', 'N/A']);
   },
+
+  getSubversionInfo: () => {
+    utils.log('trace', 'getSubversionInfo');
+    if (utils.isMacOS || utils.isLinux) {
+      return Promise.all([
+        utils.run('svn --version').then(utils.findVersion),
+        utils.run('which svn'),
+      ]).then(v => utils.determineFound('Subversion', v[0], v[1]));
+    }
+    return Promise.resolve(['Subversion', 'N/A']);
+  },
 };
