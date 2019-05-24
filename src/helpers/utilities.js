@@ -44,4 +44,15 @@ module.exports = {
     }
     return Promise.resolve(['Make', 'N/A']);
   },
+
+  getMercurialInfo: () => {
+    utils.log('trace', 'getMercurialInfo');
+    if (utils.isMacOS || utils.isLinux) {
+      return Promise.all([
+        utils.run('hg --version').then(utils.findVersion),
+        utils.run('which hg'),
+      ]).then(v => utils.determineFound('Mercurial', v[0], v[1]));
+    }
+    return Promise.resolve(['Mercurial', 'N/A']);
+  },
 };
