@@ -60,6 +60,8 @@ npm install envinfo || yarn add envinfo
     Make: 3.81 - /usr/bin/make
     GCC: 4.2.1 - /usr/bin/gcc
     Git: 2.17.1 - /usr/local/bin/git
+    Mercurial: 4.5.3 - /usr/bin/hg
+    Subversion: 1.9.7 - /usr/bin/svn
   Servers:
     Apache: 2.4.27 - /usr/sbin/apachectl
     Nginx: 1.13.12 - /usr/local/bin/nginx
