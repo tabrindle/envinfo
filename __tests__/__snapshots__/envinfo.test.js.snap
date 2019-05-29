@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Running the cli interface returns expected formatted yaml value 1`] = `
+"
+  [4mBinaries:[0m
+    Node: 10.0.0 - /usr/local/bin/node
+    Yarn: 10.0.0 - /usr/local/bin/yarn
+    npm: 10.0.0 - /usr/local/bin/npm
+    Watchman: 10.0.0 - /usr/local/bin/watchman
+"
+`;
+
+exports[`Running the cli interface returns expected unformatted yaml value 1`] = `
+"
+  Binaries:
+    Node: 10.0.0 - /usr/local/bin/node
+    Yarn: 10.0.0 - /usr/local/bin/yarn
+    npm: 10.0.0 - /usr/local/bin/npm
+    Watchman: 10.0.0 - /usr/local/bin/watchman
+"
+`;
+
 exports[`Running the programmatic interface filters out returned values with N/A 1`] = `
 Object {
   "Browsers": Object {
