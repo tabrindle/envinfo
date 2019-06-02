@@ -20,7 +20,7 @@ module.exports = {
       'WebStorm',
       'Xcode',
     ],
-    Languages: ['Bash', 'Go', 'Elixir', 'Java', 'Perl', 'PHP', 'Python', 'Ruby', 'Rust', 'Scala'],
+    Languages: ['Bash', 'Go', 'Elixir', 'Java', 'Perl', 'PHP', 'Python', 'Python3', 'Ruby', 'Rust', 'Scala'],
     Databases: ['MongoDB', 'MySQL', 'PostgreSQL', 'SQLite'],
     Browsers: [
       'Chrome',
