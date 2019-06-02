@@ -7,7 +7,7 @@ aliases:
   - &setup-nodejs
     name: setup nodejs
     command: |
-      curl -sL https://deb.nodesource.com/setup_11.x | bash -
+      curl -sL https://deb.nodesource.com/setup_12.x | bash -
       apt-get install -y nodejs
   - &link-and-execute
     name: Run envinfo
@@ -52,7 +52,7 @@ jobs:
       - image: centos
     steps:
       - checkout
-      - run: yum install curl && curl -sL https://rpm.nodesource.com/setup_11.x | bash - && yum install nodejs -y
+      - run: yum install curl && curl -sL https://rpm.nodesource.com/setup_12.x | bash - && yum install nodejs -y
       - run: npm install
       - run: npm run test
       - run: *link-and-execute
@@ -60,6 +60,15 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: reactnativecommunity/react-native-android
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+      - run: *link-and-execute
+  general-test:
+    working_directory: ~/repo
+    docker:
+      - image: gengjiawen/node-build
     steps:
       - checkout
       - run: npm install
@@ -75,3 +84,5 @@ workflows:
       - debian-test
       - centos-test
       - react-native-test
+      # Workaround for https://github.com/tabrindle/envinfo/issues/104
+      - general-test

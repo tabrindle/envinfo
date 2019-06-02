@@ -43,6 +43,19 @@ const cases = {
     string: 'javac 1.8.0_192-b12',
     version: '1.8.0_192-b12',
   },
+  R: {
+    string: `R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+http://www.gnu.org/licenses/.
+`,
+    version: '3.0.2',
+  },
   mariadb: {
     index: 1,
     string: 'mysql  Ver 15.1 Distrib 10.2.14-MariaDB, for osx10.13 (x86_64) using readline 5.1',

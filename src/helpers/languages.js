@@ -58,6 +58,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Python', v[0], v[1]));
   },
 
+  getRInfo: () => {
+    utils.log('trace', 'getRInfo');
+    return Promise.all([
+      utils.run('R --version').then(utils.findVersion),
+      utils.which('which R'),
+    ]).then(v => utils.determineFound('R', v[0], v[1]));
+  },
+
   getRubyInfo: () => {
     utils.log('trace', 'getRubyInfo');
     return Promise.all([utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]).then(
