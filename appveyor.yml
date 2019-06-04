@@ -1,5 +1,5 @@
 environment:
-  nodejs_version: 'latest'
+  nodejs_version: '8'
 
 install:
   - ps: Install-Product node $env:nodejs_version x64
