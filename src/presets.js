@@ -28,6 +28,7 @@ module.exports = {
       'Perl',
       'PHP',
       'Python',
+      'Python3',
       'R',
       'Ruby',
       'Rust',

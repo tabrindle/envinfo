@@ -58,13 +58,20 @@ module.exports = {
     ]).then(v => utils.determineFound('Python', v[0], v[1]));
   },
 
+  getPython3Info: () => {
+    utils.log('trace', 'getPython3Info');
+    return Promise.all([
+      utils.run('python3 -V 2>&1').then(utils.findVersion),
+      utils.run('which python3'),
+    ]).then(v => utils.determineFound('Python3', v[0], v[1]));
+  },
+
   getRInfo: () => {
     utils.log('trace', 'getRInfo');
     return Promise.all([
       utils.run('R --version').then(utils.findVersion),
       utils.which('which R'),
     ]).then(v => utils.determineFound('R', v[0], v[1]));
-  },
 
   getRubyInfo: () => {
     utils.log('trace', 'getRubyInfo');
