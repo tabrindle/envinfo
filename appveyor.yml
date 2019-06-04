@@ -8,7 +8,8 @@ install:
 test_script:
   - node --version
   - npm --version
-  - choco install r.project
+  - choco install r.project -version 3.6.0
+  - set PATH=C:\Program Files\R\R-3.6.0\bin\x64;%PATH%
   - SET ENVINFO_DEBUG=trace
   - npm run build
   - node -r esm src/cli.js
