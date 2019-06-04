@@ -68,9 +68,10 @@ module.exports = {
 
   getRInfo: () => {
     utils.log('trace', 'getRInfo');
-    return Promise.all([utils.run('R --version').then(utils.findVersion), utils.which('R')]).then(
-      v => utils.determineFound('R', v[0], v[1])
-    );
+    return Promise.all([
+      utils.run('R --version', { unify: true }).then(utils.findVersion),
+      utils.which('R'),
+    ]).then(v => utils.determineFound('R', v[0], v[1]));
   },
 
   getRubyInfo: () => {
