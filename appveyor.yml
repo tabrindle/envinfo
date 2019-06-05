@@ -2,12 +2,15 @@ environment:
   nodejs_version: '8'
 
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version x64
   - npm install
 
 test_script:
   - node --version
   - npm --version
+  - choco install r.project -version 3.6.0
+  - set RPATH=C:\Program Files\R\R-3.6.0\bin\x64
+  - set PATH=%RPATH%;%PATH%
   - SET ENVINFO_DEBUG=trace
   - npm run build
   - node -r esm src/cli.js
