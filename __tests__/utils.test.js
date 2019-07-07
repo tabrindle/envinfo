@@ -90,6 +90,15 @@ http://www.gnu.org/licenses/.
       '3.19.4 2017-08-18 19:28:12 605907e73adb4533b12d22be8422f17a8dc125b5c37bb391756a11fc3a8c4d10',
     version: '3.19.4',
   },
+  clang: {
+    string: `clang version 7.0.0-3 (tags/RELEASE_700/final)
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin`,
+    regex: /([0-9].*) /,
+    index: 1,
+    version: '7.0.0-3',
+  },
   sublime: {
     regex: /\d+/,
     string: 'Sublime Text Build 3143',
