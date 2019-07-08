@@ -1,19 +1,6 @@
 const utils = require('../utils');
 
 module.exports = {
-  getHomeBrewInfo: () => {
-    utils.log('trace', 'getHomeBrewInfo');
-    var homeBrewVersion;
-    if (utils.isMacOS) {
-      homeBrewVersion = Promise.all([
-        'Homebrew',
-        utils.run('brew --version').then(utils.findVersion),
-        utils.which('brew'),
-      ]);
-    } else homeBrewVersion = Promise.all(['Homebrew', 'N/A']);
-    return homeBrewVersion;
-  },
-
   getNodeInfo: () => {
     utils.log('trace', 'getNodeInfo');
     return Promise.all([

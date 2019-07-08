@@ -1,5 +1,39 @@
 const utils = require('../src/utils');
 const cases = {
+  apt: {
+    string: 'apt 1.4.9 (amd64)',
+    version: '1.4.9',
+  },
+  cargo: {
+    string: 'cargo 1.31.0 (339d9f9c8 2018-11-16)',
+    version: '1.31.0',
+  },
+  composer: {
+    string: '\u001b[32mComposer\u001b[39m version \u001b[33m1.8.6\u001b[39m 2019-06-11 15:03:05',
+    version: '1.8.6',
+  },
+  gradle: {
+    string: '---------------------\nGradle 5.5\n---------------------',
+    version: '5.5',
+  },
+  homebrew: {
+    string:
+      'Homebrew 2.1.7\nHomebrew/homebrew-core (git revision 3507d; last commit 2019-07-08)\nHomebrew/homebrew-cask (git revision 983c4; last commit 2019-07-08)',
+    version: '2.1.7',
+  },
+  maven: {
+    string:
+      'Apache Maven 3.6.1 (d66c9c0b3152b2e69ee9bac180bb8fcc8e6af555; 2019-04-04T15:00:29-04:00)',
+    version: '3.6.1',
+  },
+  pip: {
+    string: 'pip 19.0.3 from /usr/local/lib/python2.7/site-packages/pip (python 2.7)',
+    version: '19.0.3',
+  },
+  yum: {
+    string: '3.4.3\n  Installed: rpm-4.11.3-35.el7.x86_64 at 2019-03-05 17:35\n',
+    version: '3.4.3',
+  },
   bash: {
     string: 'GNU bash, version 4.4.12(1)-release (x86_64-apple-darwin17.0.0)',
     version: '4.4.12',

@@ -2,6 +2,18 @@ module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Managers: [
+      'Apt',
+      'Cargo',
+      'CocoaPods',
+      'Composer',
+      'Gradle',
+      'Homebrew',
+      'Maven',
+      'pip',
+      'RubyGems',
+      'Yum',
+    ],
     Utilities: ['CMake', 'Make', 'GCC', 'Git', 'Clang', 'Mercurial', 'Subversion'],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
