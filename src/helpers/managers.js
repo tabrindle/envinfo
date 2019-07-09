@@ -63,12 +63,20 @@ module.exports = {
     ]).then(v => utils.determineFound('Maven', v[0], v[1]));
   },
 
-  getpipInfo: () => {
-    utils.log('trace', 'getPipInfo');
+  getpip2Info: () => {
+    utils.log('trace', 'getpip2Info');
     return Promise.all([
-      utils.run('pip --version').then(utils.findVersion),
-      utils.which('pip').then(utils.condensePath),
-    ]).then(v => utils.determineFound('pip', v[0], v[1]));
+      utils.run('pip2 --version').then(utils.findVersion),
+      utils.which('pip2').then(utils.condensePath),
+    ]).then(v => utils.determineFound('pip2', v[0], v[1]));
+  },
+
+  getpip3Info: () => {
+    utils.log('trace', 'getpip3Info');
+    return Promise.all([
+      utils.run('pip3 --version').then(utils.findVersion),
+      utils.which('pip3').then(utils.condensePath),
+    ]).then(v => utils.determineFound('pip3', v[0], v[1]));
   },
 
   getRubyGemsInfo: () => {
