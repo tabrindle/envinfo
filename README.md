@@ -46,68 +46,80 @@ npm install envinfo || yarn add envinfo
 
 ```bash
   System:
-    OS: macOS High Sierra 10.13
-    CPU: x64 Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz
-    Memory: 204.88 MB / 16.00 GB
-    Shell: 5.4.2 - /usr/local/bin/zsh
+    OS: macOS Mojave 10.14.5
+    CPU: (8) x64 Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz
+    Memory: 2.97 GB / 16.00 GB
+    Shell: 5.3 - /bin/zsh
   Binaries:
-    Node: 8.11.0 - ~/.nvm/versions/node/v8.11.0/bin/node
-    Yarn: 1.5.1 - ~/.yarn/bin/yarn
-    npm: 5.6.0 - ~/.nvm/versions/node/v8.11.0/bin/npm
+    Node: 8.16.0 - ~/.nvm/versions/node/v8.16.0/bin/node
+    Yarn: 1.15.2 - ~/.yarn/bin/yarn
+    npm: 6.9.0 - ~/.nvm/versions/node/v8.16.0/bin/npm
     Watchman: 4.9.0 - /usr/local/bin/watchman
+  Managers:
+    Cargo: 1.31.0 - ~/.cargo/bin/cargo
+    CocoaPods: 1.7.3 - /usr/local/bin/pod
+    Composer: 1.8.6 - /usr/local/bin/composer
+    Gradle: 5.5 - /usr/local/bin/gradle
+    Homebrew: 2.1.7 - /usr/local/bin/brew
+    Maven: 3.6.1 - /usr/local/bin/mvn
+    pip2: 19.0.3 - /usr/local/bin/pip2
+    pip3: 19.0.2 - /usr/local/bin/pip3
+    RubyGems: 2.5.2.3 - /usr/bin/gem
   Utilities:
-    CMake: 3.10.2 - /usr/local/bin/cmake
+    CMake: 3.13.3 - /usr/local/bin/cmake
     Make: 3.81 - /usr/bin/make
-    GCC: 4.2.1 - /usr/bin/gcc
-    Git: 2.17.1 - /usr/local/bin/git
+    GCC: 10.14. - /usr/bin/gcc
+    Git: 2.20.0 - /usr/local/bin/git
     Mercurial: 4.5.3 - /usr/bin/hg
-    Subversion: 1.9.7 - /usr/bin/svn
+    Clang: 1001.0.46.4 - /usr/bin/clang
+    Subversion: 1.10.3 - /usr/bin/svn
   Servers:
-    Apache: 2.4.27 - /usr/sbin/apachectl
+    Apache: 2.4.34 - /usr/sbin/apachectl
     Nginx: 1.13.12 - /usr/local/bin/nginx
   Virtualization:
-    Docker: 18.03.1 - /usr/local/bin/docker
+    Docker: 18.09.1 - /usr/local/bin/docker
     Parallels: 13.3.0 - /usr/local/bin/prlctl
-    VirtualBox: 5.2.8 - /usr/local/bin/vboxmanage
+    VirtualBox: 5.2.20 - /usr/local/bin/vboxmanage
   SDKs:
     iOS SDK:
-      Platforms: iOS 11.0, macOS 10.13, tvOS 11.0, watchOS 4.0
+      Platforms: iOS 12.2, macOS 10.14, tvOS 12.2, watchOS 5.2
     Android SDK:
-      Build Tools: 27.0.3
-      API Levels: 26
+      API Levels: 28
+      Build Tools: 28.0.3
       System Images: android-28 | Google Play Intel x86 Atom
   IDEs:
-    Android Studio: 3.0 AI-171.4443003
+    Android Studio: 3.2 AI-181.5540.7.32.5056338
     Atom: 1.23.3
     Emacs: 22.1.1 - /usr/bin/emacs
     Nano: 2.0.6 - /usr/bin/nano
+    VSCode: 1.36.0 - /usr/local/bin/code
     Vim: 8.0 - /usr/bin/vim
-    VSCode: 1.23.1 - /usr/local/bin/code
-    Xcode: 9.0/9A235 - /usr/bin/xcodebuild
+    Xcode: 10.2.1/10E1001 - /usr/bin/xcodebuild
   Languages:
-    Bash: 4.4.12 - /usr/local/bin/bash
-    Go: 1.9.3 - /usr/local/bin/go
+    Bash: 4.4.23 - /usr/local/bin/bash
     Elixir: 1.6.2 - /usr/local/bin/elixir
+    Go: 1.11.1 - /usr/local/bin/go
     Java: 1.8.0_192 - /usr/bin/javac
-    Perl: 5.18.2 - /usr/bin/perl
-    PHP: 7.1.7 - /usr/bin/php
-    Python: 2.7.14 - /usr/local/bin/python
-    Ruby: 2.4.1 - ~/.rvm/rubies/ruby-2.4.1/bin/ruby
-    Rust: 1.11.0 - ~/.cargo/bin/rustup
-    Scala: 2.12.6 - /usr/local/bin/scalac
+    Perl: 5.18.4 - /usr/bin/perl
+    PHP: 7.1.23 - /usr/bin/php
+    Python: 2.7.16 - /usr/local/bin/python
+    Python3: 3.7.2 - /usr/local/bin/python3
+    R: 3.6.0 - /usr/local/bin/R
+    Ruby: 2.3.7 - /usr/bin/ruby
+    Rust: 1.16.0 - /Users/tabrindle/.cargo/bin/rustup
   Databases:
     MongoDB: 3.6.4 - /usr/local/bin/mongo
-    MySQL: 10.2.14 (MariaDB) - /usr/local/bin/mysql
+    MySQL: 10.3.10 (MariaDB) - /usr/local/bin/mysql
     PostgreSQL: 10.3 - /usr/local/bin/postgres
-    SQLite: 3.19.4 - /usr/local/bin/sqlite3
+    SQLite: 3.24.0 - /usr/bin/sqlite3
   Browsers:
-    Chrome: 67.0.3396.62
-    Chrome Canary: 69.0.3447.2
-    Firefox: 59.0.2
-    Firefox Developer Edition: 61.0
-    Firefox Nightly: 61.0a1
-    Safari: 11.0
-    Safari Technology Preview: 11.2
+    Chrome: 75.0.3770.100
+    Chrome Canary: 77.0.3847.0
+    Firefox: 68.0
+    Firefox Developer Edition: 69.0
+    Firefox Nightly: 69.0a1
+    Safari: 12.1.1
+    Safari Technology Preview: 13.0
   npmPackages:
     apollo-client: ^2.3.1 => 2.3.1
     jest: ^22.2.1 => 22.2.1
