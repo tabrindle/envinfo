@@ -221,6 +221,7 @@ module.exports = {
   },
 
   findVersion: (versionString, regex, index) => {
+    log('trace', 'findVersion', versionString, regex, index);
     const idx = index || 0;
     const matcher = regex || versionRegex;
     const matched = versionString.match(matcher);

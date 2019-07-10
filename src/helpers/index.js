@@ -6,6 +6,7 @@ const browsers = require('./browsers');
 const databases = require('./databases');
 const ides = require('./ides');
 const languages = require('./languages');
+const managers = require('./managers');
 const sdks = require('./sdks');
 const servers = require('./servers');
 const system = require('./system');
@@ -18,6 +19,7 @@ module.exports = Object.assign({}, utils, packages, {
   ...databases,
   ...ides,
   ...languages,
+  ...managers,
   ...sdks,
   ...servers,
   ...system,
