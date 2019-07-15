@@ -30,7 +30,8 @@
     "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
     "start": "node -r esm src/cli.js",
-    "test": "jest --env=node && eslint src && prettier -l src/**/*.js"
+    "test": "jest --env=node && eslint src && prettier -l src/**/*.js",
+    "postinstall": "opencollective-postinstall || true"
   },
   "keywords": [
     "development",
@@ -52,7 +53,9 @@
   "jest": {
     "testEnvironment": "node"
   },
-  "dependencies": {},
+  "dependencies": {
+    "opencollective-postinstall": "^2.0.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
@@ -81,5 +84,9 @@
     "webpack-cli": "^3.1.2",
     "which": "^1.2.14",
     "yamlify-object": "^0.4.5"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/envinfo"
   }
 }
