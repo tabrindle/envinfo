@@ -4,7 +4,7 @@
   <hr/>
 </p>
 
-[![CircleCI](https://circleci.com/gh/tabrindle/envinfo/tree/master.svg?style=svg)](https://circleci.com/gh/tabrindle/envinfo/tree/master) [![Build Status](https://travis-ci.org/tabrindle/envinfo.svg?branch=master)](https://travis-ci.org/tabrindle/envinfo) [![npm version](https://badge.fury.io/js/envinfo.svg)](https://badge.fury.io/js/envinfo) [![npm downloads per month](https://img.shields.io/npm/dm/envinfo.svg?maxAge=86400)](https://www.npmjs.com/package/envinfo) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Financial Contributors on Open Collective](https://opencollective.com/envinfo/all/badge.svg?label=financial+contributors)](https://opencollective.com/envinfo) [![CircleCI](https://circleci.com/gh/tabrindle/envinfo/tree/master.svg?style=svg)](https://circleci.com/gh/tabrindle/envinfo/tree/master) [![Build Status](https://travis-ci.org/tabrindle/envinfo.svg?branch=master)](https://travis-ci.org/tabrindle/envinfo) [![npm version](https://badge.fury.io/js/envinfo.svg)](https://badge.fury.io/js/envinfo) [![npm downloads per month](https://img.shields.io/npm/dm/envinfo.svg?maxAge=86400)](https://www.npmjs.com/package/envinfo) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 
 ## The problem
@@ -260,6 +260,36 @@ envinfo is used in the ISSUE_TEMPLATE of:
 -   [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
 -   [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
 -   write your own
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/tabrindle/envinfo/graphs/contributors"><img src="https://opencollective.com/envinfo/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/envinfo/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/envinfo"><img src="https://opencollective.com/envinfo/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/envinfo/contribute)]
+
+<a href="https://opencollective.com/envinfo/organization/0/website"><img src="https://opencollective.com/envinfo/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/1/website"><img src="https://opencollective.com/envinfo/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/2/website"><img src="https://opencollective.com/envinfo/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/3/website"><img src="https://opencollective.com/envinfo/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/4/website"><img src="https://opencollective.com/envinfo/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/5/website"><img src="https://opencollective.com/envinfo/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/6/website"><img src="https://opencollective.com/envinfo/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/7/website"><img src="https://opencollective.com/envinfo/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/8/website"><img src="https://opencollective.com/envinfo/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/envinfo/organization/9/website"><img src="https://opencollective.com/envinfo/organization/9/avatar.svg"></a>
 
 ## License
 
