@@ -107,8 +107,8 @@ module.exports = {
     System: ['OS'],
     Binaries: ['Node', 'npm', 'Yarn'],
     Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-    npmPackages: '*apollo*',
-    npmGlobalPackages: '*apollo*',
+    npmPackages: '{*apollo*,@apollo/*}',
+    npmGlobalPackages: '{*apollo*,@apollo/*}',
   },
   'react-native-web': {
     System: ['OS', 'CPU'],
