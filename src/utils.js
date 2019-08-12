@@ -205,7 +205,7 @@ module.exports = {
   getAllPackageJsonPaths: packageGlob => {
     log('trace', 'getAllPackageJsonPaths', packageGlob);
     return new Promise(resolve => {
-      const cb = (err, res) => resolve(res || []);
+      const cb = (err, res) => resolve(res.map(path.normalize) || []);
       if (packageGlob) return glob(path.join('node_modules', packageGlob, 'package.json'), cb);
       return glob(path.join('node_modules', '**', 'package.json'), cb);
     });

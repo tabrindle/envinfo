@@ -3,10 +3,11 @@ const path = require('path');
 const utils = require('./utils');
 
 const parsePackagePath = packagePath => {
-  const split = packagePath.split('node_modules/');
+  const split = packagePath.split('node_modules' + path.sep);
   const tree = split[split.length - 1];
-  if (tree.charAt(0) === '@') return [tree.split('/')[0], tree.split('/')[1]].join('/');
-  return tree.split('/')[0];
+  if (tree.charAt(0) === '@')
+    return [tree.split(path.sep)[0], tree.split(path.sep)[1]].join(path.sep);
+  return tree.split(path.sep)[0];
 };
 
 function getnpmPackages(packages, options) {
