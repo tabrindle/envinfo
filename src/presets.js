@@ -15,7 +15,7 @@ module.exports = {
       'RubyGems',
       'Yum',
     ],
-    Utilities: ['CMake', 'Make', 'GCC', 'Git', 'Clang', 'Mercurial', 'Subversion'],
+    Utilities: ['CMake', 'Make', 'GCC', 'Git', 'Clang', 'Mercurial', 'Subversion', 'FFmpeg'],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
     SDKs: ['iOS SDK', 'Android SDK'],
