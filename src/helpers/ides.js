@@ -3,7 +3,7 @@ const utils = require('../utils');
 
 module.exports = {
   getAndroidStudioInfo: () => {
-    let androidStudioVersion;
+    let androidStudioVersion = Promise.resolve('N/A');
     if (utils.isMacOS) {
       androidStudioVersion = utils
         .run(
