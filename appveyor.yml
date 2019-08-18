@@ -11,8 +11,7 @@ test_script:
   - choco install ffmpeg
   - choco install r.project -version 3.6.0
   - set RPATH=C:\Program Files\R\R-3.6.0\bin\x64
-  - set CHOCO_PATH=C:\ProgramData\chocolatey\bin
-  - set PATH=%RPATH%;%PATH%;%CHOCO_PATH%
+  - set PATH=%RPATH%;%PATH%
   - SET ENVINFO_DEBUG=trace
   - npm run build
   - node -r esm src/cli.js

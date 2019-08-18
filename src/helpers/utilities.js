@@ -81,7 +81,7 @@ module.exports = {
     return Promise.resolve(['Subversion', 'N/A']);
   },
 
-  getFFmpegVersion: () => {
+  getFFmpegInfo: () => {
     utils.log('trace', 'getFFmpegInfo');
     return Promise.all([
       utils.run('ffmpeg -version').then(utils.findVersion),
