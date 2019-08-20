@@ -52,7 +52,7 @@ jobs:
       - image: centos
     steps:
       - checkout
-      - run: yum install curl && curl -sL https://rpm.nodesource.com/setup_12.x | bash - && yum install nodejs -y
+      - run: yum install curl -y && curl -sL https://rpm.nodesource.com/setup_12.x | bash - && yum install nodejs -y
       - run: npm install
       - run: npm run test
       - run: *link-and-execute
