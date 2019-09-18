@@ -68,6 +68,11 @@ const cases = {
     11.0.10240.17443`,
     version: '11.0.10240.17443',
   },
+  ffmpeg: {
+    string: `ffmpeg version 4.2 Copyright (c) 2000-2019 the FFmpeg developers
+built with gcc 9.1.1 (GCC) 20190807`,
+    version: '4.2'
+  },
   go: {
     string: 'go version go1.9.3 darwin/amd64',
     version: '1.9.3',
