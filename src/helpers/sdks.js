@@ -6,7 +6,9 @@ module.exports = {
   getAndroidSDKInfo: () => {
     return utils
       .run(
-        process.env.ANDROID_HOME ? '$ANDROID_HOME/tools/bin/sdkmanager --list' : 'sdkmanager --list'
+        process.env.ANDROID_HOME
+          ? `${process.env.ANDROID_HOME}/tools/bin/sdkmanager --list`
+          : 'sdkmanager --list'
       )
       .then(output => {
         if (!output && utils.isMacOS)
