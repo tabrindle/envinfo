@@ -36,13 +36,10 @@ function getnpmPackages(packages, options) {
     'npmPackages',
     utils
       .getPackageJsonByPath('package.json')
-      .then(packageJson =>
-        Object.assign(
-          {},
-          (packageJson || {}).devDependencies || {},
-          (packageJson || {}).dependencies || {}
-        )
-      )
+      .then(packageJson => ({
+        ...((packageJson || {}).devDependencies || {}),
+        ...((packageJson || {}).dependencies || {}),
+      }))
       // determine which paths to get
       .then(packageJsonDependencies => {
         tld = packageJsonDependencies;

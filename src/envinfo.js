@@ -1,5 +1,3 @@
-'use strict';
-
 const helpers = require('./helpers');
 const formatters = require('./formatters');
 const presets = require('./presets');
@@ -19,11 +17,11 @@ function format(data, options) {
       enableConsole = true;
     }
 
-    console.log(formatter(data, Object.assign({}, options, { console: enableConsole }))); // eslint-disable-line no-console
+    console.log(formatter(data, { ...options, console: enableConsole })); // eslint-disable-line no-console
   }
 
   // call the formatter with console option off first to return
-  const formatted = formatter(data, Object.assign({}, options, { console: false }));
+  const formatted = formatter(data, { ...options, console: false });
 
   return formatted;
 }
@@ -88,10 +86,7 @@ function main(props, options) {
 function cli(options) {
   // if all option is passed, do not pass go, do not collect 200 dollars, go straight to main
   if (options.all)
-    return main(
-      Object.assign({}, presets.defaults, { npmPackages: true, npmGlobalPackages: true }),
-      options
-    );
+    return main({ ...presets.defaults, npmPackages: true, npmGlobalPackages: true }, options);
   // if raw, parse the row options and skip to main
   if (options.raw) return main(JSON.parse(options.raw), options);
   // if helper flag, run just that helper then log the results
@@ -120,12 +115,11 @@ function cli(options) {
   if (options.preset) {
     if (!presets[options.preset]) console.error(`\nNo "${options.preset}" preset found.`); // eslint-disable-line no-console
     return main(
-      Object.assign({}, utils.omit(presets[options.preset], ['options']), props),
-      Object.assign(
-        {},
-        presets[options.preset].options,
-        utils.pick(options, ['duplicates', 'fullTree', 'json', 'markdown', 'console'])
-      )
+      { ...utils.omit(presets[options.preset], ['options']), ...props },
+      {
+        ...presets[options.preset].options,
+        ...utils.pick(options, ['duplicates', 'fullTree', 'json', 'markdown', 'console']),
+      }
     );
   }
   // call the main function with the filtered props, and cli options

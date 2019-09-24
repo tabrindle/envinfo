@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "webpack --progress",
-    "check:format": "prettier -l src/**/*.js --verbose",
+    "check:format": "prettier -l src/**/*.js",
     "compress": "gzexe envinfo-* && upx envinfo-win.exe",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
@@ -60,15 +60,14 @@
     "@babel/preset-env": "^7.3.1",
     "all-contributors-cli": "^4.11.1",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.0.3",
     "babel-jest": "23.6.0",
     "babel-loader": "^8.0.5",
-    "clipboardy": "^1.2.2",
-    "eslint": "^5.13.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-prettier": "^2.7.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-prettier": "^2.3.1",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
     "esm": "^3.2.22",
     "github-release-cli": "^0.4.1",
     "glob": "^7.1.2",
@@ -76,10 +75,15 @@
     "minimist": "^1.2.0",
     "os-name": "^3.1.0",
     "pkg": "^4.3.4",
-    "prettier-eslint-cli": "^4.1.1",
+    "prettier": "^1.18.2",
+    "prettier-eslint-cli": "^5.0.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.1.2",
     "which": "^1.2.14",
     "yamlify-object": "^0.4.5"
+  },
+  "resolutions": {
+    "d2/left-pad": "1.1.1",
+    "c/**/left-pad": "^1.1.2"
   }
 }

@@ -13,7 +13,9 @@ const system = require('./system');
 const utilities = require('./utilities');
 const virtualization = require('./virtualization');
 
-module.exports = Object.assign({}, utils, packages, {
+module.exports = {
+  ...utils,
+  ...packages,
   ...binaries,
   ...browsers,
   ...databases,
@@ -25,4 +27,4 @@ module.exports = Object.assign({}, utils, packages, {
   ...system,
   ...utilities,
   ...virtualization,
-});
+};
