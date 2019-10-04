@@ -6,9 +6,7 @@ module.exports = {
     utils.log('trace', 'getBraveBrowser');
     let braveVersion;
     if (utils.isLinux) {
-      braveVersion = utils
-        .run('brave --version')
-        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+      braveVersion = utils.run('brave --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
     } else if (utils.isMacOS) {
       braveVersion = utils
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers['Brave Browser'])
