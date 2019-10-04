@@ -2,6 +2,23 @@ const os = require('os');
 const utils = require('../utils');
 
 module.exports = {
+  getBraveBrowserInfo: () => {
+    utils.log('trace', 'getBraveBrowser');
+    let braveVersion;
+    if (utils.isLinux) {
+      braveVersion = utils
+        .run('brave --version')
+        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+    } else if (utils.isMacOS) {
+      braveVersion = utils
+        .getDarwinApplicationVersion(utils.browserBundleIdentifiers['Brave Browser'])
+        .then(utils.findVersion);
+    } else {
+      braveVersion = Promise.resolve('N/A');
+    }
+    return braveVersion.then(v => utils.determineFound('Brave Browser', v, 'N/A'));
+  },
+
   getChromeInfo: () => {
     utils.log('trace', 'getChromeInfo');
     let chromeVersion;
