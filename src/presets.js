@@ -124,6 +124,6 @@ module.exports = {
   babel: {
     System: ['OS'],
     Binaries: ['Node', 'npm', 'Yarn'],
-    npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna}',
+    npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest}',
   },
 };
