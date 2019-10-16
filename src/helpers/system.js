@@ -43,8 +43,9 @@ module.exports = {
     } else if (utils.isLinux) {
       version = utils.run('cat /etc/os-release').then(v => {
         const distro = (v || '').match(/NAME="(.+)"/);
-        const versionInfo = (v || '').match(/VERSION="(.+)"/) || [];
-        return `${distro[1]} ${versionInfo[1]}`.trim() || '';
+        const versionInfo = (v || '').match(/VERSION="(.+)"/) || null;
+        const versionStr = versionInfo !== null ? versionInfo[1] : '';
+        return `${distro[1]} ${versionStr}`.trim() || '';
       });
     } else {
       version = Promise.resolve();
