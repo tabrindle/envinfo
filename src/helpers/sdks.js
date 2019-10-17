@@ -19,19 +19,25 @@ module.exports = {
         const sdkmanager = utils.parseSDKManagerOutput(output);
         const getNdkVersionFromPath = ndkDir => {
           const metaPath = path.join(ndkDir, 'source.properties');
-          if (fs.existsSync(metaPath)) {
-            const contents = fs.readFileSync(metaPath).toString();
-            const split = contents.split('\n');
-            for (let i = 0; i < split.length; i += 1) {
-              const splits = split[i].split('=');
-              if (splits.length === 2) {
-                if (splits[0].trim() === 'Pkg.Revision') {
-                  return splits[1].trim();
-                }
+          let contents;
+          try {
+            contents = fs.readFileSync(metaPath, 'utf8');
+          } catch (err) {
+            if (err.code === 'ENOENT') {
+              return undefined;
+            }
+            throw err;
+          }
+
+          const split = contents.split('\n');
+          for (let i = 0; i < split.length; i += 1) {
+            const splits = split[i].split('=');
+            if (splits.length === 2) {
+              if (splits[0].trim() === 'Pkg.Revision') {
+                return splits[1].trim();
               }
             }
           }
-
           return undefined;
         };
 
