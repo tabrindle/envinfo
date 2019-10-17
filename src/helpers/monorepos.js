@@ -1,5 +1,5 @@
 const utils = require('../utils');
-const path = require("path");
+const path = require('path');
 
 module.exports = {
   getYarnWorkspacesInfo: () => {
@@ -26,9 +26,9 @@ module.exports = {
     ]).then(v => {
       const name = 'Lerna';
       if (v[0] && v[1]) {
-        return Promise.resolve([name, v[0]])
+        return Promise.resolve([name, v[0]]);
       }
-      return Promise.resolve([name, 'Not Found'])
+      return Promise.resolve([name, 'Not Found']);
     });
   },
 };
