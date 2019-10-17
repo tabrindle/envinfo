@@ -1,4 +1,3 @@
-const envinfo = require('./envinfo');
 const argv = require('minimist')(process.argv.slice(2));
 const version = global.__VERSION__ || ''; // eslint-disable-line
 
@@ -47,10 +46,9 @@ if (argv.help || argv._.indexOf('help') > -1) {
 
     --clipboard            *Removed - use clipboardy or clipboard-cli directly*
   `);
-  process.exit(0);
 } else if (argv.version || argv.v || argv._.indexOf('version') > -1) {
   console.log(version); // eslint-disable-line no-console
-  process.exit(0);
+} else {
+  require('./envinfo').cli(argv);
 }
 
-envinfo.cli(argv);
