@@ -49,6 +49,5 @@ if (argv.help || argv._.indexOf('help') > -1) {
 } else if (argv.version || argv.v || argv._.indexOf('version') > -1) {
   console.log(version); // eslint-disable-line no-console
 } else {
-  require('./envinfo').cli(argv);
+  require('./envinfo').cli(argv); // eslint-disable-line global-require
 }
-
