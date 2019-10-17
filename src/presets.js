@@ -59,6 +59,7 @@ module.exports = {
       'Safari',
       'Safari Technology Preview',
     ],
+    Monorepos: ['Yarn Workspaces', 'Lerna'],
     npmPackages: null,
     npmGlobalPackages: null,
   },

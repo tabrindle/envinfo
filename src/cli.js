@@ -32,6 +32,7 @@ if (argv.help || argv._.indexOf('help') > -1) {
     --IDEs                 Get version numbers of installed IDEs
     --languages            Get version numbers of installed languages such as Java, Python, PHP, etc
     --managers             Get version numbers of installed package/dependency managers
+    --monorepos            Get monorepo tools
     --binaries             Get version numbers of node, npm, watchman, etc
     --npmPackages          Get version numbers of locally installed npm packages - glob, string, or comma delimited list
     --npmGlobalPackages    Get version numbers of globally installed npm packages
