@@ -49,6 +49,7 @@ module.exports = {
     ],
     Databases: ['MongoDB', 'MySQL', 'PostgreSQL', 'SQLite'],
     Browsers: [
+      'Brave Browser',
       'Chrome',
       'Chrome Canary',
       'Edge',

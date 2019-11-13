@@ -117,6 +117,7 @@ module.exports = {
   pipe: fns => x => fns.reduce((v, f) => f(v), x),
 
   browserBundleIdentifiers: {
+    'Brave Browser': 'com.brave.Browser',
     Chrome: 'com.google.Chrome',
     'Chrome Canary': 'com.google.Chrome.canary',
     Firefox: 'org.mozilla.firefox',
