@@ -7,6 +7,7 @@ const databases = require('./databases');
 const ides = require('./ides');
 const languages = require('./languages');
 const managers = require('./managers');
+const monorepos = require('./monorepos');
 const sdks = require('./sdks');
 const servers = require('./servers');
 const system = require('./system');
@@ -20,6 +21,7 @@ module.exports = Object.assign({}, utils, packages, {
   ...ides,
   ...languages,
   ...managers,
+  ...monorepos,
   ...sdks,
   ...servers,
   ...system,
