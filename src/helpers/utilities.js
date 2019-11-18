@@ -3,13 +3,10 @@ const utils = require('../utils');
 module.exports = {
   getCMakeInfo: () => {
     utils.log('trace', 'getCMakeInfo');
-    if (utils.isMacOS || utils.isLinux) {
-      return Promise.all([
-        utils.run('cmake --version').then(utils.findVersion),
-        utils.run('which cmake'),
-      ]).then(v => utils.determineFound('CMake', v[0], v[1]));
-    }
-    return Promise.resolve(['CMake', 'N/A']);
+    return Promise.all([
+      utils.run('cmake --version').then(utils.findVersion),
+      utils.run('which cmake'),
+    ]).then(v => utils.determineFound('CMake', v[0], v[1]));
   },
 
   getGCCInfo: () => {
