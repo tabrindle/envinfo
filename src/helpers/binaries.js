@@ -33,8 +33,9 @@ module.exports = {
 
   getYarnInfo: () => {
     utils.log('trace', 'getYarnInfo');
-    return Promise.all([utils.run('yarn -v'), utils.which('yarn').then(utils.condensePath)]).then(
-      v => utils.determineFound('Yarn', v[0], v[1])
-    );
+    return Promise.all([
+      utils.run('yarn -v'),
+      utils.which('yarn').then(utils.condensePath),
+    ]).then(v => utils.determineFound('Yarn', v[0], v[1]));
   },
 };
