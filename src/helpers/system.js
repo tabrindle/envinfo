@@ -74,4 +74,14 @@ module.exports = {
     }
     return Promise.resolve(['Shell', 'N/A']);
   },
+
+  getGLibcInfo: () => {
+    utils.log('trace', 'getGLibc');
+    if (utils.isLinux) {
+      return Promise.all([utils.run(`ldd --version`).then(utils.findVersion)]).then(v =>
+        utils.determineFound('GLibc', v[0] || 'Unknown')
+      );
+    }
+    return Promise.resolve(['GLibc', 'N/A']);
+  },
 };

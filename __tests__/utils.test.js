@@ -159,6 +159,10 @@ InstalledDir: /usr/bin`,
   Build version 9A235`,
     version: '9.0',
   },
+  glibc: {
+    string: `ldd (Ubuntu GLIBC 2.30-0ubuntu2) 2.30`,
+    version: '2.30'
+  }
 };
 
 describe('findVersion - Matching version strings against real world cases', () => {
