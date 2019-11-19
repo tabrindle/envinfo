@@ -47,6 +47,8 @@ module.exports = {
         const versionStr = versionInfo !== null ? versionInfo[1] : '';
         return `${distro[1]} ${versionStr}`.trim() || '';
       });
+    } else if (utils.isWindows) {
+      version = Promise.resolve(os.release());
     } else {
       version = Promise.resolve();
     }
