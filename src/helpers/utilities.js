@@ -36,13 +36,10 @@ module.exports = {
 
   getGitInfo: () => {
     utils.log('trace', 'getGitInfo');
-    if (utils.isMacOS || utils.isLinux) {
-      return Promise.all([
-        utils.run('git --version').then(utils.findVersion),
-        utils.run('which git'),
-      ]).then(v => utils.determineFound('Git', v[0], v[1]));
-    }
-    return Promise.resolve(['Git', 'N/A']);
+    return Promise.all([
+      utils.run('git --version').then(utils.findVersion),
+      utils.run('which git'),
+    ]).then(v => utils.determineFound('Git', v[0], v[1]));
   },
 
   getMakeInfo: () => {
