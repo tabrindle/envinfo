@@ -86,13 +86,10 @@ module.exports = {
 
   getRustInfo: () => {
     utils.log('trace', 'getRustInfo');
-    if (utils.isMacOS || utils.isLinux) {
-      return Promise.all([
-        utils.run('rustup --version').then(utils.findVersion),
-        utils.run('which rustup'),
-      ]).then(v => utils.determineFound('Rust', v[0], v[1]));
-    }
-    return Promise.resolve(['Rust', 'N/A']);
+    return Promise.all([
+      utils.run('rustc --version').then(utils.findVersion),
+      utils.run('which rustc'),
+    ]).then(v => utils.determineFound('Rust', v[0], v[1]));
   },
 
   getScalaInfo: () => {
