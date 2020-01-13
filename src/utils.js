@@ -39,15 +39,12 @@ const fileExists = filePath => {
 
 const readFile = filePath => {
   return new Promise(fileResolved => {
-    if (!filePath) fileResolved(null);
     fs.readFile(filePath, 'utf8', (err, file) => (file ? fileResolved(file) : fileResolved(null)));
   });
 };
 
 const requireJson = filePath => {
-  return fileExists(filePath)
-    .then(readFile)
-    .then(file => (file ? JSON.parse(file) : null));
+  return readFile(filePath).then(file => (file ? JSON.parse(file) : null));
 };
 
 const versionRegex = /\d+\.[\d+|.]+/g;
