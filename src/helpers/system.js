@@ -43,7 +43,7 @@ module.exports = {
     } else if (utils.isLinux) {
       version = utils.run('cat /etc/os-release').then(v => {
         const distro = (v || '').match(/NAME="(.+)"/);
-        const versionInfo = (v || '').match(/VERSION="(.+)"/) || null;
+        const versionInfo = (v || '').match(/VERSION="(.+)"/) || ['', ''];
         const versionStr = versionInfo !== null ? versionInfo[1] : '';
         return `${distro[1]} ${versionStr}`.trim() || '';
       });
@@ -64,10 +64,13 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       const shell =
         process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
-      return Promise.all([
-        utils.run(`${shell} --version`).then(utils.findVersion),
-        utils.which(shell),
-      ]).then(v => utils.determineFound('Shell', v[0] || 'Unknown', v[1]));
+
+      let command = `${shell} --version 2>&1`;
+      if (shell.match('/bin/ash')) command = `${shell} --help 2>&1`;
+
+      return Promise.all([utils.run(command).then(utils.findVersion), utils.which(shell)]).then(v =>
+        utils.determineFound('Shell', v[0] || 'Unknown', v[1])
+      );
     }
     return Promise.resolve(['Shell', 'N/A']);
   },

@@ -34,6 +34,13 @@ const cases = {
     string: '3.4.3\n  Installed: rpm-4.11.3-35.el7.x86_64 at 2019-03-05 17:35\n',
     version: '3.4.3',
   },
+  ash: {
+    string: `
+    BusyBox v1.31.1 () multi-call binary.
+
+    Usage: ash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS] / -s [ARGS]]`,
+    version: '1.31.1', 
+  },
   bash: {
     string: 'GNU bash, version 4.4.12(1)-release (x86_64-apple-darwin17.0.0)',
     version: '4.4.12',
