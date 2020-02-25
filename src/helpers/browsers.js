@@ -49,6 +49,10 @@ module.exports = {
       edgeVersion = utils
         .run('powershell get-appxpackage Microsoft.MicrosoftEdge')
         .then(utils.findVersion);
+    } else if (utils.isMacOS) {
+      edgeVersion = utils.getDarwinApplicationVersion(
+        utils.browserBundleIdentifiers['Microsoft Edge']
+      );
     } else {
       edgeVersion = Promise.resolve('N/A');
     }
