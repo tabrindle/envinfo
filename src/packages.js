@@ -157,7 +157,13 @@ function getnpmGlobalPackages(packages, options) {
           new Promise((resolve, reject) =>
             glob(
               // sub packageGlob in to only get globbed packages if not null
-              path.join(prefix, 'lib', 'node_modules', packageGlob || '{*,@*/*}', 'package.json'),
+              path.join(
+                prefix,
+                utils.isWindows ? '' : 'lib',
+                'node_modules',
+                packageGlob || '{*,@*/*}',
+                'package.json'
+              ),
               (err, files) => {
                 if (!err) resolve(files);
                 reject(err);
