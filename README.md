@@ -143,7 +143,7 @@ npm install envinfo || yarn add envinfo
 
 ## Programmatic Usage
 
-Envinfo takes a configuration object and returns a string (optionally yaml, json or markdown)
+Envinfo takes a configuration object and returns a Promise that resolves a string (optionally yaml, json or markdown)
 
 ```javascript
 import envinfo from 'envinfo';
@@ -155,11 +155,11 @@ envinfo.run(
         Browsers: ['Chrome', 'Firefox', 'Safari'],
         npmPackages: ['styled-components', 'babel-plugin-styled-components'],
     },
-    { json: true, console: true, showNotFound: true }
-);
+    { json: true, showNotFound: true }
+).then(env => console.log(env));
 ```
 
-returns:
+logs:
 
 ```json
 {
