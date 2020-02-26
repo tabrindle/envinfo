@@ -120,6 +120,7 @@ module.exports = {
     Firefox: 'org.mozilla.firefox',
     'Firefox Developer Edition': 'org.mozilla.firefoxdeveloperedition',
     'Firefox Nightly': 'org.mozilla.nightly',
+    'Microsoft Edge': 'com.microsoft.edgemac',
     Safari: 'com.apple.Safari',
     'Safari Technology Preview': 'com.apple.SafariTechnologyPreview',
   },
