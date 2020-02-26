@@ -37,6 +37,7 @@ module.exports = {
       'Bash',
       'Go',
       'Elixir',
+      'Erlang',
       'Java',
       'Perl',
       'PHP',

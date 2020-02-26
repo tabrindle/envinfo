@@ -19,6 +19,19 @@ module.exports = {
     ]).then(v => Promise.resolve(utils.determineFound('Elixir', v[0], v[1])));
   },
 
+  getErlangInfo: () => {
+    utils.log('trace', 'getErlangInfo');
+    return Promise.all([
+      utils
+        // https://stackoverflow.com/a/34326368
+        .run(
+          `erl -eval "{ok, Version} = file:read_file(filename:join([code:root_dir(), 'releases', erlang:system_info(otp_release), 'OTP_VERSION'])), io:fwrite(Version), halt()." -noshell`
+        )
+        .then(utils.findVersion),
+      utils.which('erl'),
+    ]).then(v => Promise.resolve(utils.determineFound('Erlang', v[0], v[1])));
+  },
+
   getGoInfo: () => {
     utils.log('trace', 'getGoInfo');
     return Promise.all([
