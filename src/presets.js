@@ -128,4 +128,10 @@ module.exports = {
     Monorepos: ['Yarn Workspaces', 'Lerna'],
     npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest}',
   },
+  brainhubeu: {
+    System: ['OS', 'CPU', 'Memory'],
+    Binaries: ['Node', 'Yarn', 'npm'],
+    Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
+    npmPackages: '@brainhubeu/*',
+  },
 };
