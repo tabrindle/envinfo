@@ -1,6 +1,6 @@
 {
   "name": "@brainhubeu/envinfo",
-  "version": "7.5.2",
+  "version": "7.5.3",
   "description": "Info about your dev environment for debugging purposes",
   "repository": "https://github.com/tabrindle/envinfo",
   "author": "tabrindle@gmail.com",
