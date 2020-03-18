@@ -86,3 +86,15 @@ workflows:
       - react-native-test
       # Workaround for https://github.com/tabrindle/envinfo/issues/104
       - general-test
+      - publish_package:
+          requires:
+            - node6-test
+            - ubuntu-test
+            - debian-test
+            - centos-test
+            - react-native-test
+            - general-test
+          filters:
+            branches:
+              only:
+                - master
