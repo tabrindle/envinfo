@@ -1,5 +1,28 @@
 {
-  "extends": [
-    "config:base"
+  "bumpVersion": "patch",
+  "commitMessagePrefix": "[renovate] ",
+  "groupName": "NPM dependencies",
+  "labels": ["renovate"],
+  "rangeStrategy": "bump",
+  "docker": {
+    "major": {
+      "enabled": true
+    }
+  },
+  "packageRules": [
+    {
+      "groupName": "Docker dependencies",
+      "managers": [
+        "circleci"
+      ]
+    },
+    {
+      "groupName": "gatsby",
+      "managerBranchPrefix": "gatsby",
+      "packagePatterns": [
+        "gatsby"
+      ],
+      "rangeStrategy": "pin"
+    }
   ]
 }
