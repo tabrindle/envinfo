@@ -15,6 +15,7 @@
   "engines": {
     "node": ">=4"
   },
+  "private": false,
   "scripts": {
     "build": "webpack --progress",
     "check:format": "prettier -l src/**/*.js --verbose",
