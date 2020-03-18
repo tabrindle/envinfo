@@ -74,6 +74,18 @@ jobs:
       - run: npm install
       - run: npm run test
       - run: *link-and-execute
+  publish_package:
+    docker:
+      - image: circleci/node:12.16.1
+    steps:
+      - checkout
+      - run: yarn install --non-interactive
+      - run:
+          name: npm publish
+          command: |
+            yarn build
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+            npm publish
 
 workflows:
   version: 2
