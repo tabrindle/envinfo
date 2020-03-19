@@ -1,8 +1,8 @@
 {
   "name": "test-duplicates",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
-    "a": "1.0.0",
+    "a": "1.0.2",
     "b": "1.0.0"
   }
 }
