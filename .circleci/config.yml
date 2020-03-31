@@ -26,6 +26,15 @@ jobs:
       - run: npm install
       - run: npm run test
       - run: *link-and-execute
+  alpine-test:
+    working_directory: ~/repo
+    docker:
+      - image: node:alpine
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+      - run: *link-and-execute
   ubuntu-test:
     working_directory: ~/repo
     docker:
@@ -81,6 +90,7 @@ workflows:
     jobs:
       - node6-test
       - ubuntu-test
+      - alpine-test
       - debian-test
       - centos-test
       - react-native-test
