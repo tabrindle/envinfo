@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`envinfo will report on scoped npm packages return expected packages 1`] = `
+Object {
+  "npmPackages": Object {
+    "@scoped-name/test": Object {
+      "installed": "1.0.0",
+      "wanted": "1.0.0",
+    },
+    "a": Object {
+      "installed": "1.0.0",
+      "wanted": "1.0.0",
+    },
+    "b": Object {
+      "duplicates": Array [
+        "1.0.2",
+      ],
+      "installed": "1.0.0",
+      "wanted": "1.0.0",
+    },
+  },
+}
+`;
