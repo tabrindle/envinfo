@@ -17,6 +17,22 @@ aliases:
       envinfo
 
 jobs:
+  check_branch_name:
+    docker:
+      - image: circleci/node:12.16.2
+    working_directory: ~/app
+    steps:
+      - run:
+          name: fail if the branch name does not start with a valid prefix
+          command: |
+            branch=$CIRCLE_BRANCH
+            if [[ "$branch" =~ ^(fix|feature|breaking)/ || "$branch" == 'master' ]]
+            then
+              echo $branch is a valid name
+            else
+              echo $branch is not valid because the branch name must match '^(fix|feature|breaking)/' or be master
+              exit 1
+            fi
   node6-test:
     working_directory: ~/repo
     docker:
@@ -81,6 +97,31 @@ jobs:
       - checkout
       - run: yarn install --non-interactive
       - run:
+          name: configure GitHub user
+          command: |
+            git config --global user.email "devops@brainhub.pl"
+            git config --global user.name "DevOps Brainhub"
+            git remote -v
+            git remote remove origin
+            git remote add origin https://$GIT_TOKEN@github.com/brainhubeu/envinfo
+            git remote -v
+      - run:
+          name: bump NPM version
+          command: |
+            branch=`git log --oneline | grep '[0-9a-f]\{6,40\} Merge pull request #[0-9]\+ from brainhubeu/' | head -1 | sed 's@.* from brainhubeu/@@g' || true`
+            echo branch=$branch
+            if [[ "$branch" =~ ^(fix)/ ]]; then
+              npm version patch -m "%s [ci skip]"
+            elif [[ "$branch" =~ ^(feature)/ ]]; then
+              npm version minor -m "%s [ci skip]"
+            elif [[ "$branch" =~ ^(breaking)/ ]]; then
+              npm version major -m "%s [ci skip]"
+            else
+              echo $branch is not valid because the branch name must match '^(fix|feature|breaking)/'
+              exit 1
+            fi
+      - run: git push origin $CIRCLE_BRANCH
+      - run:
           name: npm publish
           command: |
             yarn build
@@ -91,13 +132,26 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - node6-test
-      - ubuntu-test
-      - debian-test
-      - centos-test
-      - react-native-test
+      - check_branch_name
+      - node6-test:
+          requires:
+            - check_branch_name
+      - ubuntu-test:
+          requires:
+            - check_branch_name
+      - debian-test:
+          requires:
+            - check_branch_name
+      - centos-test:
+          requires:
+            - check_branch_name
+      - react-native-test:
+          requires:
+            - check_branch_name
       # Workaround for https://github.com/tabrindle/envinfo/issues/104
-      - general-test
+      - general-test:
+          requires:
+            - check_branch_name
       - publish_package:
           requires:
             - node6-test
