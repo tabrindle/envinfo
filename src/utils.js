@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const childProcess = require('child_process');
 const libWhich = require('which');
 const glob = require('glob');
@@ -228,7 +229,7 @@ module.exports = {
   },
 
   condensePath: pathString => {
-    return (pathString || '').replace(process.env.HOME, '~');
+    return (pathString || '').replace(os.homedir(), '~');
   },
 
   determineFound: (name, version, appPath) => {
