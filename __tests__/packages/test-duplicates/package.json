@@ -2,7 +2,9 @@
   "name": "test-duplicates",
   "version": "1.0.0",
   "dependencies": {
+    "@scoped-name/test": "1.0.0",
     "a": "1.0.0",
     "b": "1.0.0"
+
   }
 }
