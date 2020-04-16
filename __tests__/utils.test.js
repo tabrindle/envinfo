@@ -39,7 +39,7 @@ const cases = {
     BusyBox v1.31.1 () multi-call binary.
 
     Usage: ash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS] / -s [ARGS]]`,
-    version: '1.31.1', 
+    version: '1.31.1',
   },
   bash: {
     string: 'GNU bash, version 4.4.12(1)-release (x86_64-apple-darwin17.0.0)',
@@ -78,7 +78,7 @@ const cases = {
   ffmpeg: {
     string: `ffmpeg version 4.2 Copyright (c) 2000-2019 the FFmpeg developers
 built with gcc 9.1.1 (GCC) 20190807`,
-    version: '4.2'
+    version: '4.2',
   },
   go: {
     string: 'go version go1.9.3 darwin/amd64',
@@ -161,7 +161,7 @@ InstalledDir: /usr/bin`,
   },
 };
 
-describe('Matching version strings against real world cases', () => {
+describe('findVersion - Matching version strings against real world cases', () => {
   Object.keys(cases).map(c =>
     test(`${c} returns expected version`, () =>
       expect(utils.findVersion(cases[c].string, cases[c].regex, cases[c].index)).toEqual(
@@ -170,7 +170,7 @@ describe('Matching version strings against real world cases', () => {
   );
 });
 
-describe('Extracting info from sdkmanager', () => {
+describe('parseSDKManagerOutput - Extracting info from sdkmanager', () => {
   const output = `
     Path                                                                              | Version | Description                                     | Location
     -------                                                                           | ------- | -------                                         | -------
@@ -188,4 +188,45 @@ describe('Extracting info from sdkmanager', () => {
   expect(sdkmanager.apiLevels).toEqual(['28']);
   expect(sdkmanager.buildTools).toEqual(['28.0.3']);
   expect(sdkmanager.systemImages).toEqual(['android-28 | Google Play Intel x86 Atom']);
+});
+
+describe('generatePlistBuddyCommand', () => {
+  test('default options array', () => {
+    expect(utils.generatePlistBuddyCommand('/Applications/Firefox.app')).toBe(
+      '/usr/libexec/PlistBuddy -c Print:CFBundleShortVersionString /Applications/Firefox.app'
+    );
+  });
+
+  test('options array argument', () => {
+    expect(
+      utils.generatePlistBuddyCommand('/Applications/Firefox.app', [
+        'CFBundleShortVersionString',
+        'CFBundleVersion',
+      ])
+    ).toBe(
+      '/usr/libexec/PlistBuddy -c Print:CFBundleShortVersionString -c Print:CFBundleVersion /Applications/Firefox.app'
+    );
+  });
+});
+
+describe('toReadableBytes', () => {
+  test('formats bytes correctly', () => {
+    expect(utils.toReadableBytes(1337)).toBe('1.31 KB');
+  });
+
+  test('handles falsy value for bytes', () => {
+    expect(utils.toReadableBytes()).toBe('0 Bytes');
+  });
+});
+
+describe('omit', () => {
+  test('emits properties from object', () => {
+    expect(utils.omit({ one: true, two: true }, ['two'])).toEqual({ one: true });
+  });
+});
+
+describe('pick', () => {
+  test('picks properties from object', () => {
+    expect(utils.pick({ one: true, two: true }, ['two'])).toEqual({ two: true });
+  });
 });
