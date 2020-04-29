@@ -32,6 +32,11 @@
     "start": "node -r esm src/cli.js",
     "test": "jest --env=node && eslint src && prettier -l src/**/*.js"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && npm run lint"
+    }
+  },
   "keywords": [
     "development",
     "env",
@@ -58,6 +63,8 @@
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "all-contributors-cli": "^4.11.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
@@ -71,6 +78,7 @@
     "esm": "^3.2.22",
     "github-release-cli": "^0.4.1",
     "glob": "^7.1.6",
+    "husky": "^4.2.5",
     "jest": "^22.4.3",
     "minimist": "^1.2.5",
     "os-name": "^3.1.0",
