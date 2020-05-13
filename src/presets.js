@@ -128,4 +128,10 @@ module.exports = {
     Monorepos: ['Yarn Workspaces', 'Lerna'],
     npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest}',
   },
+  playwright: {
+    System: ['OS', 'Memory', 'Container'],
+    Binaries: ['Node', 'Yarn', 'npm'],
+    Languages: ['Bash'],
+    npmPackages: '{playwright*}',
+  },
 };
