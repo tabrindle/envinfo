@@ -18,6 +18,7 @@ module.exports = {
     path: path.join(__dirname, '/dist'),
   },
   module: {
+    noParse: /\/src\/nativeRequire.js$/,
     rules: [
       {
         use: 'babel-loader',

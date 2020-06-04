@@ -83,9 +83,20 @@ function main(props, options) {
   });
 }
 
+function runMainFromConfigFile(configFile, options) {
+  return Promise.resolve(configFile()).then(({ options: configOptions, ...config }) => {
+    return main(config, { ...options, ...configOptions });
+  });
+}
+
 // Example usage:
 // $ envinfo --system --npmPackages
 function cli(options) {
+  const configFile = utils.findConfigFile();
+  if (configFile) {
+    return runMainFromConfigFile(configFile, options);
+  }
+
   // if all option is passed, do not pass go, do not collect 200 dollars, go straight to main
   if (options.all) {
     return main(
@@ -135,8 +146,14 @@ function cli(options) {
 
 // require('envinfo);
 // envinfo.run({ system: [os, cpu]}, {fullTree: true })
-function run(args, options) {
+function run(args = {}, options = {}) {
   if (typeof args.preset === 'string') return main(presets[args.preset], options);
+
+  const configFile = utils.findConfigFile();
+  if (configFile) {
+    return runMainFromConfigFile(configFile, options);
+  }
+
   return main(args, options);
 }
 
