@@ -65,6 +65,14 @@ module.exports = {
     );
   },
 
+  getProtocInfo: () => {
+    utils.log('trace', 'getProtocInfo');
+    return Promise.all([
+      utils.run('protoc --version').then(utils.findVersion),
+      utils.run('which protoc'),
+    ]).then(v => utils.determineFound('Protoc', v[0], v[1]));
+  },
+
   getPythonInfo: () => {
     utils.log('trace', 'getPythonInfo');
     return Promise.all([

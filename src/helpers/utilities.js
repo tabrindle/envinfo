@@ -1,6 +1,14 @@
 const utils = require('../utils');
 
 module.exports = {
+  getBazelInfo: () => {
+    utils.log('trace', 'getBazelInfo');
+    return Promise.all([
+      utils.run('bazel --version').then(utils.findVersion),
+      utils.run('which bazel'),
+    ]).then(v => utils.determineFound('Bazel', v[0], v[1]));
+  },
+
   getCMakeInfo: () => {
     utils.log('trace', 'getCMakeInfo');
     return Promise.all([
