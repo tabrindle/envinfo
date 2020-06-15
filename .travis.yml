@@ -1,3 +1,4 @@
+install: yarn install --frozen-lockfile --ignore-engines
 language: node_js
 node_js:
   - "6"
