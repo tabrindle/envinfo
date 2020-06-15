@@ -87,11 +87,12 @@ function main(props, options) {
 // $ envinfo --system --npmPackages
 function cli(options) {
   // if all option is passed, do not pass go, do not collect 200 dollars, go straight to main
-  if (options.all)
+  if (options.all) {
     return main(
       Object.assign({}, presets.defaults, { npmPackages: true, npmGlobalPackages: true }),
       options
     );
+  }
   // if raw, parse the row options and skip to main
   if (options.raw) return main(JSON.parse(options.raw), options);
   // if helper flag, run just that helper then log the results
@@ -118,7 +119,7 @@ function cli(options) {
   }, {});
   // if there is a preset, merge that with the parsed props and options
   if (options.preset) {
-    if (!presets[options.preset]) console.error(`\nNo "${options.preset}" preset found.`); // eslint-disable-line no-console
+    if (!presets[options.preset]) return console.error(`\nNo "${options.preset}" preset found.`); // eslint-disable-line no-console
     return main(
       Object.assign({}, utils.omit(presets[options.preset], ['options']), props),
       Object.assign(
