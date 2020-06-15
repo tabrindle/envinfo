@@ -12,6 +12,24 @@ module.exports = {
             ['CFBundleShortVersionString', 'CFBundleVersion']
           )
         )
+        .then(version => {
+          if (!version) {
+            return utils.run(
+              utils.generatePlistBuddyCommand(
+                path.join(
+                  '~',
+                  'Applications',
+                  'JetBrains\\ Toolbox',
+                  'Android\\ Studio.app',
+                  'Contents',
+                  'Info.plist'
+                ),
+                ['CFBundleShortVersionString', 'CFBundleVersion']
+              )
+            );
+          }
+          return version;
+        })
         .then(version => version.split('\n').join(' '));
     } else if (utils.isLinux) {
       androidStudioVersion = Promise.all([
