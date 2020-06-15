@@ -5,11 +5,19 @@ const utils = require('../utils');
 module.exports = {
   getAndroidSDKInfo: () => {
     return utils
-      .run(
-        process.env.ANDROID_HOME
-          ? `${process.env.ANDROID_HOME}/tools/bin/sdkmanager --list`
-          : 'sdkmanager --list'
-      )
+      .run('sdkmanager --list')
+      .then(output => {
+        if (!output && process.env.ANDROID_HOME)
+          return utils.run(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager --list`);
+        return output;
+      })
+      .then(output => {
+        if (!output && process.env.ANDROID_HOME)
+          return utils.run(
+            `${process.env.ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --list`
+          );
+        return output;
+      })
       .then(output => {
         if (!output && utils.isMacOS)
           return utils.run('~/Library/Android/sdk/tools/bin/sdkmanager --list');
