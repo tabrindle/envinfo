@@ -94,7 +94,7 @@ const parseSDKManagerOutput = output => {
 };
 
 function findConfigFile() {
-  const configPath = path.join(process.cwd(), 'envinfo.js');
+  const configPath = path.join(process.cwd(), 'envinfo.config.js');
   try {
     const fn = nativeRequire(configPath); // eslint-disable-line global-require
     return fn;
