@@ -26,4 +26,27 @@ describe('envinfo.js config file', () => {
       process.chdir(cwd);
     }
   });
+
+  test('command line flags will override config file', async () => {
+    const cwd = process.cwd();
+    process.chdir(path.join(__dirname, 'packages', path.sep, 'test-config'));
+
+    const consoleLogSpy = jest.spyOn(global.console, 'log');
+
+    consoleLogSpy.mockImplementation(() => () => {});
+
+    try {
+      await envinfo.cli({
+        markdown: true,
+        json: false,
+        npmPackages: false,
+        system: true,
+        console: true,
+      });
+      expect(consoleLogSpy.mock.calls[0][0].includes('##')).toBe(true);
+    } finally {
+      consoleLogSpy.mockClear();
+      process.chdir(cwd);
+    }
+  });
 });

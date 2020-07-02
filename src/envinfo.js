@@ -85,7 +85,7 @@ function main(props, options) {
 
 function runMainFromConfigFile(configFile, options) {
   return Promise.resolve(configFile()).then(({ options: configOptions, ...config }) => {
-    return main(config, { ...options, ...configOptions });
+    return main(config, { ...configOptions, ...options });
   });
 }
 
