@@ -97,4 +97,42 @@ module.exports = {
     }
     return Promise.resolve(['iOS SDK', 'N/A']);
   },
+
+  getWindowsSDKInfo: () => {
+    utils.log('trace', 'getWindowsSDKInfo');
+    let info;
+    if (utils.isWindows) {
+      // Query the registry under AppModelUnlock,
+      // parse out the output into an object where the object properties are the registry values,
+      // and the values of those properties are the corresponding registry data.
+      return utils
+        .run('reg query HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock')
+        .then(out => {
+          info = out
+            .split(/[\r\n]/g)
+            .slice(1)
+            .filter(x => x !== '')
+            .reduce((m, o) => {
+              let values = o.match(/[^\s]+/g);
+              if (values[2] === '0x0' || values[2] === '0x1') {
+                // coerce to a string bool value instead of a boolean because
+                // clean() will strip out non-Object values like Boolean.
+                values[2] = values[2] === '0x1' ? 'Enabled' : 'Disabled';
+              }
+              m[values[0]] = values[2];
+              return m;
+            }, {});
+          try {
+            const versions = fs.readdirSync(
+              `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Platforms/UAP`
+            );
+            info.Versions = versions;
+          } catch (_) {
+            // None found
+          }
+          return Promise.resolve(['Windows SDK', info]);
+        });
+    }
+    return Promise.resolve(['Windows SDK', utils.NA]);
+  },
 };

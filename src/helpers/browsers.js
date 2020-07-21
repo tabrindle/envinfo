@@ -1,3 +1,4 @@
+const fs = require('fs');
 const os = require('os');
 const utils = require('../utils');
 
@@ -28,6 +29,12 @@ module.exports = {
       chromeVersion = utils
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
         .then(utils.findVersion);
+    } else if (utils.isWindows) {
+      chromeVersion = Promise.resolve(
+        utils.findVersion(
+          fs.readdirSync(`${process.env['ProgramFiles(x86)']}/Google/Chrome/Application`).join('\n')
+        )
+      );
     } else {
       chromeVersion = Promise.resolve('N/A');
     }
@@ -46,9 +53,25 @@ module.exports = {
     utils.log('trace', 'getEdgeInfo');
     let edgeVersion;
     if (utils.isWindows && os.release().split('.')[0] === '10') {
-      edgeVersion = utils
-        .run('powershell get-appxpackage Microsoft.MicrosoftEdge')
-        .then(utils.findVersion);
+      const getPackageInfo = (pkgName, nickname) => {
+        return utils.run(`powershell get-appxpackage ${pkgName}`).then(out => {
+          const version = utils.findVersion(out);
+          if (version !== '') {
+            return `${nickname} (${utils.findVersion(out)})`;
+          }
+          return undefined;
+        });
+      };
+      const edgePackages = {
+        Spartan: 'Microsoft.MicrosoftEdge',
+        Chromium: 'Microsoft.MicrosoftEdge.Stable',
+        ChromiumDev: 'Microsoft.MicrosoftEdge.Dev',
+      };
+      edgeVersion = Promise.all(
+        Object.keys(edgePackages)
+          .map(nickname => getPackageInfo(edgePackages[nickname], nickname))
+          .filter(x => x !== undefined)
+      );
     } else if (utils.isMacOS) {
       edgeVersion = utils.getDarwinApplicationVersion(
         utils.browserBundleIdentifiers['Microsoft Edge']
@@ -56,7 +79,13 @@ module.exports = {
     } else {
       edgeVersion = Promise.resolve('N/A');
     }
-    return edgeVersion.then(v => utils.determineFound('Edge', v, 'N/A'));
+    return edgeVersion.then(v =>
+      utils.determineFound(
+        'Edge',
+        v.filter(x => x !== undefined),
+        'N/A'
+      )
+    );
   },
 
   getFirefoxInfo: () => {
