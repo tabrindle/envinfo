@@ -97,4 +97,34 @@ module.exports = {
     }
     return Promise.resolve(['iOS SDK', 'N/A']);
   },
+
+  getWindowsSDKInfo: () => {
+    let info;
+    if (utils.isWindows) {
+      return utils
+        .run('reg query HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock')
+        .then(out => {
+          const devModeLines = out
+            .split(/[\r\n]/g)
+            .slice(1)
+            .filter(x => x !== '');
+          const devModeMap = devModeLines.reduce((m, o) => {
+            const values = o.match(/[^\s]+/g);
+            m[values[0]] = values[2];
+            return m;
+          }, {});
+          info = devModeMap;
+          try {
+            const versions = fs.readdirSync(
+              `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Include`
+            );
+            info.Versions = versions;
+          } catch {
+            // None found
+          }
+          return Promise.resolve(['Windows SDK', info]);
+        });
+    }
+    return Promise.resolve(['Windows SDK', utils.NotFound]);
+  },
 };

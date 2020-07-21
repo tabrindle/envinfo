@@ -154,6 +154,27 @@ module.exports = {
     ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
+  getVisualStudioInfo: () => {
+    if (utils.isWindows) {
+      return utils
+        .run(
+          `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
+        )
+        .then(jsonText =>
+          JSON.parse(jsonText).map(_ => {
+            return { Version: _.installationVersion, DisplayName: _.displayName };
+          })
+        )
+        .then(x =>
+          utils.determineFound(
+            'Visual Studio',
+            x.map(v => `${v.Version} (${v.DisplayName})`)
+          )
+        );
+    }
+    return Promise.resolve('N/A');
+  },
+
   getWebStormInfo: () => {
     utils.log('trace', 'getWebStormInfo');
     return utils

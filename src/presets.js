@@ -28,7 +28,7 @@ module.exports = {
     ],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
-    SDKs: ['iOS SDK', 'Android SDK'],
+    SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
     IDEs: [
       'Android Studio',
       'Atom',
@@ -39,6 +39,7 @@ module.exports = {
       'PhpStorm',
       'Sublime Text',
       'VSCode',
+      'Visual Studio',
       'Vim',
       'WebStorm',
       'Xcode',
@@ -84,8 +85,8 @@ module.exports = {
   'react-native': {
     System: ['OS', 'CPU'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
-    SDKs: ['iOS SDK', 'Android SDK'],
-    IDEs: ['Android Studio', 'Xcode'],
+    SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
+    IDEs: ['Android Studio', 'Xcode', 'Visual Studio'],
     npmPackages: ['react', 'react-native'],
     npmGlobalPackages: ['react-native-cli'],
   },
