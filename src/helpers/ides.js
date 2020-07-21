@@ -155,14 +155,15 @@ module.exports = {
   },
 
   getVisualStudioInfo: () => {
+    utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
       return utils
         .run(
           `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
         )
         .then(jsonText =>
-          JSON.parse(jsonText).map(_ => {
-            return { Version: _.installationVersion, DisplayName: _.displayName };
+          JSON.parse(jsonText).map(vsInstance => {
+            return { Version: vsInstance.installationVersion, DisplayName: vsInstance.displayName };
           })
         )
         .then(x =>
