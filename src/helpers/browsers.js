@@ -1,3 +1,4 @@
+const fs = require('fs');
 const os = require('os');
 const utils = require('../utils');
 
@@ -28,6 +29,12 @@ module.exports = {
       chromeVersion = utils
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
         .then(utils.findVersion);
+    } else if (utils.isWindows) {
+      chromeVersion = Promise.resolve(
+        utils.findVersion(
+          fs.readdirSync(`${process.env['ProgramFiles(x86)']}/Google/Chrome/Application`).join('\n')
+        )
+      );
     } else {
       chromeVersion = Promise.resolve('N/A');
     }

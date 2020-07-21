@@ -116,7 +116,7 @@ module.exports = {
           info = devModeMap;
           try {
             const versions = fs.readdirSync(
-              `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Include`
+              `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Platforms/UAP`
             );
             info.Versions = versions;
           } catch (_) {
