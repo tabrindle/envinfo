@@ -119,7 +119,7 @@ module.exports = {
               `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Include`
             );
             info.Versions = versions;
-          } catch {
+          } catch (_) {
             // None found
           }
           return Promise.resolve(['Windows SDK', info]);
