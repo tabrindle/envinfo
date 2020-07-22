@@ -100,8 +100,8 @@ module.exports = {
 
   getWindowsSDKInfo: () => {
     utils.log('trace', 'getWindowsSDKInfo');
-    let info;
     if (utils.isWindows) {
+      let info = utils.NotFound;
       // Query the registry under AppModelUnlock,
       // parse out the output into an object where the object properties are the registry values,
       // and the values of those properties are the corresponding registry data.
@@ -122,6 +122,9 @@ module.exports = {
               m[values[0]] = values[2];
               return m;
             }, {});
+          if (Object.keys(info).length === 0) {
+            info = utils.NotFound;
+          }
           try {
             const versions = fs.readdirSync(
               `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Platforms/UAP`

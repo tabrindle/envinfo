@@ -157,23 +157,35 @@ module.exports = {
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
-      return utils
-        .run(
-          `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
-        )
-        .then(jsonText =>
-          JSON.parse(jsonText).map(vsInstance => {
-            return { Version: vsInstance.installationVersion, DisplayName: vsInstance.displayName };
-          })
-        )
-        .then(x =>
-          utils.determineFound(
-            'Visual Studio',
-            x.map(v => `${v.Version} (${v.DisplayName})`)
+      try {
+        return utils
+          .run(
+            `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
           )
-        );
+          .then(jsonText => {
+            try {
+              return Promise.resolve(
+                JSON.parse(jsonText).map(vsInstance => {
+                  return {
+                    Version: vsInstance.installationVersion,
+                    DisplayName: vsInstance.displayName,
+                  };
+                })
+              ).then(x =>
+                utils.determineFound(
+                  'Visual Studio',
+                  x.map(v => `${v.Version} (${v.DisplayName})`)
+                )
+              );
+            } catch (e) {
+              return Promise.resolve(['Visual Studio', utils.NotFound]);
+            }
+          });
+      } catch (e) {
+        return Promise.resolve(['Visual Studio', utils.NotFound]);
+      }
     }
-    return Promise.resolve('N/A');
+    return Promise.resolve(['Visual Studio', utils.NA]);
   },
 
   getWebStormInfo: () => {
