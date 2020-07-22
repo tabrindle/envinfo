@@ -84,7 +84,7 @@ module.exports = {
         utils.browserBundleIdentifiers['Microsoft Edge']
       );
     } else {
-      edgeVersion = Promise.resolve('N/A');
+      return Promise.resolve('N/A');
     }
     return edgeVersion.then(v =>
       utils.determineFound(
