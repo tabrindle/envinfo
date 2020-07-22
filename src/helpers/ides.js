@@ -157,33 +157,25 @@ module.exports = {
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
-      try {
-        return utils
-          .run(
-            `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
-          )
-          .then(jsonText => {
-            try {
-              return Promise.resolve(
-                JSON.parse(jsonText).map(vsInstance => {
-                  return {
-                    Version: vsInstance.installationVersion,
-                    DisplayName: vsInstance.displayName,
-                  };
-                })
-              ).then(x =>
-                utils.determineFound(
-                  'Visual Studio',
-                  x.map(v => `${v.Version} (${v.DisplayName})`)
-                )
-              );
-            } catch (e) {
-              return Promise.resolve(['Visual Studio', utils.NotFound]);
-            }
+      return utils
+        .run(
+          `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
+        )
+        .then(jsonText => {
+          const instances = JSON.parse(jsonText).map(vsInstance => {
+            return {
+              Version: vsInstance.installationVersion,
+              DisplayName: vsInstance.displayName,
+            };
           });
-      } catch (e) {
-        return Promise.resolve(['Visual Studio', utils.NotFound]);
-      }
+          return utils.determineFound(
+            'Visual Studio',
+            instances.map(v => `${v.Version} (${v.DisplayName})`)
+          );
+        })
+        .catch(() => {
+          return Promise.resolve(['Visual Studio', utils.NotFound]);
+        });
     }
     return Promise.resolve(['Visual Studio', utils.NA]);
   },

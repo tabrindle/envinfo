@@ -14,8 +14,8 @@ test_script:
   - set PATH=%RPATH%;%PATH%
   - SET ENVINFO_DEBUG=trace
   - npm run build
-  - node --unhandled-rejections=strict -r esm src/cli.js
-  - node --unhandled-rejections=strict dist/cli.js
+  - node -r esm src/cli.js
+  - node dist/cli.js
   - SET ENVINFO_DEBUG=""
   - npm test
 
