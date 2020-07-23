@@ -89,7 +89,7 @@ module.exports = {
     return edgeVersion.then(v =>
       utils.determineFound(
         'Edge',
-        v.filter(x => x !== undefined),
+        (v || []).filter(x => x !== undefined),
         utils.NA
       )
     );
