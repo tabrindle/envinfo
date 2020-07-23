@@ -1,6 +1,7 @@
 const fs = require('fs');
 const os = require('os');
 const utils = require('../utils');
+const path = require('path');
 
 module.exports = {
   getBraveBrowserInfo: () => {
@@ -30,11 +31,17 @@ module.exports = {
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
         .then(utils.findVersion);
     } else if (utils.isWindows) {
-      chromeVersion = Promise.resolve(
-        utils.findVersion(
-          fs.readdirSync(`${process.env['ProgramFiles(x86)']}/Google/Chrome/Application`).join('\n')
-        )
-      );
+      let version;
+      try {
+        version = utils.findVersion(
+          fs
+            .readdirSync(path.join(process.env['ProgramFiles(x86)'], 'Google/Chrome/Application'))
+            .join('\n')
+        );
+      } catch (e) {
+        version = utils.NotFound;
+      }
+      chromeVersion = Promise.resolve(version);
     } else {
       chromeVersion = Promise.resolve('N/A');
     }
@@ -77,13 +84,13 @@ module.exports = {
         utils.browserBundleIdentifiers['Microsoft Edge']
       );
     } else {
-      edgeVersion = Promise.resolve('N/A');
+      return Promise.resolve('N/A');
     }
     return edgeVersion.then(v =>
       utils.determineFound(
         'Edge',
         v.filter(x => x !== undefined),
-        'N/A'
+        utils.NA
       )
     );
   },

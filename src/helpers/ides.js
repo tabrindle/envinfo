@@ -161,19 +161,23 @@ module.exports = {
         .run(
           `"${process.env['ProgramFiles(x86)']}/Microsoft Visual Studio/Installer/vswhere.exe" -format json -prerelease`
         )
-        .then(jsonText =>
-          JSON.parse(jsonText).map(vsInstance => {
-            return { Version: vsInstance.installationVersion, DisplayName: vsInstance.displayName };
-          })
-        )
-        .then(x =>
-          utils.determineFound(
+        .then(jsonText => {
+          const instances = JSON.parse(jsonText).map(vsInstance => {
+            return {
+              Version: vsInstance.installationVersion,
+              DisplayName: vsInstance.displayName,
+            };
+          });
+          return utils.determineFound(
             'Visual Studio',
-            x.map(v => `${v.Version} (${v.DisplayName})`)
-          )
-        );
+            instances.map(v => `${v.Version} (${v.DisplayName})`)
+          );
+        })
+        .catch(() => {
+          return Promise.resolve(['Visual Studio', utils.NotFound]);
+        });
     }
-    return Promise.resolve('N/A');
+    return Promise.resolve(['Visual Studio', utils.NA]);
   },
 
   getWebStormInfo: () => {
