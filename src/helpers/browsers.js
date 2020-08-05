@@ -87,11 +87,7 @@ module.exports = {
       return Promise.resolve('N/A');
     }
     return edgeVersion.then(v =>
-      utils.determineFound(
-        'Edge',
-        Array.isArray(v) ? v.filter(x => x !== undefined) : v,
-        utils.NA
-      )
+      utils.determineFound('Edge', Array.isArray(v) ? v.filter(x => x !== undefined) : v, utils.NA)
     );
   },
 
