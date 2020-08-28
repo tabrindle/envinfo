@@ -144,6 +144,6 @@ module.exports = {
     System: ['OS', 'Memory', 'Container'],
     Binaries: ['Node', 'Yarn', 'npm'],
     Languages: ['Bash'],
-    npmPackages: '{playwright*}',
+    npmPackages: 'playwright*',
   },
 };
