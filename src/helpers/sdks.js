@@ -10,7 +10,11 @@ module.exports = {
       const localConfigurationPath = path.join(process.cwd(), 'android/local.properties');
       const localConfiguration = fs.readFileSync(localConfigurationPath, 'utf8');
 
-      ANDROID_HOME = localConfiguration.split('=')[1].trim();
+      const sdkDir = localConfiguration.split('sdk.dir=');
+
+      if (sdkDir.length > 1) {
+        ANDROID_HOME = sdkDir[1].trim();
+      }
     } catch (err) {
       if (err.code !== 'ENOENT') {
         throw err;
