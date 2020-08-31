@@ -4,18 +4,29 @@ const utils = require('../utils');
 
 module.exports = {
   getAndroidSDKInfo: () => {
+    let ANDROID_HOME = process.env.ANDROID_HOME;
+
+    try {
+      const localConfigurationPath = path.join(process.cwd(), 'android/local.properties');
+      const localConfiguration = fs.readFileSync(localConfigurationPath, 'utf8');
+
+      ANDROID_HOME = localConfiguration.split('=')[1].trim();
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
+
     return utils
       .run('sdkmanager --list')
       .then(output => {
-        if (!output && process.env.ANDROID_HOME)
-          return utils.run(`${process.env.ANDROID_HOME}/tools/bin/sdkmanager --list`);
+        if (!output && ANDROID_HOME)
+          return utils.run(`${ANDROID_HOME}/tools/bin/sdkmanager --list`);
         return output;
       })
       .then(output => {
-        if (!output && process.env.ANDROID_HOME)
-          return utils.run(
-            `${process.env.ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --list`
-          );
+        if (!output && ANDROID_HOME)
+          return utils.run(`${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --list`);
         return output;
       })
       .then(output => {
@@ -58,8 +69,8 @@ module.exports = {
             return getNdkVersionFromPath(process.env.ANDROID_NDK_HOME);
           }
 
-          if (process.env.ANDROID_HOME) {
-            return getNdkVersionFromPath(path.join(process.env.ANDROID_HOME, 'ndk-bundle'));
+          if (ANDROID_HOME) {
+            return getNdkVersionFromPath(path.join(ANDROID_HOME, 'ndk-bundle'));
           }
 
           return undefined;
