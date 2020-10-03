@@ -8,7 +8,9 @@ module.exports = {
     utils.log('trace', 'getBraveBrowser');
     let braveVersion;
     if (utils.isLinux) {
-      braveVersion = utils.run('brave --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+      braveVersion = utils
+        .run('brave --version || brave-browser --version')
+        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
     } else if (utils.isMacOS) {
       braveVersion = utils
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers['Brave Browser'])
@@ -54,6 +56,17 @@ module.exports = {
       utils.browserBundleIdentifiers['Chrome Canary']
     );
     return chromeCanaryVersion.then(v => utils.determineFound('Chrome Canary', v, 'N/A'));
+  },
+
+  getChromiumInfo: () => {
+    utils.log('trace', 'getChromiumInfo');
+    let chromiumVersion;
+    if (utils.isLinux) {
+      chromiumVersion = utils.run('chromium --version').then(utils.findVersion);
+    } else {
+      chromiumVersion = Promise.resolve('N/A');
+    }
+    return chromiumVersion.then(v => utils.determineFound('Chromium', v, 'N/A'));
   },
 
   getEdgeInfo: () => {
