@@ -25,7 +25,7 @@ module.exports = {
     if (utils.isLinux) {
       chromeVersion = utils
         .run('google-chrome --version')
-        .then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+        .then(v => v.replace(' dev', '').replace(/^.* ([^ ]*)/g, '$1'));
     } else if (utils.isMacOS) {
       chromeVersion = utils
         .getDarwinApplicationVersion(utils.browserBundleIdentifiers.Chrome)
