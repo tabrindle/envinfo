@@ -61,6 +61,14 @@ module.exports = {
     return Promise.resolve(['Make', 'N/A']);
   },
 
+  getNinjaInfo: () => {
+    utils.log('trace', 'getNinjaInfo');
+    return Promise.all([
+      utils.run('ninja --version').then(utils.findVersion),
+      utils.run('which ninja'),
+    ]).then(v => utils.determineFound('Ninja', v[0], v[1]));
+  },
+
   getMercurialInfo: () => {
     utils.log('trace', 'getMercurialInfo');
     if (utils.isMacOS || utils.isLinux) {
