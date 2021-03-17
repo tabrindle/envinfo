@@ -22,6 +22,7 @@ module.exports = {
       'GCC',
       'Git',
       'Clang',
+      'Ninja',
       'Mercurial',
       'Subversion',
       'FFmpeg',
