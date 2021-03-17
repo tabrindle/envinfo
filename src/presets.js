@@ -66,6 +66,7 @@ module.exports = {
       'Brave Browser',
       'Chrome',
       'Chrome Canary',
+      'Chromium',
       'Edge',
       'Firefox',
       'Firefox Developer Edition',
