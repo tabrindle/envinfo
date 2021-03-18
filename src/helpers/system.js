@@ -42,7 +42,7 @@ module.exports = {
       version = utils.run('sw_vers -productVersion ');
     } else if (utils.isLinux) {
       version = utils.run('cat /etc/os-release').then(v => {
-        const distro = (v || '').match(/NAME="(.+)"/);
+        const distro = (v || '').match(/NAME="(.+)"/) || '';
         const versionInfo = (v || '').match(/VERSION="(.+)"/) || ['', ''];
         const versionStr = versionInfo !== null ? versionInfo[1] : '';
         return `${distro[1]} ${versionStr}`.trim() || '';
