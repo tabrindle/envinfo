@@ -47,7 +47,7 @@ module.exports = {
 
   getHomebrewInfo: () => {
     utils.log('trace', 'getHomebrewInfo');
-    if (utils.isMacOS)
+    if (utils.isMacOS || utils.isLinux)
       return Promise.all([
         utils.run('brew --version').then(utils.findVersion),
         utils.which('brew'),
