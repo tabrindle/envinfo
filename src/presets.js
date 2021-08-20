@@ -79,6 +79,14 @@ module.exports = {
     npmPackages: null,
     npmGlobalPackages: null,
   },
+  cssnano: {
+    System: ['OS', 'CPU'],
+    Binaries: ['Node', 'Yarn', 'npm'],
+    npmPackages: ['cssnano', 'postcss'],
+    options: {
+      duplicates: true,
+    },
+  },
   jest: {
     System: ['OS', 'CPU'],
     Binaries: ['Node', 'Yarn', 'npm'],
