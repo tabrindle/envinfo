@@ -26,6 +26,7 @@ module.exports = {
       'Mercurial',
       'Subversion',
       'FFmpeg',
+      'Curl',
     ],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],

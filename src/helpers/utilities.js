@@ -92,4 +92,11 @@ module.exports = {
       utils.which('ffmpeg'),
     ]).then(v => utils.determineFound('FFmpeg', v[0], v[1]));
   },
+  getCurlInfo: () => {
+    utils.log('trace', 'getCurlInfo');
+    return Promise.all([
+      utils.run('curl --version').then(utils.findVersion),
+      utils.which('curl'),
+    ]).then(v => utils.determineFound('Curl', v[0], v[1]));
+  },
 };
