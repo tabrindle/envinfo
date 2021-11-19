@@ -148,4 +148,12 @@ module.exports = {
     Languages: ['Bash'],
     npmPackages: 'playwright*',
   },
+  rax: {
+    System: ['OS'],
+    Binaries: ['Node', 'npm'],
+    npmPackages: '{*rax*,@uni/*,rax,rax-app}',
+    options: {
+      duplicates: true,
+    },
+  },
 };
