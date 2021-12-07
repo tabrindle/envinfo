@@ -5,8 +5,8 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: {
-    envinfo: './src/envinfo.js',
-    cli: './src/cli.js',
+    envinfo: './src/envinfo.mjs',
+    cli: './src/cli.mjs',
   },
   target: 'node',
   mode: 'production',
@@ -34,8 +34,7 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: `#!/usr/bin/env node
-      "use strict"`,
+      banner: `#!/usr/bin/env node`,
       raw: true,
       include: 'cli',
     }),

@@ -1,5 +1,5 @@
 import path from 'path';
-import utils from '../utils.js';
+import utils from '../utils.mjs';
 
 export default {
   getYarnWorkspacesInfo: () => {

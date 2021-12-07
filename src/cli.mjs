@@ -1,4 +1,4 @@
-import envinfo from './envinfo.js';
+import envinfo from './envinfo.mjs';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs';
 

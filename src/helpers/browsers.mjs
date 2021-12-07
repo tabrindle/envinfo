@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import utils from '../utils.js';
+import utils from '../utils.mjs';
 
 export default {
   getBraveBrowserInfo: () => {

@@ -1,6 +1,6 @@
 import os from 'os';
 import osName from 'os-name';
-import utils from '../utils.js';
+import utils from '../utils.mjs';
 
 export default {
   getContainerInfo: () => {

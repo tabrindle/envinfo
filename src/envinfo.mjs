@@ -1,7 +1,7 @@
-import formatters from './formatters.js';
-import helpers from './helpers/index.js';
-import presets from './presets.js';
-import utils from './utils.js';
+import formatters from './formatters.mjs';
+import helpers from './helpers/index.mjs';
+import presets from './presets.mjs';
+import utils from './utils.mjs';
 
 function format(data, options) {
   // set the default formatter (yaml is default, similar to old table)

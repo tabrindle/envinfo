@@ -1,4 +1,4 @@
-import utils from './utils.js';
+import utils from './utils.mjs';
 import yamlify from 'yamlify-object';
 
 function clean(data, options) {

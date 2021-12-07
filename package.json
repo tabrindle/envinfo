@@ -8,8 +8,7 @@
   "files": [
     "dist/"
   ],
-  "type": "module",
-  "exports": "./dist/envinfo.js",
+  "exports": "./dist/envinfo.mjs",
   "bin": {
     "envinfo": "dist/cli.js"
   },
@@ -18,20 +17,20 @@
   },
   "scripts": {
     "build": "webpack --progress",
-    "check:format": "prettier -l src/**/*.js --verbose",
+    "check:format": "prettier -l src/**/*.*js --verbose",
     "compress": "gzexe envinfo-* && upx envinfo-win.exe",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
     "postcompress": "tar -czvf envinfo-linux.tar.gz envinfo-linux && tar -czvf envinfo-macos.tar.gz envinfo-macos && zip -r -X envinfo-win.zip envinfo-win.exe",
     "executable": "pkg package.json",
-    "format": "prettier --write src/**/*.js",
-    "lint": "eslint src",
-    "lint-fix": "eslint src --fix",
+    "format": "prettier --write src/**/*.*js",
+    "lint": "eslint src --ext js,mjs",
+    "lint-fix": "eslint src --fix --ext js,mjs",
     "preversion": "npm run test && webpack && git add .",
     "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
-    "start": "node src/cli.js",
-    "test": "jest --config jest.config.cjs && eslint src && prettier -l src/**/*.js"
+    "start": "node src/cli.mjs",
+    "test": "jest --config jest.config.js && eslint src --ext js,mjs && prettier -l src/**/*.*js"
   },
   "husky": {
     "hooks": {

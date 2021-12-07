@@ -2,7 +2,7 @@ import childProcess from 'child_process';
 import fs from 'fs';
 import glob from 'glob';
 import libWhich from 'which';
-import matchers from './matchers.js';
+import matchers from './matchers.mjs';
 import os from 'os';
 import path from 'path';
 

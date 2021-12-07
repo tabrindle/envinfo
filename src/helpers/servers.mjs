@@ -1,4 +1,4 @@
-import utils from '../utils.js';
+import utils from '../utils.mjs';
 
 export default {
   getApacheInfo: () => {

@@ -1,6 +1,6 @@
 import glob from 'glob';
 import path from 'path';
-import utils from './utils.js';
+import utils from './utils.mjs';
 
 const parsePackagePath = packagePath => {
   const split = packagePath.split('node_modules' + path.sep);
