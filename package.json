@@ -81,6 +81,7 @@
     "pkg": "^5.5.1",
     "prettier": "^2.5.1",
     "prettier-eslint-cli": "^5.0.1",
+    "regenerator-runtime": "^0.13.9",
     "terser-webpack-plugin": "^5.2.5",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
