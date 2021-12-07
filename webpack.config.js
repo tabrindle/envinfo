@@ -17,6 +17,8 @@ module.exports = {
     })],
   },
   output: {
+    libraryTarget: "umd",
+    libraryExport: "default",
     filename: '[name].js',
     path: path.join(__dirname, '/dist'),
   },
@@ -30,7 +32,8 @@ module.exports = {
     ],
   },
   externals: {
-    envinfo: '_'
+    envinfo: '_',
+    'node:os': 'commonjs2 os'
   },
   plugins: [
     new webpack.BannerPlugin({
@@ -44,5 +47,5 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /spawn-sync/
     }),
-  ],
+  ]
 };

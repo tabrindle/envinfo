@@ -139,8 +139,8 @@ function run(args, options) {
 }
 
 export default {
-  cli: cli,
-  helpers: helpers,
-  main: main,
-  run: run,
+  cli,
+  helpers,
+  main,
+  run,
 };
