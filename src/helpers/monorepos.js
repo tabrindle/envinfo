@@ -1,7 +1,7 @@
-const utils = require('../utils');
-const path = require('path');
+import path from 'path';
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getYarnWorkspacesInfo: () => {
     utils.log('trace', 'getYarnWorkspacesInfo');
     return Promise.all([

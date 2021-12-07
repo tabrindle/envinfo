@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const utils = require('../utils');
+import fs from 'fs';
+import path from 'path';
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getAndroidSDKInfo: () => {
     return utils
       .run('sdkmanager --list')

@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getBashInfo: () => {
     utils.log('trace', 'getBashInfo');
     return Promise.all([
@@ -34,10 +34,9 @@ module.exports = {
 
   getGoInfo: () => {
     utils.log('trace', 'getGoInfo');
-    return Promise.all([
-      utils.run('go version').then(utils.findVersion),
-      utils.which('go'),
-    ]).then(v => utils.determineFound('Go', v[0], v[1]));
+    return Promise.all([utils.run('go version').then(utils.findVersion), utils.which('go')]).then(
+      v => utils.determineFound('Go', v[0], v[1])
+    );
   },
 
   getJavaInfo: () => {
@@ -52,10 +51,9 @@ module.exports = {
 
   getPerlInfo: () => {
     utils.log('trace', 'getPerlInfo');
-    return Promise.all([
-      utils.run('perl -v').then(utils.findVersion),
-      utils.which('perl'),
-    ]).then(v => utils.determineFound('Perl', v[0], v[1]));
+    return Promise.all([utils.run('perl -v').then(utils.findVersion), utils.which('perl')]).then(
+      v => utils.determineFound('Perl', v[0], v[1])
+    );
   },
 
   getPHPInfo: () => {
@@ -99,10 +97,9 @@ module.exports = {
 
   getRubyInfo: () => {
     utils.log('trace', 'getRubyInfo');
-    return Promise.all([
-      utils.run('ruby -v').then(utils.findVersion),
-      utils.which('ruby'),
-    ]).then(v => utils.determineFound('Ruby', v[0], v[1]));
+    return Promise.all([utils.run('ruby -v').then(utils.findVersion), utils.which('ruby')]).then(
+      v => utils.determineFound('Ruby', v[0], v[1])
+    );
   },
 
   getRustInfo: () => {

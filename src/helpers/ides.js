@@ -1,7 +1,7 @@
-const path = require('path');
-const utils = require('../utils');
+import path from 'path';
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getAndroidStudioInfo: () => {
     let androidStudioVersion = Promise.resolve('N/A');
     if (utils.isMacOS) {

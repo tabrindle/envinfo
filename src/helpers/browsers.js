@@ -1,9 +1,9 @@
-const fs = require('fs');
-const os = require('os');
-const utils = require('../utils');
-const path = require('path');
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getBraveBrowserInfo: () => {
     utils.log('trace', 'getBraveBrowser');
     let braveVersion;

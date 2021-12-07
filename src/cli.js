@@ -1,4 +1,9 @@
-const argv = require('minimist')(process.argv.slice(2));
+import envinfo from './envinfo.js';
+import { hideBin } from 'yargs/helpers';
+import yargs from 'yargs';
+
+const argv = yargs(hideBin(process.argv)).argv;
+
 const version = global.__VERSION__ || ''; // eslint-disable-line
 
 argv.console = true;
@@ -50,5 +55,5 @@ if (argv.help || argv._.indexOf('help') > -1) {
 } else if (argv.version || argv.v || argv._.indexOf('version') > -1) {
   console.log(version); // eslint-disable-line no-console
 } else {
-  require('./envinfo').cli(argv); // eslint-disable-line global-require
+  envinfo.cli(argv);
 }

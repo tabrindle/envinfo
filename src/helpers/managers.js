@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getAptInfo: () => {
     utils.log('trace', 'getAptInfo');
     if (utils.isLinux)

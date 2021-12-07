@@ -1,20 +1,19 @@
-const packages = require('../packages');
-const utils = require('../utils');
+import binaries from './binaries.js';
+import browsers from './browsers.js';
+import databases from './databases.js';
+import ides from './ides.js';
+import languages from './languages.js';
+import managers from './managers.js';
+import monorepos from './monorepos.js';
+import packages from '../packages.js';
+import sdks from './sdks.js';
+import servers from './servers.js';
+import system from './system.js';
+import utilities from './utilities.js';
+import utils from '../utils.js';
+import virtualization from './virtualization.js';
 
-const binaries = require('./binaries');
-const browsers = require('./browsers');
-const databases = require('./databases');
-const ides = require('./ides');
-const languages = require('./languages');
-const managers = require('./managers');
-const monorepos = require('./monorepos');
-const sdks = require('./sdks');
-const servers = require('./servers');
-const system = require('./system');
-const utilities = require('./utilities');
-const virtualization = require('./virtualization');
-
-module.exports = Object.assign({}, utils, packages, {
+export default Object.assign({}, utils, packages, {
   ...binaries,
   ...browsers,
   ...databases,

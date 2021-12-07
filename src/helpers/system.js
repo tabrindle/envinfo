@@ -1,8 +1,8 @@
-const osName = require('os-name');
-const utils = require('../utils');
-const os = require('os');
+import os from 'os';
+import osName from 'os-name';
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getContainerInfo: () => {
     utils.log('trace', 'getContainerInfo');
     if (utils.isLinux)

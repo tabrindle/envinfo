@@ -1,5 +1,5 @@
-const envinfo = require('../src/envinfo');
-const path = require('path');
+import envinfo from '../src/envinfo';
+import path from 'path';
 
 describe('Running the programmatic interface', () => {
   test('return expected duplicates in json', async () => {

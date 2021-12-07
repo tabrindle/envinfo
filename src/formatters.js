@@ -1,5 +1,5 @@
-const yamlify = require('yamlify-object');
-const utils = require('./utils');
+import utils from './utils.js';
+import yamlify from 'yamlify-object';
 
 function clean(data, options) {
   utils.log('trace', 'clean', data);
@@ -195,7 +195,7 @@ function formatToJson(data, options) {
   return data;
 }
 
-module.exports = {
+export default {
   json: formatToJson,
   markdown: formatToMarkdown,
   yaml: formatToYaml,

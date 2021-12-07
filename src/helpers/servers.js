@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getApacheInfo: () => {
     utils.log('trace', 'getApacheInfo');
     if (utils.isMacOS || utils.isLinux) {

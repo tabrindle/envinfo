@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getMongoDBInfo: () => {
     utils.log('trace', 'getMongoDBInfo');
     return Promise.all([

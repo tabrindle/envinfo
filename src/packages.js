@@ -1,6 +1,6 @@
-const glob = require('glob');
-const path = require('path');
-const utils = require('./utils');
+import glob from 'glob';
+import path from 'path';
+import utils from './utils.js';
 
 const parsePackagePath = packagePath => {
   const split = packagePath.split('node_modules' + path.sep);
@@ -157,6 +157,7 @@ function getnpmGlobalPackages(packages, options) {
       .then(
         prefix =>
           new Promise((resolve, reject) =>
+            // eslint-disable-next-line no-promise-executor-return
             glob(
               // sub packageGlob in to only get globbed packages if not null
               path.join(
@@ -207,7 +208,7 @@ function getnpmGlobalPackages(packages, options) {
   ]);
 }
 
-module.exports = {
+export default {
   getnpmPackages: getnpmPackages,
   getnpmGlobalPackages: getnpmGlobalPackages,
 };

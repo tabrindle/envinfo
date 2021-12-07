@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getBazelInfo: () => {
     utils.log('trace', 'getBazelInfo');
     return Promise.all([

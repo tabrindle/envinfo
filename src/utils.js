@@ -1,10 +1,10 @@
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const childProcess = require('child_process');
-const libWhich = require('which');
-const glob = require('glob');
-const matchers = require('./matchers');
+import childProcess from 'child_process';
+import fs from 'fs';
+import glob from 'glob';
+import libWhich from 'which';
+import matchers from './matchers.js';
+import os from 'os';
+import path from 'path';
 
 const run = (cmd, { unify = false } = {}) => {
   return new Promise(resolve => {
@@ -61,10 +61,7 @@ const generatePlistBuddyCommand = (appPath, options) => {
   var optionsArray = (options || ['CFBundleShortVersionString']).map(function optionsMap(option) {
     return '-c Print:' + option;
   });
-  return ['/usr/libexec/PlistBuddy']
-    .concat(optionsArray)
-    .concat([appPath])
-    .join(' ');
+  return ['/usr/libexec/PlistBuddy'].concat(optionsArray).concat([appPath]).join(' ');
 };
 
 const matchAll = (regex, text) => {
@@ -92,7 +89,7 @@ const parseSDKManagerOutput = output => {
   };
 };
 
-module.exports = {
+export default {
   run: run,
   log: log,
   fileExists: fileExists,
@@ -145,7 +142,7 @@ module.exports = {
   },
 
   which: binary => {
-    return new Promise(resolve => libWhich(binary, (err, binaryPath) => resolve(binaryPath)));
+    return new Promise(resolve => libWhich(binary, (err, binaryPath) => resolve(binaryPath))); // eslint-disable-line no-promise-executor-return
   },
 
   getDarwinApplicationVersion: bundleIdentifier => {
@@ -173,7 +170,7 @@ module.exports = {
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     return (
       (!bytes && '0 Bytes') ||
-      (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + ['B', 'KB', 'MB', 'GB', 'TB', 'PB'][i]
+      (bytes / 1024 ** i).toFixed(2) + ' ' + ['B', 'KB', 'MB', 'GB', 'TB', 'PB'][i]
     );
   },
 
@@ -206,8 +203,8 @@ module.exports = {
     log('trace', 'getAllPackageJsonPaths', packageGlob);
     return new Promise(resolve => {
       const cb = (err, res) => resolve(res.map(path.normalize) || []);
-      if (packageGlob) return glob(path.join('node_modules', packageGlob, 'package.json'), cb);
-      return glob(path.join('node_modules', '**', 'package.json'), cb);
+      if (packageGlob) return glob(path.join('node_modules', packageGlob, 'package.json'), cb); // eslint-disable-line no-promise-executor-return
+      return glob(path.join('node_modules', '**', 'package.json'), cb); // eslint-disable-line no-promise-executor-return
     });
   },
 

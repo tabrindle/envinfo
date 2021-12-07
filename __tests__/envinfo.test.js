@@ -1,5 +1,5 @@
-const envinfo = require('../src/envinfo');
-const helpers = require('../src/helpers');
+import envinfo from '../src/envinfo';
+import helpers from '../src/helpers';
 
 jest.mock('../src/helpers');
 

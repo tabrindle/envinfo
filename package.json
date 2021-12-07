@@ -8,7 +8,8 @@
   "files": [
     "dist/"
   ],
-  "main": "dist/envinfo.js",
+  "type": "module",
+  "exports": "./dist/envinfo.js",
   "bin": {
     "envinfo": "dist/cli.js"
   },
@@ -29,8 +30,8 @@
     "preversion": "npm run test && webpack && git add .",
     "postversion": "npm run executable && npm run compress && npm run release",
     "release": "github-release upload --owner=tabrindle --repo=envinfo --tag=${npm_package_version} 'envinfo-linux.tar.gz' 'envinfo-macos.tar.gz' 'envinfo-win.zip'",
-    "start": "node -r esm src/cli.js",
-    "test": "jest --env=node && eslint src && prettier -l src/**/*.js"
+    "start": "node src/cli.js",
+    "test": "jest --config jest.config.cjs && eslint src && prettier -l src/**/*.js"
   },
   "husky": {
     "hooks": {
@@ -54,41 +55,38 @@
       "win"
     ]
   },
-  "jest": {
-    "testEnvironment": "node"
-  },
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.3.1",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.16.4",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "all-contributors-cli": "^4.11.1",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "23.6.0",
+    "babel-jest": "^27.4.2",
     "babel-loader": "^8.0.5",
-    "eslint": "^5.13.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-prettier": "^2.7.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-prettier": "^2.3.1",
-    "esm": "^3.2.22",
+    "eslint": "^8.4.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
     "github-release-cli": "^0.4.1",
     "glob": "^7.1.6",
     "husky": "^4.2.5",
-    "jest": "^22.4.3",
-    "minimist": "^1.2.5",
-    "os-name": "^3.1.0",
-    "pkg": "^4.5.1",
-    "prettier": "^1.19.1",
-    "prettier-eslint-cli": "^4.1.1",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.1.2",
+    "jest": "^27.2.0",
+    "os-name": "^5.0.1",
+    "pkg": "^5.5.1",
+    "prettier": "^2.5.1",
+    "prettier-eslint-cli": "^5.0.1",
+    "terser-webpack-plugin": "^5.2.5",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
     "which": "^1.2.14",
-    "yamlify-object": "^0.5.1"
+    "yamlify-object": "^0.5.1",
+    "yargs": "^17.3.0"
   },
   "resolutions": {
     "lodash": "4.17.15"

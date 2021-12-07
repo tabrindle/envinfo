@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.js';
 
-module.exports = {
+export default {
   getNodeInfo: () => {
     utils.log('trace', 'getNodeInfo');
     return Promise.all([
@@ -33,9 +33,8 @@ module.exports = {
 
   getYarnInfo: () => {
     utils.log('trace', 'getYarnInfo');
-    return Promise.all([
-      utils.run('yarn -v'),
-      utils.which('yarn').then(utils.condensePath),
-    ]).then(v => utils.determineFound('Yarn', v[0], v[1]));
+    return Promise.all([utils.run('yarn -v'), utils.which('yarn').then(utils.condensePath)]).then(
+      v => utils.determineFound('Yarn', v[0], v[1])
+    );
   },
 };
