@@ -148,4 +148,22 @@ module.exports = {
     Languages: ['Bash'],
     npmPackages: 'playwright*',
   },
+  next: {
+    System: ['OS'],
+    Binaries: ['Node', 'npm', 'Yarn'],
+      Browsers: [
+      'Brave Browser',
+      'Chrome',
+      'Chrome Canary',
+      'Chromium',
+      'Edge',
+      'Firefox',
+      'Firefox Developer Edition',
+      'Firefox Nightly',
+      'Internet Explorer',
+      'Safari',
+      'Safari Technology Preview',
+    ],
+    npmPackages: ['next', 'webpack'],
+  }
 };
