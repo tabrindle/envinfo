@@ -1,6 +1,6 @@
-const utils = require('../utils');
+import utils from '../utils.mjs';
 
-module.exports = {
+export default {
   getDockerInfo: () => {
     utils.log('trace', 'getDockerInfo');
     return Promise.all([

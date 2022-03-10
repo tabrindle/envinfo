@@ -1,9 +1,9 @@
-const fs = require('fs');
-const os = require('os');
-const utils = require('../utils');
-const path = require('path');
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import utils from '../utils.mjs';
 
-module.exports = {
+export default {
   getBraveBrowserInfo: () => {
     utils.log('trace', 'getBraveBrowser');
     let braveVersion;
@@ -156,7 +156,9 @@ module.exports = {
         'iexplore.exe',
       ].join('\\\\');
       explorerVersion = utils
-        .run(`wmic datafile where "name='${explorerPath}'" get Version`)
+        .run(
+          `powershell -command "(Get-ItemProperty -LiteralPath '${explorerPath}').VersionInfo | Format-Table -Property FileVersion -HideTableHeaders"`
+        )
         .then(utils.findVersion);
     } else {
       explorerVersion = Promise.resolve('N/A');

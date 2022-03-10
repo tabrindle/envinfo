@@ -1,4 +1,5 @@
-const utils = require('../src/utils');
+import utils from '../src/utils';
+
 const cases = {
   apt: {
     string: 'apt 1.4.9 (amd64)',

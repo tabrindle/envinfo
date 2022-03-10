@@ -1,9 +1,7 @@
-'use strict';
-
-const helpers = require('./helpers');
-const formatters = require('./formatters');
-const presets = require('./presets');
-const utils = require('./utils');
+import formatters from './formatters.mjs';
+import helpers from './helpers/index.mjs';
+import presets from './presets.mjs';
+import utils from './utils.mjs';
 
 function format(data, options) {
   // set the default formatter (yaml is default, similar to old table)
@@ -140,9 +138,9 @@ function run(args, options) {
   return main(args, options);
 }
 
-module.exports = {
-  cli: cli,
-  helpers: helpers,
-  main: main,
-  run: run,
+export default {
+  cli,
+  helpers,
+  main,
+  run,
 };

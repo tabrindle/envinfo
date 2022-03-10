@@ -2,16 +2,7 @@
 
 module.exports = {
   presets: [
-    [
-      '@babel/preset-env',
-      {
-        modules: 'commonjs',
-        targets: {
-          node: '4.9.1',
-        },
-        useBuiltIns: 'usage',
-      },
-    ],
+    ['@babel/preset-env'],
   ],
-  plugins: ['@babel/plugin-proposal-optional-chaining'],
+  plugins: ['@babel/plugin-proposal-optional-chaining']
 };

@@ -120,6 +120,16 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "HarryGwinnell",
+      "name": "Harry Gwinnell",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10196821?v=4",
+      "profile": "https://harrygwinnell.co.uk",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }

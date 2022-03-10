@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
     Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],

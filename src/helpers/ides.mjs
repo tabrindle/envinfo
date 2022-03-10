@@ -1,7 +1,7 @@
-const path = require('path');
-const utils = require('../utils');
+import path from 'path';
+import utils from '../utils.mjs';
 
-module.exports = {
+export default {
   getAndroidStudioInfo: () => {
     let androidStudioVersion = Promise.resolve('N/A');
     if (utils.isMacOS) {
@@ -46,7 +46,7 @@ module.exports = {
       androidStudioVersion = Promise.all([
         utils
           .run(
-            'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
+            'powershell -command "(Get-ItemProperty -LiteralPath \'C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe\').VersionInfo | Format-Table -Property FileVersion -HideTableHeaders"'
           )
           .then(version => version.replace(/(\r\n|\n|\r)/gm, '')),
         utils
