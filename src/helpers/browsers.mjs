@@ -156,7 +156,9 @@ export default {
         'iexplore.exe',
       ].join('\\\\');
       explorerVersion = utils
-        .run(`wmic datafile where "name='${explorerPath}'" get Version`)
+        .run(
+          `powershell -command "(Get-ItemProperty -LiteralPath '${explorerPath}').VersionInfo | Format-Table -Property FileVersion -HideTableHeaders"`
+        )
         .then(utils.findVersion);
     } else {
       explorerVersion = Promise.resolve('N/A');

@@ -46,7 +46,7 @@ export default {
       androidStudioVersion = Promise.all([
         utils
           .run(
-            'wmic datafile where name="C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe" get Version'
+            'powershell -command "(Get-ItemProperty -LiteralPath \'C:\\\\Program Files\\\\Android\\\\Android Studio\\\\bin\\\\studio.exe\').VersionInfo | Format-Table -Property FileVersion -HideTableHeaders"'
           )
           .then(version => version.replace(/(\r\n|\n|\r)/gm, '')),
         utils
