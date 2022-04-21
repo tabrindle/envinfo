@@ -89,7 +89,7 @@ module.exports = {
 
   getNanoInfo: () => {
     utils.log('trace', 'getNanoInfo');
-    if (utils.isMacOS || utils.isLinux) {
+    if (utils.isLinux) {
       return Promise.all([
         utils.run('nano --version').then(utils.findVersion),
         utils.run('which nano'),
