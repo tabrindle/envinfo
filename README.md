@@ -242,7 +242,7 @@ envinfo is live in:
 
 -   [React Native](https://github.com/facebook/react-native) (`react-native info`)
 -   [Create React App](https://github.com/facebook/create-react-app) (`create-react-app --info`)
--   [Expo CLI](https://github.com/expo/expo-cli) (`expo diagnostics`)
+-   [Expo Environment Info](https://github.com/expo/expo-cli/tree/main/packages/expo-env-info) (`npx expo-env-info`)
 -   [Webpack](https://github.com/webpack/webpack-cli) (`webpack-cli info`)
 -   [Solidarity](https://github.com/infinitered/solidarity) (`solidarity report`)
 -   [Gatsby](https://github.com/gatsbyjs/gatsby) (`gatsby info`)
