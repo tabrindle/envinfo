@@ -54,7 +54,9 @@ const findDarwinApplication = id => {
   log('trace', 'findDarwinApplication', id);
   const command = `mdfind "kMDItemCFBundleIdentifier=='${id}'"`;
   log('trace', command);
-  return run(command).then(v => v.replace(/(\s)/g, '\\ '));
+  return run(command).then(v => {
+    return v.split('\n')[0].replace(/(\s)/g, '\\ ');
+  });
 };
 
 const generatePlistBuddyCommand = (appPath, options) => {
