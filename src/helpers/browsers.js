@@ -61,7 +61,11 @@ module.exports = {
   getChromiumInfo: () => {
     utils.log('trace', 'getChromiumInfo');
     let chromiumVersion;
-    if (utils.isLinux) {
+    if (process.env.CHROME_EXECUTABLE) {
+      chromiumVersion = utils
+        .run(`${process.env.CHROME_EXECUTABLE} --version`)
+        .then(utils.findVersion);
+    } else if (utils.isLinux) {
       chromiumVersion = utils.run('chromium --version').then(utils.findVersion);
     } else {
       chromiumVersion = Promise.resolve('N/A');
