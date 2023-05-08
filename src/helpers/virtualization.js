@@ -17,6 +17,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Parallels', v[0], v[1]));
   },
 
+  getPodmanInfo: () => {
+    utils.log('trace', 'getPodmanInfo');
+    return Promise.all([
+      utils.run('podman --version').then(utils.findVersion),
+      utils.which('podman'),
+    ]).then(v => utils.determineFound('Podman', v[0], v[1]));
+  },
+
   getVirtualBoxInfo: () => {
     utils.log('trace', 'getVirtualBoxInfo');
     return Promise.all([
