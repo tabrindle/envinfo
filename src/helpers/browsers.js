@@ -3,6 +3,28 @@ const os = require('os');
 const utils = require('../utils');
 const path = require('path');
 
+function getFirefoxVersion(darvinId, winProgPath) {
+  let firefoxVersion;
+  let appPath;
+  if (utils.isLinux) {
+    firefoxVersion = utils.run('firefox --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
+  } else if (utils.isMacOS && typeof darvinId === 'string' && darvinId) {
+    firefoxVersion = utils.getDarwinApplicationVersion(darvinId);
+  } else if (utils.isWindows && typeof winProgPath === 'string' && winProgPath) {
+    firefoxVersion = utils.windowsExeExists(winProgPath).then(filePath => {
+      appPath = filePath;
+      return filePath
+        ? utils
+            .run(`powershell ". '${filePath}' -v | Write-Output"`)
+            .then(out => utils.findVersion(out))
+        : utils.NA;
+    });
+  } else {
+    firefoxVersion = Promise.resolve(utils.NA);
+  }
+  return firefoxVersion.then(v => utils.determineFound('Firefox', v, appPath || utils.NA));
+}
+
 module.exports = {
   getBraveBrowserInfo: () => {
     utils.log('trace', 'getBraveBrowser');
@@ -106,24 +128,14 @@ module.exports = {
 
   getFirefoxInfo: () => {
     utils.log('trace', 'getFirefoxInfo');
-    let firefoxVersion;
-    if (utils.isLinux) {
-      firefoxVersion = utils.run('firefox --version').then(v => v.replace(/^.* ([^ ]*)/g, '$1'));
-    } else if (utils.isMacOS) {
-      firefoxVersion = utils.getDarwinApplicationVersion(utils.browserBundleIdentifiers.Firefox);
-    } else {
-      firefoxVersion = Promise.resolve('N/A');
-    }
-    return firefoxVersion.then(v => utils.determineFound('Firefox', v, 'N/A'));
+    getFirefoxVersion(utils.browserBundleIdentifiers.Firefox, 'Mozilla Firefox/firefox.exe');
   },
 
   getFirefoxDeveloperEditionInfo: () => {
     utils.log('trace', 'getFirefoxDeveloperEditionInfo');
-    const firefoxDeveloperEdition = utils.getDarwinApplicationVersion(
-      utils.browserBundleIdentifiers['Firefox Developer Edition']
-    );
-    return firefoxDeveloperEdition.then(v =>
-      utils.determineFound('Firefox Developer Edition', v, 'N/A')
+    getFirefoxVersion(
+      utils.browserBundleIdentifiers['Firefox Developer Edition'],
+      'Firefox Developer Edition/firefox.exe'
     );
   },
 
