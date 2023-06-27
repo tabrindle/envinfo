@@ -6,8 +6,8 @@ exports[`Running the cli interface returns expected formatted yaml value 1`] = `
     Node: 10.0.0 - /usr/local/bin/node
     Yarn: 10.0.0 - /usr/local/bin/yarn
     npm: 10.0.0 - /usr/local/bin/npm
-    Watchman: 10.0.0 - /usr/local/bin/watchman
     pnpm: 10.0.0 - /usr/local/bin/pnpm
+    Watchman: 10.0.0 - /usr/local/bin/watchman
 "
 `;
 
@@ -17,8 +17,8 @@ exports[`Running the cli interface returns expected unformatted yaml value 1`] =
     Node: 10.0.0 - /usr/local/bin/node
     Yarn: 10.0.0 - /usr/local/bin/yarn
     npm: 10.0.0 - /usr/local/bin/npm
-    Watchman: 10.0.0 - /usr/local/bin/watchman
     pnpm: 10.0.0 - /usr/local/bin/pnpm
+    Watchman: 10.0.0 - /usr/local/bin/watchman
 "
 `;
 

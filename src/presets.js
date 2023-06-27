@@ -1,7 +1,7 @@
 module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'pnpm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'Watchman'],
     Managers: [
       'Apt',
       'Cargo',
@@ -87,7 +87,7 @@ module.exports = {
   },
   'react-native': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman', 'pnpm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'Watchman'],
     SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
     IDEs: ['Android Studio', 'Xcode', 'Visual Studio'],
     npmPackages: ['react', 'react-native'],
