@@ -1,7 +1,7 @@
 module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'Watchman'],
     Managers: [
       'Apt',
       'Cargo',
@@ -82,12 +82,12 @@ module.exports = {
   },
   jest: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm'],
     npmPackages: ['jest'],
   },
   'react-native': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'Watchman'],
     SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
     IDEs: ['Android Studio', 'Xcode', 'Visual Studio'],
     npmPackages: ['react', 'react-native'],
@@ -95,24 +95,24 @@ module.exports = {
   },
   nyc: {
     System: ['OS', 'CPU', 'Memory'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm'],
     npmPackages: '/**/{*babel*,@babel/*/,*istanbul*,nyc,source-map-support,typescript,ts-node}',
   },
   webpack: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm'],
     npmPackages: '*webpack*',
     npmGlobalPackages: ['webpack', 'webpack-cli'],
   },
   'styled-components': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm'],
     Browsers: ['Chrome', 'Firefox', 'Safari'],
     npmPackages: '*styled-components*',
   },
   'create-react-app': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm'],
     Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
     npmPackages: ['react', 'react-dom', 'react-scripts'],
     npmGlobalPackages: ['create-react-app'],
@@ -123,14 +123,14 @@ module.exports = {
   },
   apollo: {
     System: ['OS'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm'],
     Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
     npmPackages: '{*apollo*,@apollo/*}',
     npmGlobalPackages: '{*apollo*,@apollo/*}',
   },
   'react-native-web': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm'],
     Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
     npmPackages: ['react', 'react-native-web'],
     options: {
@@ -139,13 +139,13 @@ module.exports = {
   },
   babel: {
     System: ['OS'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm'],
     Monorepos: ['Yarn Workspaces', 'Lerna'],
     npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest}',
   },
   playwright: {
     System: ['OS', 'Memory', 'Container'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm'],
     Languages: ['Bash'],
     npmPackages: 'playwright*',
   },

@@ -38,4 +38,12 @@ module.exports = {
       utils.which('yarn').then(utils.condensePath),
     ]).then(v => utils.determineFound('Yarn', v[0], v[1]));
   },
+
+  getpnpmInfo: () => {
+    utils.log('trace', 'getpnpmInfo');
+    return Promise.all([
+      utils.run('pnpm -v'),
+      utils.which('pnpm').then(utils.condensePath),
+    ]).then(v => utils.determineFound('pnpm', v[0], v[1]));
+  },
 };
