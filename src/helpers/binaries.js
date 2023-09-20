@@ -46,4 +46,11 @@ module.exports = {
       utils.which('pnpm').then(utils.condensePath),
     ]).then(v => utils.determineFound('pnpm', v[0], v[1]));
   },
+
+  getbunInfo: () => {
+    utils.log('trace', 'getbunInfo');
+    return Promise.all([utils.run('bun -v'), utils.which('bun').then(utils.condensePath)]).then(v =>
+      utils.determineFound('bun', v[0], v[1])
+    );
+  },
 };
