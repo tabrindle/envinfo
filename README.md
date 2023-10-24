@@ -258,7 +258,6 @@ envinfo is used in the ISSUE_TEMPLATE of:
 ## Alternatives
 
 -   type `command -v` until you smash your computer
--   [specs](https://github.com/mcandre/specs) - an excellent ruby gem that runs `command -v` for you on :all-the-things: Great for raw info.
 -   [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
 -   [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
 -   write your own
