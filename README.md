@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/tabrindle/envinfo/master/logo.png" align="center"  width="700px"/>
-  <h3 align="center">envinfo generates a report of the common details needed when troubleshooting software issues, such as your operating system, binary versions, browsers, installed languages, and more</h3> 
+  <h3 align="center">envinfo generates a report of the common details needed when troubleshooting software issues, such as your operating system, binary versions, browsers, installed languages, and more</h3>
   <hr/>
 </p>
 
@@ -54,6 +54,8 @@ npm install envinfo || yarn add envinfo
     Node: 8.16.0 - ~/.nvm/versions/node/v8.16.0/bin/node
     Yarn: 1.15.2 - ~/.yarn/bin/yarn
     npm: 6.9.0 - ~/.nvm/versions/node/v8.16.0/bin/npm
+    pnpm: 8.7.6 - /usr/local/bin/pnpm
+    bun: 1.0.2 - /usr/local/bin/bun
     Watchman: 4.9.0 - /usr/local/bin/watchman
   Managers:
     Cargo: 1.31.0 - ~/.cargo/bin/cargo
@@ -256,7 +258,6 @@ envinfo is used in the ISSUE_TEMPLATE of:
 ## Alternatives
 
 -   type `command -v` until you smash your computer
--   [specs](https://github.com/mcandre/specs) - an excellent ruby gem that runs `command -v` for you on :all-the-things: Great for raw info.
 -   [screenfetch](https://github.com/KittyKatt/screenFetch) - fetch system and terminal information, and display a pretty ascii logo
 -   [Solidarity](https://github.com/infinitered/solidarity) - a project based environment checker
 -   write your own
