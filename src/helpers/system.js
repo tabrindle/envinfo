@@ -38,6 +38,7 @@ module.exports = {
   getOSInfo: () => {
     utils.log('trace', 'getOSInfo');
     let version;
+    let info;
     if (utils.isMacOS) {
       version = utils.run('sw_vers -productVersion ');
     } else if (utils.isLinux) {
@@ -49,11 +50,15 @@ module.exports = {
       });
     } else if (utils.isWindows) {
       version = Promise.resolve(os.release());
+      const release = os.release().split('.');
+      if (release[0] === '10' && release[1] === '0' && release[2] >= 22000) {
+        info = 'Windows 11';
+      }
     } else {
       version = Promise.resolve();
     }
     return version.then(v => {
-      let info = osName(os.platform(), os.release());
+      info ||= osName(os.platform(), os.release());
       if (v) info += ` ${v}`;
       return ['OS', info];
     });
