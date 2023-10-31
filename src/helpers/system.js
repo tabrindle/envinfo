@@ -58,7 +58,7 @@ module.exports = {
       version = Promise.resolve();
     }
     return version.then(v => {
-      info ||= osName(os.platform(), os.release());
+      info = info || osName(os.platform(), os.release());
       if (v) info += ` ${v}`;
       return ['OS', info];
     });
