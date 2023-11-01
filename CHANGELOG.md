@@ -1,5 +1,17 @@
 # Changelog
 
+## [7.11.0](https://www.github.com/tabrindle/envinfo/compare/v7.10.0...v7.11.0) (2023-11-01)
+
+
+### Features
+
+* add bun in binaries ([#240](https://www.github.com/tabrindle/envinfo/issues/240)) ([d7db2a3](https://www.github.com/tabrindle/envinfo/commit/d7db2a3504d4e0fa66c9fda028e895c088cb864b))
+
+
+### Bug Fixes
+
+* Windows 11 information ([#242](https://www.github.com/tabrindle/envinfo/issues/242)) ([5330fb2](https://www.github.com/tabrindle/envinfo/commit/5330fb2b970e52de8875824fcd739da1be5e2b11))
+
 ## [7.10.0](https://www.github.com/tabrindle/envinfo/compare/v7.9.0...v7.10.0) (2023-06-27)
 
 
