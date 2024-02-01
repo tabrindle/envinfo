@@ -144,9 +144,10 @@ module.exports = {
     npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest}',
   },
   playwright: {
-    System: ['OS', 'Memory', 'Container'],
+    System: ['OS', 'CPU', 'Memory', 'Container'],
     Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     Languages: ['Bash'],
-    npmPackages: 'playwright*',
+    IDEs: ['VSCode'],
+    npmPackages: '{playwright*,@playwright/*}',
   },
 };
