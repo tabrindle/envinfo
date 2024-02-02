@@ -1,5 +1,12 @@
 # Changelog
 
+### [7.11.1](https://www.github.com/tabrindle/envinfo/compare/v7.11.0...v7.11.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* add @playwright/ to playwright preset ([#245](https://www.github.com/tabrindle/envinfo/issues/245)) ([08802a0](https://www.github.com/tabrindle/envinfo/commit/08802a080675d33f45d7a9f7712d348600f8e257))
+
 ## [7.11.0](https://www.github.com/tabrindle/envinfo/compare/v7.10.0...v7.11.0) (2023-11-01)
 
 
