@@ -10,7 +10,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
