@@ -3,11 +3,10 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version x64
-  - npm install
+  - yarn
 
 test_script:
   - node --version
-  - yarn
   - choco install ffmpeg
   - choco install r.project -version 3.6.0
   - set RPATH=C:\Program Files\R\R-3.6.0\bin\x64
