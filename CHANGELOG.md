@@ -1,5 +1,12 @@
 # Changelog
 
+### [7.11.2](https://www.github.com/tabrindle/envinfo/compare/v7.11.1...v7.11.2) (2024-02-03)
+
+
+### Bug Fixes
+
+* delete old CI ([#247](https://www.github.com/tabrindle/envinfo/issues/247)) ([6ae3cda](https://www.github.com/tabrindle/envinfo/commit/6ae3cda9744342182f4e74fd7284bcc0d5536d20))
+
 ### [7.11.1](https://www.github.com/tabrindle/envinfo/compare/v7.11.0...v7.11.1) (2024-02-02)
 
 
