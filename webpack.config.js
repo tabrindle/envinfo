@@ -29,14 +29,12 @@ module.exports = {
   externals: [/envinfo$/],
   plugins: [
     new webpack.BannerPlugin({
-      banner: `#!/usr/bin/env node
-      "use strict"`,
+      banner: `#!/usr/bin/env node\n`,
       raw: true,
       include: 'cli',
     }),
     new webpack.DefinePlugin({
       'global.__VERSION__': JSON.stringify(packageJson.version),
     }),
-    new webpack.IgnorePlugin(/spawn-sync/),
   ],
 };
