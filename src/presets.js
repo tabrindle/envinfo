@@ -150,4 +150,12 @@ module.exports = {
     IDEs: ['VSCode'],
     npmPackages: '{playwright*,@playwright/*}',
   },
+  rax: {
+    System: ['OS'],
+    Binaries: ['Node', 'npm'],
+    npmPackages: '{*rax*,@uni/*,rax,rax-app}',
+    options: {
+      duplicates: true,
+    },
+  },
 };
