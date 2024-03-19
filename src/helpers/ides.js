@@ -5,32 +5,44 @@ module.exports = {
   getAndroidStudioInfo: () => {
     let androidStudioVersion = Promise.resolve('N/A');
     if (utils.isMacOS) {
-      androidStudioVersion = utils
-        .run(
-          utils.generatePlistBuddyCommand(
-            path.join('/', 'Applications', 'Android\\ Studio.app', 'Contents', 'Info.plist'),
-            ['CFBundleShortVersionString', 'CFBundleVersion']
-          )
-        )
-        .then(version => {
-          if (!version) {
-            return utils.run(
-              utils.generatePlistBuddyCommand(
-                path.join(
-                  '~',
-                  'Applications',
-                  'JetBrains\\ Toolbox',
-                  'Android\\ Studio.app',
-                  'Contents',
-                  'Info.plist'
-                ),
-                ['CFBundleShortVersionString', 'CFBundleVersion']
-              )
-            );
-          }
-          return version;
+      const paths = [
+        path.join('/', 'Applications', 'Android Studio.app', 'Contents', 'Info.plist'),
+        path.join(process.env.HOME, 'Applications', 'Android Studio.app', 'Contents', 'Info.plist'),
+        path.join(
+          '/',
+          'Applications',
+          'JetBrains Toolbox',
+          'Android Studio.app',
+          'Contents',
+          'Info.plist'
+        ),
+        path.join(
+          process.env.HOME,
+          'Applications',
+          'JetBrains Toolbox',
+          'Android Studio.app',
+          'Contents',
+          'Info.plist'
+        ),
+      ];
+      androidStudioVersion = Promise.all(
+        paths.map(p => {
+          return utils.fileExists(p).then(exists => {
+            if (!exists) {
+              return null;
+            }
+            const command = utils.generatePlistBuddyCommand(p.replace(/ /g, '\\ '), [
+              'CFBundleShortVersionString',
+              'CFBundleVersion',
+            ]);
+            return utils.run(command).then(version => {
+              return version.split('\n').join(' ');
+            });
+          });
         })
-        .then(version => version.split('\n').join(' '));
+      ).then(versions => {
+        return versions.find(version => version !== null) || utils.NotFound;
+      });
     } else if (utils.isLinux) {
       androidStudioVersion = Promise.all([
         utils
