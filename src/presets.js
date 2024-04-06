@@ -29,7 +29,7 @@ module.exports = {
       'Curl',
     ],
     Servers: ['Apache', 'Nginx'],
-    Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
+    Virtualization: ['Docker', 'Docker Compose', 'Parallels', 'VirtualBox', 'VMware Fusion'],
     SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
     IDEs: [
       'Android Studio',
