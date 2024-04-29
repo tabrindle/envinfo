@@ -1,5 +1,18 @@
 # Changelog
 
+## [7.12.0](https://www.github.com/tabrindle/envinfo/compare/v7.11.1...v7.12.0) (2024-04-06)
+
+
+### Features
+
+* add docker-compose ([#253](https://www.github.com/tabrindle/envinfo/issues/253)) ([d1861f0](https://www.github.com/tabrindle/envinfo/commit/d1861f07991e8c4a154e9e0d4dc200be9ff36f79))
+* update to webpack5 ([#248](https://www.github.com/tabrindle/envinfo/issues/248)) ([4715340](https://www.github.com/tabrindle/envinfo/commit/4715340388023be122c52a395def8b01815e5e4f))
+
+
+### Bug Fixes
+
+* delete old CI ([#247](https://www.github.com/tabrindle/envinfo/issues/247)) ([6ae3cda](https://www.github.com/tabrindle/envinfo/commit/6ae3cda9744342182f4e74fd7284bcc0d5536d20))
+
 ### [7.11.1](https://www.github.com/tabrindle/envinfo/compare/v7.11.0...v7.11.1) (2024-02-02)
 
 

@@ -9,6 +9,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Docker', v[0], v[1]));
   },
 
+  getDockerComposeInfo: () => {
+    utils.log('trace', 'getDockerComposeInfo');
+    return Promise.all([
+      utils.run('docker-compose --version').then(utils.findVersion),
+      utils.which('docker-compose'),
+    ]).then(v => utils.determineFound('Docker Compose', v[0], v[1]));
+  },
+
   getParallelsInfo: () => {
     utils.log('trace', 'getParallelsInfo');
     return Promise.all([
