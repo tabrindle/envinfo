@@ -1,5 +1,17 @@
 # Changelog
 
+## [7.13.0](https://www.github.com/tabrindle/envinfo/compare/v7.12.0...v7.13.0) (2024-04-29)
+
+
+### Features
+
+* add openssl support ([#255](https://www.github.com/tabrindle/envinfo/issues/255)) ([299bd3f](https://www.github.com/tabrindle/envinfo/commit/299bd3f6b365103651e2323351247d3fed583162))
+
+
+### Bug Fixes
+
+* be more tolerant when detecting Android Studio IDE on OSX ([#252](https://www.github.com/tabrindle/envinfo/issues/252)) ([eb9e5de](https://www.github.com/tabrindle/envinfo/commit/eb9e5de59310a78ccb24daa088e2695b32e48c28))
+
 ## [7.12.0](https://www.github.com/tabrindle/envinfo/compare/v7.11.1...v7.12.0) (2024-04-06)
 
 
