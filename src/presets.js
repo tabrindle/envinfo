@@ -27,6 +27,7 @@ module.exports = {
       'Subversion',
       'FFmpeg',
       'Curl',
+      'OpenSSL',
     ],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Docker Compose', 'Parallels', 'VirtualBox', 'VMware Fusion'],
