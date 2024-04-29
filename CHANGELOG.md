@@ -1,5 +1,12 @@
 # Changelog
 
+### [7.12.1](https://www.github.com/tabrindle/envinfo/compare/v7.12.0...v7.12.1) (2024-04-29)
+
+
+### Bug Fixes
+
+* be more tolerant when detecting Android Studio IDE on OSX ([#252](https://www.github.com/tabrindle/envinfo/issues/252)) ([eb9e5de](https://www.github.com/tabrindle/envinfo/commit/eb9e5de59310a78ccb24daa088e2695b32e48c28))
+
 ## [7.12.0](https://www.github.com/tabrindle/envinfo/compare/v7.11.1...v7.12.0) (2024-04-06)
 
 
