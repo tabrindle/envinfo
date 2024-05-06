@@ -38,6 +38,27 @@ const fileExists = filePath => {
   });
 };
 
+const windowsExeExists = relExeFilePath => {
+  return new Promise(resolve => {
+    let absPath;
+    fs.access(
+      (absPath = path.join(process.env.ProgramFiles, `${relExeFilePath}`)),
+      fs.constants.R_OK,
+      err1 => {
+        if (err1) {
+          fs.access(
+            (absPath = path.join(process.env['ProgramFiles(x86)'], `${relExeFilePath}`)),
+            fs.constants.X_OK,
+            err2 => {
+              resolve(err2 ? null : absPath);
+            }
+          );
+        } else resolve(absPath);
+      }
+    );
+  });
+};
+
 const readFile = filePath => {
   return new Promise(fileResolved => {
     fs.readFile(filePath, 'utf8', (err, file) => (file ? fileResolved(file) : fileResolved(null)));
@@ -96,6 +117,7 @@ module.exports = {
   run: run,
   log: log,
   fileExists: fileExists,
+  windowsExeExists: windowsExeExists,
   readFile: readFile,
   requireJson: requireJson,
   versionRegex: versionRegex,

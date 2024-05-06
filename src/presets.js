@@ -1,7 +1,7 @@
 module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Watchman'],
     Managers: [
       'Apt',
       'Cargo',
@@ -26,9 +26,11 @@ module.exports = {
       'Mercurial',
       'Subversion',
       'FFmpeg',
+      'Curl',
+      'OpenSSL',
     ],
     Servers: ['Apache', 'Nginx'],
-    Virtualization: ['Docker', 'Parallels', 'VirtualBox', 'VMware Fusion'],
+    Virtualization: ['Docker', 'Docker Compose', 'Parallels', 'VirtualBox', 'VMware Fusion'],
     SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
     IDEs: [
       'Android Studio',
@@ -89,12 +91,12 @@ module.exports = {
   },
   jest: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     npmPackages: ['jest'],
   },
   'react-native': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'Watchman'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Watchman'],
     SDKs: ['iOS SDK', 'Android SDK', 'Windows SDK'],
     IDEs: ['Android Studio', 'Xcode', 'Visual Studio'],
     npmPackages: ['react', 'react-native'],
@@ -102,24 +104,24 @@ module.exports = {
   },
   nyc: {
     System: ['OS', 'CPU', 'Memory'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     npmPackages: '/**/{*babel*,@babel/*/,*istanbul*,nyc,source-map-support,typescript,ts-node}',
   },
   webpack: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     npmPackages: '*webpack*',
     npmGlobalPackages: ['webpack', 'webpack-cli'],
   },
   'styled-components': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     Browsers: ['Chrome', 'Firefox', 'Safari'],
     npmPackages: '*styled-components*',
   },
   'create-react-app': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm', 'bun'],
     Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
     npmPackages: ['react', 'react-dom', 'react-scripts'],
     npmGlobalPackages: ['create-react-app'],
@@ -130,14 +132,14 @@ module.exports = {
   },
   apollo: {
     System: ['OS'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm', 'bun'],
     Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
     npmPackages: '{*apollo*,@apollo/*}',
     npmGlobalPackages: '{*apollo*,@apollo/*}',
   },
   'react-native-web': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm', 'bun'],
     Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
     npmPackages: ['react', 'react-native-web'],
     options: {
@@ -146,14 +148,15 @@ module.exports = {
   },
   babel: {
     System: ['OS'],
-    Binaries: ['Node', 'npm', 'Yarn'],
+    Binaries: ['Node', 'npm', 'Yarn', 'pnpm', 'bun'],
     Monorepos: ['Yarn Workspaces', 'Lerna'],
     npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest}',
   },
   playwright: {
-    System: ['OS', 'Memory', 'Container'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    System: ['OS', 'CPU', 'Memory', 'Container'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     Languages: ['Bash'],
-    npmPackages: 'playwright*',
+    IDEs: ['VSCode'],
+    npmPackages: '{playwright*,@playwright/*}',
   },
 };
