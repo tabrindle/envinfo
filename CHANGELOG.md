@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.14.0](https://www.github.com/tabrindle/envinfo/compare/v7.13.0...v7.14.0) (2024-05-06)
+
+
+### Features
+
+* add preset for cssnano ([#208](https://www.github.com/tabrindle/envinfo/issues/208)) ([d4f73e9](https://www.github.com/tabrindle/envinfo/commit/d4f73e985b12c3087134088baaa28c2fc0356101))
+
 ## [7.13.0](https://www.github.com/tabrindle/envinfo/compare/v7.12.0...v7.13.0) (2024-04-29)
 
 
