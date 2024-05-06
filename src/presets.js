@@ -83,7 +83,7 @@ module.exports = {
   },
   cssnano: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
     npmPackages: ['cssnano', 'postcss'],
     options: {
       duplicates: true,
