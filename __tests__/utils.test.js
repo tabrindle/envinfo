@@ -1,3 +1,9 @@
+const os = require('os');
+const libWhich = require('which');
+
+jest.mock('os');
+jest.mock('which');
+
 const utils = require('../src/utils');
 const cases = {
   apt: {
@@ -232,5 +238,27 @@ describe('omit', () => {
 describe('pick', () => {
   test('picks properties from object', () => {
     expect(utils.pick({ one: true, two: true }, ['two'])).toEqual({ two: true });
+  });
+});
+
+describe('which', () => {
+  const homedir = '/home/testuser';
+
+  beforeAll(() => os.homedir.mockReturnValue(homedir));
+  afterAll(() => os.homedir.mockRestore());
+  afterEach(() => libWhich.mockRestore());
+
+  test('should not modify paths not in homedir', async () => {
+    const path = '/usr/local/bin/node';
+    libWhich.mockImplementation((_, cb) => cb(null, path));
+    const expected = '/usr/local/bin/node';
+    expect(await utils.which()).toBe(expected);
+  });
+
+  test('should replace homedir with ~', async () => {
+    const path = `${homedir}/.local/bin/node`;
+    libWhich.mockImplementation((_, cb) => cb(null, path));
+    const expected = '~/.local/bin/node';
+    expect(await utils.which()).toBe(expected);
   });
 });

@@ -5,7 +5,7 @@ module.exports = {
     utils.log('trace', 'getBazelInfo');
     return Promise.all([
       utils.run('bazel --version').then(utils.findVersion),
-      utils.run('which bazel'),
+      utils.which('bazel'),
     ]).then(v => utils.determineFound('Bazel', v[0], v[1]));
   },
 
@@ -13,7 +13,7 @@ module.exports = {
     utils.log('trace', 'getCMakeInfo');
     return Promise.all([
       utils.run('cmake --version').then(utils.findVersion),
-      utils.run('which cmake'),
+      utils.which('cmake'),
     ]).then(v => utils.determineFound('CMake', v[0], v[1]));
   },
 
@@ -22,7 +22,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('gcc -v 2>&1').then(utils.findVersion),
-        utils.run('which gcc'),
+        utils.which('gcc'),
       ]).then(v => utils.determineFound('GCC', v[0], v[1]));
     }
     return Promise.resolve(['GCC', 'N/A']);
@@ -40,7 +40,7 @@ module.exports = {
     utils.log('trace', 'getGitInfo');
     return Promise.all([
       utils.run('git --version').then(utils.findVersion),
-      utils.run('which git'),
+      utils.which('git'),
     ]).then(v => utils.determineFound('Git', v[0], v[1]));
   },
 
@@ -49,7 +49,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('make --version').then(utils.findVersion),
-        utils.run('which make'),
+        utils.which('make'),
       ]).then(v => utils.determineFound('Make', v[0], v[1]));
     }
     return Promise.resolve(['Make', 'N/A']);
@@ -59,7 +59,7 @@ module.exports = {
     utils.log('trace', 'getNinjaInfo');
     return Promise.all([
       utils.run('ninja --version').then(utils.findVersion),
-      utils.run('which ninja'),
+      utils.which('ninja'),
     ]).then(v => utils.determineFound('Ninja', v[0], v[1]));
   },
 
@@ -68,7 +68,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('hg --version').then(utils.findVersion),
-        utils.run('which hg'),
+        utils.which('hg'),
       ]).then(v => utils.determineFound('Mercurial', v[0], v[1]));
     }
     return Promise.resolve(['Mercurial', 'N/A']);
@@ -79,7 +79,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('svn --version').then(utils.findVersion),
-        utils.run('which svn'),
+        utils.which('svn'),
       ]).then(v => utils.determineFound('Subversion', v[0], v[1]));
     }
     return Promise.resolve(['Subversion', 'N/A']);
