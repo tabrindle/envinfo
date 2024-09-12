@@ -150,7 +150,8 @@ module.exports = {
     System: ['OS'],
     Binaries: ['Node', 'npm', 'Yarn', 'pnpm', 'bun'],
     Monorepos: ['Yarn Workspaces', 'Lerna'],
-    npmPackages: '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest,next,rollup}',
+    npmPackages:
+      '{*babel*,@babel/*,eslint,webpack,create-react-app,react-native,lerna,jest,next,rollup}',
   },
   playwright: {
     System: ['OS', 'CPU', 'Memory', 'Container'],
