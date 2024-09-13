@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.14.0](https://www.github.com/tabrindle/envinfo/compare/v7.13.0...v7.14.0) (2024-09-13)
+
+
+### Features
+
+* add preset for cssnano ([#208](https://www.github.com/tabrindle/envinfo/issues/208)) ([d4f73e9](https://www.github.com/tabrindle/envinfo/commit/d4f73e985b12c3087134088baaa28c2fc0356101))
+* Update Babel preset ([#263](https://www.github.com/tabrindle/envinfo/issues/263)) ([e57dcad](https://www.github.com/tabrindle/envinfo/commit/e57dcadf7d31a6790593e8df0b755aa75872ccfe))
+
 ## [7.13.0](https://www.github.com/tabrindle/envinfo/compare/v7.12.0...v7.13.0) (2024-04-29)
 
 
