@@ -1,6 +1,32 @@
 const osName = require('os-name');
 const utils = require('../utils');
 const os = require('os');
+const fs = require('fs');
+
+function isAlpine() {
+  let osRelease;
+
+  try {
+    // Read the /etc/os-release file
+    const osReleaseContent = fs.readFileSync('/etc/os-release', 'utf8');
+
+    // Parse the content to find the ID or NAME field
+    osRelease = osReleaseContent.split('\n').reduce((acc, line) => {
+      const [key, value] = line.split('=').map(part => part.trim());
+      if (key && value) {
+        acc[key] = value.replace(/"/g, ''); // Remove quotes if any
+      }
+      return acc;
+    }, {});
+
+    // Check if the OS is Alpine
+    return osRelease.ID === 'alpine' || osRelease.NAME === 'Alpine Linux';
+  } catch (error) {
+    // If the file can't be read, assume it's not Alpine
+    console.error('Unable to determine OS:', error);
+    return false;
+  }
+}
 
 module.exports = {
   getContainerInfo: () => {
@@ -66,6 +92,9 @@ module.exports = {
 
   getShellInfo: () => {
     utils.log('trace', 'getShellInfo', process.env);
+    if (isAlpine()) {
+      return Promise.resolve(['Shell', 'N/A']);
+    }
     if (utils.isMacOS || utils.isLinux) {
       const shell =
         process.env.SHELL || utils.runSync('getent passwd $LOGNAME | cut -d: -f7 | head -1');
