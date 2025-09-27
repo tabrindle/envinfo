@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.15.0](https://www.github.com/tabrindle/envinfo/compare/v7.14.0...v7.15.0) (2025-09-27)
+
+
+### Features
+
+* support deno ([#269](https://www.github.com/tabrindle/envinfo/issues/269)) ([d03690a](https://www.github.com/tabrindle/envinfo/commit/d03690a399f2aa276222bb9bd64cf92916d23524))
+
 ## [7.14.0](https://www.github.com/tabrindle/envinfo/compare/v7.13.0...v7.14.0) (2024-09-13)
 
 
