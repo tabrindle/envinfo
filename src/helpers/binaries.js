@@ -53,4 +53,17 @@ module.exports = {
       utils.determineFound('bun', v[0], v[1])
     );
   },
+
+  getDenoInfo: () => {
+    utils.log('trace', 'getDenoInfo');
+    return Promise.all([
+      utils.isWindows
+        ? utils.run('deno --version').then(utils.findVersion)
+        : utils
+            .which('deno')
+            .then(denoPath => (denoPath ? utils.run(denoPath + ' --version') : Promise.resolve('')))
+            .then(utils.findVersion),
+      utils.which('deno').then(utils.condensePath),
+    ]).then(v => utils.determineFound('Deno', v[0], v[1]));
+  },
 };

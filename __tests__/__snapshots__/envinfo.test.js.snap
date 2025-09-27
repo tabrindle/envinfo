@@ -8,6 +8,7 @@ exports[`Running the cli interface returns expected formatted yaml value 1`] = `
     npm: 10.0.0 - /usr/local/bin/npm
     pnpm: 10.0.0 - /usr/local/bin/pnpm
     bun: 10.0.0 - /usr/local/bin/bun
+    Deno: 10.0.0 - /usr/local/bin/deno
     Watchman: 10.0.0 - /usr/local/bin/watchman
 "
 `;
@@ -20,6 +21,7 @@ exports[`Running the cli interface returns expected unformatted yaml value 1`] =
     npm: 10.0.0 - /usr/local/bin/npm
     pnpm: 10.0.0 - /usr/local/bin/pnpm
     bun: 10.0.0 - /usr/local/bin/bun
+    Deno: 10.0.0 - /usr/local/bin/deno
     Watchman: 10.0.0 - /usr/local/bin/watchman
 "
 `;

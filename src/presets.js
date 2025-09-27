@@ -1,7 +1,7 @@
 module.exports = {
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Watchman'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno', 'Watchman'],
     Managers: [
       'Apt',
       'Cargo',
@@ -83,7 +83,7 @@ module.exports = {
   },
   cssnano: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     npmPackages: ['cssnano', 'postcss'],
     options: {
       duplicates: true,
@@ -91,7 +91,7 @@ module.exports = {
   },
   jest: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     npmPackages: ['jest'],
   },
   'react-native': {
@@ -104,18 +104,18 @@ module.exports = {
   },
   nyc: {
     System: ['OS', 'CPU', 'Memory'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     npmPackages: '/**/{*babel*,@babel/*/,*istanbul*,nyc,source-map-support,typescript,ts-node}',
   },
   webpack: {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     npmPackages: '*webpack*',
     npmGlobalPackages: ['webpack', 'webpack-cli'],
   },
   'styled-components': {
     System: ['OS', 'CPU'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     Browsers: ['Chrome', 'Firefox', 'Safari'],
     npmPackages: '*styled-components*',
   },
@@ -155,7 +155,7 @@ module.exports = {
   },
   playwright: {
     System: ['OS', 'CPU', 'Memory', 'Container'],
-    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun'],
+    Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     Languages: ['Bash'],
     IDEs: ['VSCode'],
     npmPackages: '{playwright*,@playwright/*}',
