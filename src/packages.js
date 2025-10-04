@@ -207,7 +207,88 @@ function getnpmGlobalPackages(packages, options) {
   ]);
 }
 
+function getpnpmGlobalPackages(packages, options) {
+  utils.log('trace', 'getpnpmGlobalPackages', packages);
+
+  let packageGlob = null;
+
+  // Normalize packages arg: boolean | array | glob-string | comma-list
+  if (typeof packages === 'string') {
+    if (
+      packages.includes('*') ||
+      packages.includes('?') ||
+      packages.includes('+') ||
+      packages.includes('!')
+    ) {
+      packageGlob = packages;
+    } else {
+      packages = packages.split(',');
+    }
+  } else if (!Array.isArray(packages)) {
+    packages = true;
+  }
+
+  // Parse JSON output from `pnpm list --global --depth=0 --json`
+  const parseJson = jsonText => {
+    const versions = {};
+    try {
+      const parsed = JSON.parse(jsonText || '[]');
+      const nodes = Array.isArray(parsed) ? parsed : [parsed];
+      nodes.forEach(node => {
+        if (!node) return;
+        const deps = node.dependencies || {};
+        Object.keys(deps).forEach(name => {
+          const meta = deps[name];
+          if (meta && typeof meta === 'object' && meta.version) versions[name] = meta.version;
+          else if (typeof meta === 'string') versions[name] = meta;
+        });
+        if (node.name && node.version) versions[node.name] = node.version;
+      });
+    } catch (e) {
+      utils.log('trace', 'pnpm parseJson error', (e && e.message) || String(e));
+    }
+    return versions;
+  };
+
+  const applyFilters = versions => {
+    let out = versions || {};
+    if (packageGlob !== null) {
+      const globRegex = new RegExp(
+        '^' +
+          packageGlob
+            .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+            .replace(/\*/g, '.*')
+            .replace(/\?/g, '.') +
+          '$'
+      );
+      out = Object.keys(out)
+        .filter(name => globRegex.test(name))
+        .reduce((acc, name) => Object.assign(acc, { [name]: out[name] }), {});
+    } else if (Array.isArray(packages)) {
+      out = Object.keys(out)
+        .filter(name => packages.includes(name))
+        .reduce((acc, name) => Object.assign(acc, { [name]: out[name] }), {});
+    }
+
+    if (options && options.showNotFound && Array.isArray(packages)) {
+      packages.forEach(p => {
+        if (!out[p]) out[p] = 'Not Found';
+      });
+    }
+    return utils.sortObject(out);
+  };
+
+  return Promise.all([
+    'pnpmGlobalPackages',
+    utils
+      .run('pnpm list --global --depth=0 --json')
+      .then(parseJson)
+      .then(applyFilters),
+  ]);
+}
+
 module.exports = {
   getnpmPackages: getnpmPackages,
   getnpmGlobalPackages: getnpmGlobalPackages,
+  getpnpmGlobalPackages: getpnpmGlobalPackages,
 };

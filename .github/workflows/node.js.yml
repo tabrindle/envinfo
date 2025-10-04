@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 20
       - run: yarn
-      - run: node --unhandled-rejections=strict src/cli.js
+      - run: node --unhandled-rejections=strict src/cli.js --all
 
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - run: yarn build
-      - run: node --unhandled-rejections=strict src/cli.js
+      - run: node --unhandled-rejections=strict src/cli.js --all
 
   build-macOS:
     runs-on: macos-14
@@ -48,4 +48,4 @@ jobs:
           node-version: 20
       - run: yarn
       - run: yarn build
-      - run: node --unhandled-rejections=strict src/cli.js
+      - run: node --unhandled-rejections=strict src/cli.js --all
