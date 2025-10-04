@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.16.0](https://www.github.com/tabrindle/envinfo/compare/v7.15.0...v7.16.0) (2025-10-04)
+
+
+### Features
+
+* add ccache ([#271](https://www.github.com/tabrindle/envinfo/issues/271)) ([8941eb9](https://www.github.com/tabrindle/envinfo/commit/8941eb93629c3da2efd303bf3826b44ab1985f48))
+* add pnpm global packages ([#273](https://www.github.com/tabrindle/envinfo/issues/273)) ([d32cb16](https://www.github.com/tabrindle/envinfo/commit/d32cb1635b36e0b13355e1ad9e45992a9bc6ec28))
+
 ## [7.15.0](https://www.github.com/tabrindle/envinfo/compare/v7.14.0...v7.15.0) (2025-09-27)
 
 
