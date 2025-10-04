@@ -254,6 +254,7 @@ envinfo is used in the ISSUE_TEMPLATE of:
 -   [styled-components](https://github.com/styled-components/styled-components)
 -   [Jest](https://github.com/facebook/jest)
 -   [Apollo Client](https://github.com/apollographql/apollo-client)
+-   [FakerJS](https://github.com/faker-js/faker)
 
 ## Alternatives
 
