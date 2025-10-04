@@ -28,6 +28,7 @@ module.exports = {
       'FFmpeg',
       'Curl',
       'OpenSSL',
+      'ccache',
     ],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Docker Compose', 'Parallels', 'VirtualBox', 'VMware Fusion'],
