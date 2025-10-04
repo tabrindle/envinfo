@@ -89,7 +89,11 @@ function cli(options) {
   // if all option is passed, do not pass go, do not collect 200 dollars, go straight to main
   if (options.all) {
     return main(
-      Object.assign({}, presets.defaults, { npmPackages: true, npmGlobalPackages: true }),
+      Object.assign({}, presets.defaults, {
+        npmPackages: true,
+        npmGlobalPackages: true,
+        pnpmGlobalPackages: true,
+      }),
       options
     );
   }

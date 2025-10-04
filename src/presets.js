@@ -81,6 +81,7 @@ module.exports = {
     Monorepos: ['Yarn Workspaces', 'Lerna'],
     npmPackages: null,
     npmGlobalPackages: null,
+    pnpmGlobalPackages: null,
   },
   cssnano: {
     System: ['OS', 'CPU'],

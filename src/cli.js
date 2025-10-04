@@ -35,6 +35,7 @@ if (argv.help || argv._.indexOf('help') > -1) {
     --binaries             Get version numbers of node, npm, watchman, etc
     --npmPackages          Get version numbers of locally installed npm packages - glob, string, or comma delimited list
     --npmGlobalPackages    Get version numbers of globally installed npm packages
+    --pnpmGlobalPackages   Get version numbers of globally installed pnpm packages
 
     --duplicates           Mark duplicate npm packages inside parentheses eg. (2.1.4)
     --fullTree             Traverse entire node_modules dependency tree, not just top level
