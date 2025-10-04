@@ -108,4 +108,12 @@ module.exports = {
       utils.which('openssl'),
     ]).then(v => utils.determineFound('OpenSSL', v[0], v[1]));
   },
+
+  getccacheInfo: () => {
+    utils.log('trace', 'getccacheInfo');
+    return Promise.all([
+      utils.run('ccache -V').then(utils.findVersion),
+      utils.which('ccache'),
+    ]).then(v => utils.determineFound('ccache', v[0], v[1]));
+  },
 };
