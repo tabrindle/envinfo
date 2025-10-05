@@ -1,3 +1,4 @@
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const utils = require('../utils');
@@ -26,6 +27,16 @@ module.exports = {
       .then(output => {
         if (!output && utils.isMacOS)
           return utils.run('~/Library/Android/sdk/tools/bin/sdkmanager --list');
+        return output;
+      })
+      .then(output => {
+        if (!output && utils.isWindows) {
+          const sdkPath = path.join(
+            os.homedir(),
+            'AppData/Local/Android/Sdk/cmdline-tools/latest/bin/sdkmanager'
+          );
+          return utils.run(`${sdkPath} --list`);
+        }
         return output;
       })
       .then(output => {
