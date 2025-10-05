@@ -1,5 +1,8 @@
+image:
+  - Visual Studio 2022
+  
 environment:
-  nodejs_version: '16'
+  nodejs_version: '24'
 
 install:
   - ps: Install-Product node $env:nodejs_version x64
@@ -13,7 +16,7 @@ test_script:
   - set PATH=%RPATH%;%PATH%
   - SET ENVINFO_DEBUG=trace
   - npm run build
-  - node -r esm src/cli.js
+  - node src/cli.js
   - node dist/cli.js
   - SET ENVINFO_DEBUG=""
   - npm test
