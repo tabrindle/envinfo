@@ -134,12 +134,12 @@ module.exports = {
 
   getFirefoxInfo: () => {
     utils.log('trace', 'getFirefoxInfo');
-    getFirefoxVersion(utils.browserBundleIdentifiers.Firefox, 'Mozilla Firefox/firefox.exe');
+    return getFirefoxVersion(utils.browserBundleIdentifiers.Firefox, 'Mozilla Firefox/firefox.exe');
   },
 
   getFirefoxDeveloperEditionInfo: () => {
     utils.log('trace', 'getFirefoxDeveloperEditionInfo');
-    getFirefoxVersion(
+    return getFirefoxVersion(
       utils.browserBundleIdentifiers['Firefox Developer Edition'],
       'Firefox Developer Edition/firefox.exe'
     );
