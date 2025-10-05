@@ -20,6 +20,11 @@ module.exports = {
       })
       .then(output => {
         if (!output && utils.isMacOS)
+          return utils.run('~/Library/Android/sdk/cmdline-tools/latest/bin/sdkmanager --list');
+        return output;
+      })
+      .then(output => {
+        if (!output && utils.isMacOS)
           return utils.run('~/Library/Android/sdk/tools/bin/sdkmanager --list');
         return output;
       })
