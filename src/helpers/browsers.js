@@ -3,7 +3,7 @@ const os = require('os');
 const utils = require('../utils');
 const path = require('path');
 
-function getFirefoxVersion(darvinId, winProgPath) {
+function getFirefoxVersion(name, darvinId, winProgPath) {
   let firefoxVersion;
   let appPath;
   if (utils.isLinux) {
@@ -15,14 +15,14 @@ function getFirefoxVersion(darvinId, winProgPath) {
       appPath = filePath;
       return filePath
         ? utils
-            .run(`powershell ". '${filePath}' -v | Write-Output"`)
+            .run(`powershell "& '${filePath}' -v | Write-Output"`)
             .then(out => utils.findVersion(out))
         : utils.NA;
     });
   } else {
     firefoxVersion = Promise.resolve(utils.NA);
   }
-  return firefoxVersion.then(v => utils.determineFound('Firefox', v, appPath || utils.NA));
+  return firefoxVersion.then(v => utils.determineFound(name, v, appPath || utils.NA));
 }
 
 module.exports = {
@@ -134,12 +134,17 @@ module.exports = {
 
   getFirefoxInfo: () => {
     utils.log('trace', 'getFirefoxInfo');
-    return getFirefoxVersion(utils.browserBundleIdentifiers.Firefox, 'Mozilla Firefox/firefox.exe');
+    return getFirefoxVersion(
+      'Firefox',
+      utils.browserBundleIdentifiers.Firefox,
+      'Mozilla Firefox/firefox.exe'
+    );
   },
 
   getFirefoxDeveloperEditionInfo: () => {
     utils.log('trace', 'getFirefoxDeveloperEditionInfo');
     return getFirefoxVersion(
+      'Firefox Developer Edition',
       utils.browserBundleIdentifiers['Firefox Developer Edition'],
       'Firefox Developer Edition/firefox.exe'
     );
