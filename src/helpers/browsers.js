@@ -57,11 +57,17 @@ module.exports = {
     } else if (utils.isWindows) {
       let version;
       try {
-        version = utils.findVersion(
-          fs
-            .readdirSync(path.join(process.env['ProgramFiles(x86)'], 'Google/Chrome/Application'))
-            .join('\n')
-        );
+        const bases = [process.env.ProgramFiles, process.env['ProgramFiles(x86)']].filter(Boolean);
+        const contents = bases
+          .map(base => {
+            try {
+              return fs.readdirSync(path.join(base, 'Google/Chrome/Application'));
+            } catch (e) {
+              return [];
+            }
+          })
+          .reduce((acc, arr) => acc.concat(arr), []);
+        version = contents.length ? utils.findVersion(contents.join('\n')) : utils.NotFound;
       } catch (e) {
         version = utils.NotFound;
       }
