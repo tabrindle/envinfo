@@ -15,7 +15,7 @@ module.exports = {
     utils.log('trace', 'getCargoInfo');
     return Promise.all([
       utils.run('cargo --version').then(utils.findVersion),
-      utils.which('cargo').then(utils.condensePath),
+      utils.which('cargo'),
     ]).then(v => utils.determineFound('Cargo', v[0], v[1]));
   },
 

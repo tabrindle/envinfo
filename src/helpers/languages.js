@@ -46,7 +46,7 @@ module.exports = {
       utils
         .run('javac -version', { unify: true })
         .then(v => utils.findVersion(v, /\d+\.[\w+|.|_|-]+/)),
-      utils.run('which javac'),
+      utils.which('javac'),
     ]).then(v => utils.determineFound('Java', v[0], v[1]));
   },
 
@@ -69,7 +69,7 @@ module.exports = {
     utils.log('trace', 'getProtocInfo');
     return Promise.all([
       utils.run('protoc --version').then(utils.findVersion),
-      utils.run('which protoc'),
+      utils.which('protoc'),
     ]).then(v => utils.determineFound('Protoc', v[0], v[1]));
   },
 
@@ -77,7 +77,7 @@ module.exports = {
     utils.log('trace', 'getPythonInfo');
     return Promise.all([
       utils.run('python -V 2>&1').then(utils.findVersion),
-      utils.run('which python'),
+      utils.which('python'),
     ]).then(v => utils.determineFound('Python', v[0], v[1]));
   },
 
@@ -85,7 +85,7 @@ module.exports = {
     utils.log('trace', 'getPython3Info');
     return Promise.all([
       utils.run('python3 -V 2>&1').then(utils.findVersion),
-      utils.run('which python3'),
+      utils.which('python3'),
     ]).then(v => utils.determineFound('Python3', v[0], v[1]));
   },
 
@@ -109,7 +109,7 @@ module.exports = {
     utils.log('trace', 'getRustInfo');
     return Promise.all([
       utils.run('rustc --version').then(utils.findVersion),
-      utils.run('which rustc'),
+      utils.which('rustc'),
     ]).then(v => utils.determineFound('Rust', v[0], v[1]));
   },
 
@@ -118,7 +118,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('scalac -version').then(utils.findVersion),
-        utils.run('which scalac'),
+        utils.which('scalac'),
       ]).then(v => utils.determineFound('Scala', v[0], v[1]));
     }
     return Promise.resolve(['Scala', 'N/A']);

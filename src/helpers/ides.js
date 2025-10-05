@@ -86,7 +86,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('emacs --version').then(utils.findVersion),
-        utils.run('which emacs'),
+        utils.which('emacs'),
       ]).then(v => utils.determineFound('Emacs', v[0], v[1]));
     }
     return Promise.resolve(['Emacs', 'N/A']);
@@ -104,7 +104,7 @@ module.exports = {
     if (utils.isLinux) {
       return Promise.all([
         utils.run('nano --version').then(utils.findVersion),
-        utils.run('which nano'),
+        utils.which('nano'),
       ]).then(v => utils.determineFound('Nano', v[0], v[1]));
     }
     return Promise.resolve(['Nano', 'N/A']);
@@ -115,7 +115,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('nvim --version').then(utils.findVersion),
-        utils.run('which nvim'),
+        utils.which('nvim'),
       ]).then(v => utils.determineFound('Nvim', v[0], v[1]));
     }
     return Promise.resolve(['Vim', 'N/A']);
@@ -152,7 +152,7 @@ module.exports = {
     if (utils.isMacOS || utils.isLinux) {
       return Promise.all([
         utils.run('vim --version').then(utils.findVersion),
-        utils.run('which vim'),
+        utils.which('vim'),
       ]).then(v => utils.determineFound('Vim', v[0], v[1]));
     }
     return Promise.resolve(['Vim', 'N/A']);
