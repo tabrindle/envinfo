@@ -31,7 +31,10 @@ module.exports = {
       })
       .then(output => {
         if (!output && utils.isWindows) {
-          const sdkPath = path.join(os.homedir(), 'AppData/Local/Android/Sdk/cmdline-tools/latest/bin/sdkmanager')
+          const sdkPath = path.join(
+            os.homedir(),
+            'AppData/Local/Android/Sdk/cmdline-tools/latest/bin/sdkmanager'
+          );
           return utils.run(`${sdkPath} --list`);
         }
         return output;
