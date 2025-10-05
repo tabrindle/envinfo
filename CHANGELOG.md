@@ -1,5 +1,15 @@
 # Changelog
 
+### [7.16.1](https://www.github.com/tabrindle/envinfo/compare/v7.16.0...v7.16.1) (2025-10-05)
+
+
+### Bug Fixes
+
+* add fallback command for SDK manager on macOS ([#275](https://www.github.com/tabrindle/envinfo/issues/275)) ([4bfda67](https://www.github.com/tabrindle/envinfo/commit/4bfda67325d519a83d42e5cc76777a18380c4f2f))
+* make windows android sdk detect more robust ([#278](https://www.github.com/tabrindle/envinfo/issues/278)) ([990362e](https://www.github.com/tabrindle/envinfo/commit/990362e0311fee1c00845cc15d4648bd0973affe))
+* windows chrome and firefox detection ([#279](https://www.github.com/tabrindle/envinfo/issues/279)) ([b089e3e](https://www.github.com/tabrindle/envinfo/commit/b089e3ea258cafa549733975080e4a39c249c5a6))
+* windows path issue ([#280](https://www.github.com/tabrindle/envinfo/issues/280)) ([05c9c29](https://www.github.com/tabrindle/envinfo/commit/05c9c29a22d8682aa218d953beb33aeb70550084))
+
 ## [7.16.0](https://www.github.com/tabrindle/envinfo/compare/v7.15.0...v7.16.0) (2025-10-04)
 
 
