@@ -3,7 +3,7 @@ const os = require('os');
 const utils = require('../utils');
 const path = require('path');
 
-function getFirefoxVersion(darvinId, winProgPath) {
+function getFirefoxVersion(name, darvinId, winProgPath) {
   let firefoxVersion;
   let appPath;
   if (utils.isLinux) {
@@ -15,14 +15,14 @@ function getFirefoxVersion(darvinId, winProgPath) {
       appPath = filePath;
       return filePath
         ? utils
-            .run(`powershell ". '${filePath}' -v | Write-Output"`)
+            .run(`powershell "& '${filePath}' -v | Write-Output"`)
             .then(out => utils.findVersion(out))
         : utils.NA;
     });
   } else {
     firefoxVersion = Promise.resolve(utils.NA);
   }
-  return firefoxVersion.then(v => utils.determineFound('Firefox', v, appPath || utils.NA));
+  return firefoxVersion.then(v => utils.determineFound(name, v, appPath || utils.NA));
 }
 
 module.exports = {
@@ -57,11 +57,17 @@ module.exports = {
     } else if (utils.isWindows) {
       let version;
       try {
-        version = utils.findVersion(
-          fs
-            .readdirSync(path.join(process.env['ProgramFiles(x86)'], 'Google/Chrome/Application'))
-            .join('\n')
-        );
+        const bases = [process.env.ProgramFiles, process.env['ProgramFiles(x86)']].filter(Boolean);
+        const contents = bases
+          .map(base => {
+            try {
+              return fs.readdirSync(path.join(base, 'Google/Chrome/Application'));
+            } catch (e) {
+              return [];
+            }
+          })
+          .reduce((acc, arr) => acc.concat(arr), []);
+        version = contents.length ? utils.findVersion(contents.join('\n')) : utils.NotFound;
       } catch (e) {
         version = utils.NotFound;
       }
@@ -128,12 +134,17 @@ module.exports = {
 
   getFirefoxInfo: () => {
     utils.log('trace', 'getFirefoxInfo');
-    getFirefoxVersion(utils.browserBundleIdentifiers.Firefox, 'Mozilla Firefox/firefox.exe');
+    return getFirefoxVersion(
+      'Firefox',
+      utils.browserBundleIdentifiers.Firefox,
+      'Mozilla Firefox/firefox.exe'
+    );
   },
 
   getFirefoxDeveloperEditionInfo: () => {
     utils.log('trace', 'getFirefoxDeveloperEditionInfo');
-    getFirefoxVersion(
+    return getFirefoxVersion(
+      'Firefox Developer Edition',
       utils.browserBundleIdentifiers['Firefox Developer Edition'],
       'Firefox Developer Edition/firefox.exe'
     );
