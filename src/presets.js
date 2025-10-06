@@ -21,6 +21,7 @@ module.exports = {
       'Make',
       'GCC',
       'Git',
+      'Git LFS',
       'Clang',
       'Ninja',
       'Mercurial',

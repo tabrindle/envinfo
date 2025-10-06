@@ -44,6 +44,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Git', v[0], v[1]));
   },
 
+  getGitLFSInfo: () => {
+    utils.log('trace', 'getGitLFSInfo');
+    return Promise.all([
+      utils.run('git lfs version').then(utils.findVersion),
+      utils.which('git-lfs'),
+    ]).then(v => utils.determineFound('Git LFS', v[0], v[1]));
+  },
+
   getMakeInfo: () => {
     utils.log('trace', 'getMakeInfo');
     if (utils.isMacOS || utils.isLinux) {
