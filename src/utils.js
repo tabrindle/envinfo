@@ -4,6 +4,7 @@ const os = require('os');
 const childProcess = require('child_process');
 const libWhich = require('which');
 const glob = require('glob');
+const nativeRequire = require('./nativeRequire');
 const matchers = require('./matchers');
 
 const run = (cmd, { unify = false } = {}) => {
@@ -113,9 +114,20 @@ const parseSDKManagerOutput = output => {
   };
 };
 
+function findConfigFile() {
+  const configPath = path.join(process.cwd(), 'envinfo.config.js');
+  try {
+    const fn = nativeRequire(configPath); // eslint-disable-line global-require
+    return fn;
+  } catch (error) {
+    return null;
+  }
+}
+
 module.exports = {
   run: run,
   log: log,
+  findConfigFile: findConfigFile,
   fileExists: fileExists,
   windowsExeExists: windowsExeExists,
   readFile: readFile,
