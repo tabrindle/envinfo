@@ -1,6 +1,6 @@
 image:
   - Visual Studio 2022
-  
+
 environment:
   nodejs_version: '24'
 
@@ -14,9 +14,9 @@ test_script:
   - choco install r.project -version 3.6.0
   - set RPATH=C:\Program Files\R\R-3.6.0\bin\x64
   - set PATH=%RPATH%;%PATH%
+  - node src/cli.js
   - SET ENVINFO_DEBUG=trace
   - npm run build
-  - node src/cli.js
   - node dist/cli.js
   - SET ENVINFO_DEBUG=""
   - npm test

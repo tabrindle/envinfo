@@ -124,4 +124,44 @@ module.exports = {
       utils.which('ccache'),
     ]).then(v => utils.determineFound('ccache', v[0], v[1]));
   },
+
+  get7zInfo: () => {
+    utils.log('trace', 'get7zInfo');
+    const candidates = ['7z', '7zz'];
+
+    const findFirstWhich = () =>
+      Promise.all(candidates.map(bin => utils.which(bin))).then(paths => {
+        const idx = paths.findIndex(Boolean);
+        return idx >= 0 ? { bin: candidates[idx], path: paths[idx] } : null;
+      });
+
+    if (utils.isWindows) {
+      // Try default install location first
+      return utils.windowsExeExists('7-Zip/7z.exe').then(filePath => {
+        if (filePath) {
+          return Promise.all([
+            utils.run(`powershell "& '${filePath}' i | Write-Output"`).then(utils.findVersion),
+            Promise.resolve(filePath),
+          ]).then(v => utils.determineFound('7z', v[0], v[1]));
+        }
+        // Fallback to PATH candidates
+        return findFirstWhich().then(found => {
+          if (!found) return utils.determineFound('7z', '', undefined);
+          return Promise.all([
+            utils.run(`${found.bin} i`).then(utils.findVersion),
+            Promise.resolve(found.path),
+          ]).then(v => utils.determineFound('7z', v[0], v[1]));
+        });
+      });
+    }
+
+    // macOS/Linux: find on PATH among common names
+    return findFirstWhich().then(found => {
+      if (!found) return utils.determineFound('7z', '', undefined);
+      return Promise.all([
+        utils.run(`${found.bin} i`).then(utils.findVersion),
+        Promise.resolve(found.path),
+      ]).then(v => utils.determineFound('7z', v[0], v[1]));
+    });
+  },
 };
