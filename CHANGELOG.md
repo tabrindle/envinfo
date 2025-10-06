@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.17.0](https://www.github.com/tabrindle/envinfo/compare/v7.16.1...v7.17.0) (2025-10-06)
+
+
+### Features
+
+* add git lfs support ([#281](https://www.github.com/tabrindle/envinfo/issues/281)) ([636461f](https://www.github.com/tabrindle/envinfo/commit/636461ff549273dad09bd2d1793d9d4aabf399b2))
+
 ### [7.16.1](https://www.github.com/tabrindle/envinfo/compare/v7.16.0...v7.16.1) (2025-10-05)
 
 
