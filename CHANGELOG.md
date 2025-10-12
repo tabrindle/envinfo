@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.18.0](https://www.github.com/tabrindle/envinfo/compare/v7.17.0...v7.18.0) (2025-10-12)
+
+
+### Features
+
+* add 7z support ([#283](https://www.github.com/tabrindle/envinfo/issues/283)) ([84b9d01](https://www.github.com/tabrindle/envinfo/commit/84b9d0181cdecb9c64d73bf78089a1f2ad305a9f))
+
 ## [7.17.0](https://www.github.com/tabrindle/envinfo/compare/v7.16.1...v7.17.0) (2025-10-06)
 
 
