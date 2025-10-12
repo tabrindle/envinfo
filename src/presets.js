@@ -16,6 +16,7 @@ module.exports = {
       'Yum',
     ],
     Utilities: [
+      '7z',
       'Bazel',
       'CMake',
       'Make',
