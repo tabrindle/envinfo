@@ -166,6 +166,38 @@ module.exports = {
     ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
+  getCursorInfo: () => {
+    utils.log('trace', 'getCursorInfo');
+    return Promise.all([
+      utils.run('cursor --version').then(utils.findVersion),
+      utils.which('cursor'),
+    ]).then(v => utils.determineFound('Cursor', v[0], v[1]));
+  },
+
+  getClaudeCodeInfo: () => {
+    utils.log('trace', 'getClaudeCodeInfo');
+    return Promise.all([
+      utils.run('claude --version').then(utils.findVersion),
+      utils.which('claude'),
+    ]).then(v => utils.determineFound('Claude Code', v[0], v[1]));
+  },
+
+  getopencodeInfo: () => {
+    utils.log('trace', 'getopencodeInfo');
+    return Promise.all([
+      utils.run('opencode --version').then(utils.findVersion),
+      utils.which('opencode'),
+    ]).then(v => utils.determineFound('opencode', v[0], v[1]));
+  },
+
+  getCodexInfo: () => {
+    utils.log('trace', 'getCodexInfo');
+    return Promise.all([
+      utils.run('codex --version').then(utils.findVersion),
+      utils.which('codex'),
+    ]).then(v => utils.determineFound('Codex', v[0], v[1]));
+  },
+
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
