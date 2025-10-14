@@ -174,6 +174,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Cursor', v[0], v[1]));
   },
 
+  getClaudeCodeInfo: () => {
+    utils.log('trace', 'getClaudeCodeInfo');
+    return Promise.all([
+      utils.run('claude --version').then(utils.findVersion),
+      utils.which('claude'),
+    ]).then(v => utils.determineFound('Claude Code', v[0], v[1]));
+  },
+
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
