@@ -47,8 +47,8 @@ module.exports = {
       'VSCode',
       'Cursor',
       'Claude Code',
-      'opencode',
       'Codex',
+      'opencode',
       'Visual Studio',
       'Vim',
       'WebStorm',
@@ -165,7 +165,7 @@ module.exports = {
     System: ['OS', 'CPU', 'Memory', 'Container'],
     Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     Languages: ['Bash'],
-    IDEs: ['VSCode', 'Cursor', 'Claude Code', 'opencode', 'Codex'],
+    IDEs: ['VSCode', 'Cursor', 'Claude Code', 'Codex', 'opencode'],
     npmPackages: '{playwright*,@playwright/*}',
   },
 };
