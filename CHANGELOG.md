@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.19.0](https://www.github.com/tabrindle/envinfo/compare/v7.18.0...v7.19.0) (2025-10-14)
+
+
+### Features
+
+* support ai agent ([#285](https://www.github.com/tabrindle/envinfo/issues/285)) ([6e3b48d](https://www.github.com/tabrindle/envinfo/commit/6e3b48dbdcdf83872ccdb7d280bd5f31b70fdd7d))
+
 ## [7.18.0](https://www.github.com/tabrindle/envinfo/compare/v7.17.0...v7.18.0) (2025-10-12)
 
 
