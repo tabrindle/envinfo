@@ -182,6 +182,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Claude Code', v[0], v[1]));
   },
 
+  getopencodeInfo: () => {
+    utils.log('trace', 'getopencodeInfo');
+    return Promise.all([
+      utils.run('opencode --version').then(utils.findVersion),
+      utils.which('opencode'),
+    ]).then(v => utils.determineFound('opencode', v[0], v[1]));
+  },
+
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
