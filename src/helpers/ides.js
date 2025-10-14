@@ -190,6 +190,14 @@ module.exports = {
     ]).then(v => utils.determineFound('opencode', v[0], v[1]));
   },
 
+  getCodexInfo: () => {
+    utils.log('trace', 'getCodexInfo');
+    return Promise.all([
+      utils.run('codex --version').then(utils.findVersion),
+      utils.which('codex'),
+    ]).then(v => utils.determineFound('Codex', v[0], v[1]));
+  },
+
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {
