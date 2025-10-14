@@ -166,6 +166,14 @@ module.exports = {
     ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
+  getCursorInfo: () => {
+    utils.log('trace', 'getCursorInfo');
+    return Promise.all([
+      utils.run('cursor --version').then(utils.findVersion),
+      utils.which('cursor'),
+    ]).then(v => utils.determineFound('Cursor', v[0], v[1]));
+  },
+
   getVisualStudioInfo: () => {
     utils.log('trace', 'getVisualStudioInfo');
     if (utils.isWindows) {

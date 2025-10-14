@@ -45,6 +45,7 @@ module.exports = {
       'PhpStorm',
       'Sublime Text',
       'VSCode',
+      'Cursor',
       'Visual Studio',
       'Vim',
       'WebStorm',
@@ -161,7 +162,7 @@ module.exports = {
     System: ['OS', 'CPU', 'Memory', 'Container'],
     Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     Languages: ['Bash'],
-    IDEs: ['VSCode'],
+    IDEs: ['VSCode', 'Cursor'],
     npmPackages: '{playwright*,@playwright/*}',
   },
 };
