@@ -69,6 +69,7 @@ module.exports = {
       'Ruby',
       'Rust',
       'Scala',
+      'Zig',
     ],
     Databases: ['MongoDB', 'MySQL', 'PostgreSQL', 'SQLite'],
     Browsers: [
