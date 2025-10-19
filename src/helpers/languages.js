@@ -113,6 +113,14 @@ module.exports = {
     ]).then(v => utils.determineFound('Rust', v[0], v[1]));
   },
 
+  getZigInfo: () => {
+    utils.log('trace', 'getZigInfo');
+    return Promise.all([
+      utils.run('zig version').then(utils.findVersion),
+      utils.which('zig'),
+    ]).then(v => utils.determineFound('Zig', v[0], v[1]));
+  },
+
   getScalaInfo: () => {
     utils.log('trace', 'getScalaInfo');
     if (utils.isMacOS || utils.isLinux) {
