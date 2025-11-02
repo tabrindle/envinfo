@@ -31,6 +31,7 @@ module.exports = {
       'Curl',
       'OpenSSL',
       'ccache',
+      'Clash Meta',
     ],
     Servers: ['Apache', 'Nginx'],
     Virtualization: ['Docker', 'Docker Compose', 'Parallels', 'VirtualBox', 'VMware Fusion'],

@@ -164,4 +164,23 @@ module.exports = {
       ]).then(v => utils.determineFound('7z', v[0], v[1]));
     });
   },
+
+  getClashMetaInfo: () => {
+    utils.log('trace', 'getClashMetaInfo');
+    const candidates = ['mihomo'];
+
+    const findFirstWhich = () =>
+      Promise.all(candidates.map(bin => utils.which(bin))).then(paths => {
+        const idx = paths.findIndex(Boolean);
+        return idx >= 0 ? { bin: candidates[idx], path: paths[idx] } : null;
+      });
+
+    return findFirstWhich().then(found => {
+      if (!found) return utils.determineFound('Clash Meta', '', undefined);
+      return Promise.all([
+        utils.run(`${found.bin} -v`).then(utils.findVersion),
+        Promise.resolve(found.path),
+      ]).then(v => utils.determineFound('Clash Meta', v[0], v[1]));
+    });
+  },
 };
