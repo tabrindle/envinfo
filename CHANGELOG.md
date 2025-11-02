@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.20.0](https://www.github.com/tabrindle/envinfo/compare/v7.19.0...v7.20.0) (2025-11-02)
+
+
+### Features
+
+* add support for Clash Meta detection ([#289](https://www.github.com/tabrindle/envinfo/issues/289)) ([eab1dbf](https://www.github.com/tabrindle/envinfo/commit/eab1dbf87651cfdc3b309e9fc242c64f8512873f))
+* add zig support ([#287](https://www.github.com/tabrindle/envinfo/issues/287)) ([c3769aa](https://www.github.com/tabrindle/envinfo/commit/c3769aa8f58ce158504cbae5cbfa2a15298ae2a4))
+
 ## [7.19.0](https://www.github.com/tabrindle/envinfo/compare/v7.18.0...v7.19.0) (2025-10-14)
 
 
