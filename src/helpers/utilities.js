@@ -183,4 +183,12 @@ module.exports = {
       ]).then(v => utils.determineFound('Clash Meta', v[0], v[1]));
     });
   },
+
+  getCalibreInfo: () => {
+    utils.log('trace', 'getCalibreInfo');
+    return Promise.all([
+      utils.run('ebook-convert --version').then(utils.findVersion),
+      utils.which('calibre'),
+    ]).then(v => utils.determineFound('Calibre', v[0], v[1]));
+  },
 };

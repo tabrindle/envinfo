@@ -31,6 +31,7 @@ module.exports = {
       'Curl',
       'OpenSSL',
       'ccache',
+      'Calibre',
       'Clash Meta',
     ],
     Servers: ['Apache', 'Nginx'],
