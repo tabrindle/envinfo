@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.21.0](https://www.github.com/tabrindle/envinfo/compare/v7.20.0...v7.21.0) (2025-11-26)
+
+
+### Features
+
+* add Calibre support for version detection ([#290](https://www.github.com/tabrindle/envinfo/issues/290)) ([bec2168](https://www.github.com/tabrindle/envinfo/commit/bec2168ab8f271b79051ae1e6c4c0b95274098eb))
+
 ## [7.20.0](https://www.github.com/tabrindle/envinfo/compare/v7.19.0...v7.20.0) (2025-11-02)
 
 
