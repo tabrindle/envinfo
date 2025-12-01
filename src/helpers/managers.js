@@ -33,7 +33,7 @@ module.exports = {
     utils.log('trace', 'getComposerInfo');
     return Promise.all([
       utils.run('composer --version').then(utils.findVersion),
-      utils.which('composer').then(utils.condensePath),
+      utils.which('composer'),
     ]).then(v => utils.determineFound('Composer', v[0], v[1]));
   },
 
@@ -41,7 +41,7 @@ module.exports = {
     utils.log('trace', 'getGradleInfo');
     return Promise.all([
       utils.run('gradle --version').then(utils.findVersion),
-      utils.which('gradle').then(utils.condensePath),
+      utils.which('gradle'),
     ]).then(v => utils.determineFound('Gradle', v[0], v[1]));
   },
 
@@ -59,7 +59,7 @@ module.exports = {
     utils.log('trace', 'getMavenInfo');
     return Promise.all([
       utils.run('mvn --version').then(utils.findVersion),
-      utils.which('mvn').then(utils.condensePath),
+      utils.which('mvn'),
     ]).then(v => utils.determineFound('Maven', v[0], v[1]));
   },
 
@@ -67,7 +67,7 @@ module.exports = {
     utils.log('trace', 'getpip2Info');
     return Promise.all([
       utils.run('pip2 --version').then(utils.findVersion),
-      utils.which('pip2').then(utils.condensePath),
+      utils.which('pip2'),
     ]).then(v => utils.determineFound('pip2', v[0], v[1]));
   },
 
@@ -75,7 +75,7 @@ module.exports = {
     utils.log('trace', 'getpip3Info');
     return Promise.all([
       utils.run('pip3 --version').then(utils.findVersion),
-      utils.which('pip3').then(utils.condensePath),
+      utils.which('pip3'),
     ]).then(v => utils.determineFound('pip3', v[0], v[1]));
   },
 
