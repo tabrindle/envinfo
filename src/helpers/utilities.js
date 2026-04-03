@@ -117,6 +117,14 @@ module.exports = {
     ]).then(v => utils.determineFound('OpenSSL', v[0], v[1]));
   },
 
+  getjqInfo: () => {
+    utils.log('trace', 'getjqInfo');
+    return Promise.all([
+      utils.run('jq --version').then(utils.findVersion),
+      utils.which('jq'),
+    ]).then(v => utils.determineFound('jq', v[0], v[1]));
+  },
+
   getccacheInfo: () => {
     utils.log('trace', 'getccacheInfo');
     return Promise.all([
