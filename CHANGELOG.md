@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.22.0](https://www.github.com/tabrindle/envinfo/compare/v7.21.0...v7.22.0) (2026-04-04)
+
+
+### Features
+
+* Add jq utility helper ([#293](https://www.github.com/tabrindle/envinfo/issues/293)) ([9e273fa](https://www.github.com/tabrindle/envinfo/commit/9e273faed820b6d04900db5c6123d2a0e93d5136))
+
 ## [7.21.0](https://www.github.com/tabrindle/envinfo/compare/v7.20.0...v7.21.0) (2025-11-26)
 
 
