@@ -11,9 +11,6 @@ install:
 test_script:
   - node --version
   - choco install ffmpeg
-  - choco install r.project -version 3.6.0
-  - set RPATH=C:\Program Files\R\R-3.6.0\bin\x64
-  - set PATH=%RPATH%;%PATH%
   - node src/cli.js
   - SET ENVINFO_DEBUG=trace
   - npm run build
