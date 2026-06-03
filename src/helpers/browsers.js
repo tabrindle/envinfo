@@ -63,12 +63,14 @@ module.exports = {
             try {
               return fs.readdirSync(path.join(base, 'Google/Chrome/Application'));
             } catch (e) {
+              utils.log('trace', 'getChromeInfoReadDirCatch', e);
               return [];
             }
           })
           .reduce((acc, arr) => acc.concat(arr), []);
         version = contents.length ? utils.findVersion(contents.join('\n')) : utils.NotFound;
       } catch (e) {
+        utils.log('trace', 'getChromeInfoCatch', e);
         version = utils.NotFound;
       }
       chromeVersion = Promise.resolve(version);
