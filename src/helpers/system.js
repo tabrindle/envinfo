@@ -22,6 +22,7 @@ module.exports = {
       const cpus = os.cpus();
       info = '(' + cpus.length + ') ' + os.arch() + ' ' + cpus[0].model;
     } catch (err) {
+      utils.log('trace', 'getCPUInfoCatch', err);
       info = 'Unknown';
     }
     return Promise.all(['CPU', info]);
@@ -83,9 +84,9 @@ module.exports = {
   getGLibcInfo: () => {
     utils.log('trace', 'getGLibc');
     if (utils.isLinux) {
-      return Promise.all([utils.run(`ldd --version`).then(utils.findVersion)]).then(v =>
-        utils.determineFound('GLibc', v[0] || 'Unknown')
-      );
+      return utils
+        .run(`ldd --version`)
+        .then(v => utils.determineFound('GLibc', utils.findVersion(v) || 'Unknown'));
     }
     return Promise.resolve(['GLibc', 'N/A']);
   },

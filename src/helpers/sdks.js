@@ -146,7 +146,8 @@ module.exports = {
               `${process.env['ProgramFiles(x86)']}/Windows Kits/10/Platforms/UAP`
             );
             info.Versions = versions;
-          } catch (_) {
+          } catch (err) {
+            utils.log('trace', 'getWindowsSDKInfoCatch', err);
             // None found
           }
           return Promise.resolve(['Windows SDK', info]);
