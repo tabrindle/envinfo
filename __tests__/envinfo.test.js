@@ -82,6 +82,19 @@ describe('Running the programmatic interface', () => {
     });
   });
 
+  test('returns expected utility value for ripgrep', () => {
+    return envinfo.run({ Utilities: ['ripgrep'] }, { json: true }).then(data => {
+      expect(JSON.parse(data)).toEqual({
+        Utilities: {
+          ripgrep: {
+            version: '10.0.0',
+            path: '/usr/local/bin/ripgrep',
+          },
+        },
+      });
+    });
+  });
+
   test('returns expected title in json', () => {
     return envinfo
       .run({ Binaries: ['Node'] }, { title: 'envinfo rocks!', json: true })

@@ -24,6 +24,7 @@ module.exports = {
       'Git',
       'Git LFS',
       'jq',
+      'ripgrep',
       'Clang',
       'Ninja',
       'Mercurial',
