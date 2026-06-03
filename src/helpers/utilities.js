@@ -125,6 +125,14 @@ module.exports = {
     ]).then(v => utils.determineFound('jq', v[0], v[1]));
   },
 
+  getripgrepInfo: () => {
+    utils.log('trace', 'getripgrepInfo');
+    return Promise.all([
+      utils.run('rg --version').then(utils.findVersion),
+      utils.which('rg'),
+    ]).then(v => utils.determineFound('ripgrep', v[0], v[1]));
+  },
+
   getccacheInfo: () => {
     utils.log('trace', 'getccacheInfo');
     return Promise.all([

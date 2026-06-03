@@ -75,6 +75,7 @@ npm install envinfo || yarn add envinfo
     Mercurial: 4.5.3 - /usr/bin/hg
     Clang: 1001.0.46.4 - /usr/bin/clang
     Subversion: 1.10.3 - /usr/bin/svn
+    ripgrep: 14.1.1 - /usr/local/bin/rg
   Servers:
     Apache: 2.4.34 - /usr/sbin/apachectl
     Nginx: 1.13.12 - /usr/local/bin/nginx
