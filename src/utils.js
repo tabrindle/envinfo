@@ -113,6 +113,10 @@ const parseSDKManagerOutput = output => {
   };
 };
 
+const condensePath = pathString => {
+  return (pathString || '').replace(os.homedir(), '~');
+};
+
 module.exports = {
   run: run,
   log: log,
@@ -167,7 +171,11 @@ module.exports = {
   },
 
   which: binary => {
-    return new Promise(resolve => libWhich(binary, (err, binaryPath) => resolve(binaryPath)));
+    return new Promise(resolve =>
+      libWhich(binary, (err, binaryPath) => {
+        resolve(condensePath(binaryPath));
+      })
+    );
   },
 
   getDarwinApplicationVersion: bundleIdentifier => {
@@ -248,10 +256,6 @@ module.exports = {
     const matcher = regex || versionRegex;
     const matched = versionString.match(matcher);
     return matched ? matched[idx] : versionString;
-  },
-
-  condensePath: pathString => {
-    return (pathString || '').replace(os.homedir(), '~');
   },
 
   determineFound: (name, version, appPath) => {
