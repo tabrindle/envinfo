@@ -96,6 +96,7 @@ npm install envinfo || yarn add envinfo
     Emacs: 22.1.1 - /usr/bin/emacs
     Nano: 2.0.6 - /usr/bin/nano
     VSCode: 1.36.0 - /usr/local/bin/code
+    Cursor Agent: 2026.06.02-8c11d9f - ~/.local/bin/agent
     Vim: 8.0 - /usr/bin/vim
     Xcode: 10.2.1/10E1001 - /usr/bin/xcodebuild
   Languages:
