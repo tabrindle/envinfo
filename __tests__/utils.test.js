@@ -131,6 +131,11 @@ http://www.gnu.org/licenses/.
     string: 'rustc 1.31.1 (b6c32da9b 2018-12-18)',
     version: '1.31.1',
   },
+  cursorAgent: {
+    string: '2026.06.02-8c11d9f',
+    regex: /\d+\.\d+\.\d+(?:-[0-9a-z]+)?/i,
+    version: '2026.06.02-8c11d9f',
+  },
   ripgrep: {
     string: 'ripgrep 14.1.1 (rev 4649aa9700)',
     version: '14.1.1',

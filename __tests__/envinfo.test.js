@@ -82,6 +82,23 @@ describe('Running the programmatic interface', () => {
     });
   });
 
+  test('returns expected ide value for Cursor Agent', () => {
+    helpers.getCursorAgentInfo.mockImplementationOnce(() =>
+      Promise.resolve(['Cursor Agent', '2026.06.02-8c11d9f', '/usr/local/bin/agent'])
+    );
+
+    return envinfo.run({ IDEs: ['Cursor Agent'] }, { json: true }).then(data => {
+      expect(JSON.parse(data)).toEqual({
+        IDEs: {
+          'Cursor Agent': {
+            version: '2026.06.02-8c11d9f',
+            path: '/usr/local/bin/agent',
+          },
+        },
+      });
+    });
+  });
+
   test('returns expected utility value for ripgrep', () => {
     return envinfo.run({ Utilities: ['ripgrep'] }, { json: true }).then(data => {
       expect(JSON.parse(data)).toEqual({

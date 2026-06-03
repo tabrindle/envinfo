@@ -50,6 +50,7 @@ module.exports = {
       'Sublime Text',
       'VSCode',
       'Cursor',
+      'Cursor Agent',
       'Claude Code',
       'Codex',
       'opencode',
@@ -170,7 +171,7 @@ module.exports = {
     System: ['OS', 'CPU', 'Memory', 'Container'],
     Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno'],
     Languages: ['Bash'],
-    IDEs: ['VSCode', 'Cursor', 'Claude Code', 'Codex', 'opencode'],
+    IDEs: ['VSCode', 'Cursor', 'Cursor Agent', 'Claude Code', 'Codex', 'opencode'],
     npmPackages: '{playwright*,@playwright/*}',
   },
 };

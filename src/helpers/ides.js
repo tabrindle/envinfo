@@ -174,6 +174,16 @@ module.exports = {
     ]).then(v => utils.determineFound('Cursor', v[0], v[1]));
   },
 
+  getCursorAgentInfo: () => {
+    utils.log('trace', 'getCursorAgentInfo');
+    return Promise.all([
+      utils
+        .run('agent --version')
+        .then(version => utils.findVersion(version, /\d+\.\d+\.\d+(?:-[0-9a-z]+)?/i)),
+      utils.which('agent'),
+    ]).then(v => utils.determineFound('Cursor Agent', v[0], v[1]));
+  },
+
   getClaudeCodeInfo: () => {
     utils.log('trace', 'getClaudeCodeInfo');
     return Promise.all([
