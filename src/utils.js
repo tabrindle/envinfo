@@ -78,6 +78,34 @@ const findDarwinApplication = id => {
   return run(command).then(v => v.replace(/(\s)/g, '\\ '));
 };
 
+// Like findDarwinApplication, but returns every match as an array of raw
+// (unescaped) paths. mdfind prints one path per line; multiple apps can share
+// a bundle identifier (e.g. several Android Studio versions side by side).
+const findDarwinApplications = id => {
+  log('trace', 'findDarwinApplications', id);
+  const command = `mdfind "kMDItemCFBundleIdentifier=='${id}'"`;
+  log('trace', command);
+  return run(command).then(output =>
+    output
+      .split('\n')
+      .map(p => p.trim())
+      .filter(Boolean)
+  );
+};
+
+// Compares two version-ish strings ('2025.2', '2022.3.1.18', '4.1 AI-201.8743.12.41.7042882')
+// by their numeric groups. Returns negative when a < b, positive when a > b, 0 when equal.
+const compareVersions = (a, b) => {
+  const toParts = v => (String(v).match(/\d+/g) || []).map(Number);
+  const partsA = toParts(a);
+  const partsB = toParts(b);
+  for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+    const diff = (partsA[i] || 0) - (partsB[i] || 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+};
+
 const generatePlistBuddyCommand = (appPath, options) => {
   var optionsArray = (options || ['CFBundleShortVersionString']).map(function optionsMap(option) {
     return '-c Print:' + option;
@@ -122,6 +150,8 @@ module.exports = {
   requireJson: requireJson,
   versionRegex: versionRegex,
   findDarwinApplication: findDarwinApplication,
+  findDarwinApplications: findDarwinApplications,
+  compareVersions: compareVersions,
   generatePlistBuddyCommand: generatePlistBuddyCommand,
   matchAll: matchAll,
   parseSDKManagerOutput: parseSDKManagerOutput,
@@ -149,6 +179,7 @@ module.exports = {
   },
 
   ideBundleIdentifiers: {
+    'Android Studio': 'com.google.android.studio',
     Atom: 'com.github.atom',
     IntelliJ: 'com.jetbrains.intellij',
     PhpStorm: 'com.jetbrains.PhpStorm',
