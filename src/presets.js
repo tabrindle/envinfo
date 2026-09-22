@@ -23,6 +23,8 @@ module.exports = {
       'GCC',
       'Git',
       'Git LFS',
+      'gh',
+      'glab',
       'jq',
       'ripgrep',
       'Clang',

@@ -52,6 +52,22 @@ module.exports = {
     ]).then(v => utils.determineFound('Git LFS', v[0], v[1]));
   },
 
+  getghInfo: () => {
+    utils.log('trace', 'getghInfo');
+    return Promise.all([
+      utils.run('gh --version').then(utils.findVersion),
+      utils.which('gh'),
+    ]).then(v => utils.determineFound('gh', v[0], v[1]));
+  },
+
+  getglabInfo: () => {
+    utils.log('trace', 'getglabInfo');
+    return Promise.all([
+      utils.run('glab --version').then(utils.findVersion),
+      utils.which('glab'),
+    ]).then(v => utils.determineFound('glab', v[0], v[1]));
+  },
+
   getMakeInfo: () => {
     utils.log('trace', 'getMakeInfo');
     if (utils.isMacOS || utils.isLinux) {
