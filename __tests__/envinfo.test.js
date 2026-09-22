@@ -112,6 +112,23 @@ describe('Running the programmatic interface', () => {
     });
   });
 
+  test('returns expected utility values for gh and glab', () => {
+    return envinfo.run({ Utilities: ['gh', 'glab'] }, { json: true }).then(data => {
+      expect(JSON.parse(data)).toEqual({
+        Utilities: {
+          gh: {
+            version: '10.0.0',
+            path: '/usr/local/bin/gh',
+          },
+          glab: {
+            version: '10.0.0',
+            path: '/usr/local/bin/glab',
+          },
+        },
+      });
+    });
+  });
+
   test('returns expected title in json', () => {
     return envinfo
       .run({ Binaries: ['Node'] }, { title: 'envinfo rocks!', json: true })

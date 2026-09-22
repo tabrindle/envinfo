@@ -136,6 +136,14 @@ http://www.gnu.org/licenses/.
     regex: /\d+\.\d+\.\d+(?:-[0-9a-z]+)?/i,
     version: '2026.06.02-8c11d9f',
   },
+  gh: {
+    string: 'gh version 2.100.0 (2026-09-03)\nhttps://github.com/cli/cli/releases/tag/v2.100.0',
+    version: '2.100.0',
+  },
+  glab: {
+    string: 'glab 1.62.0 (f4b5a2c8)',
+    version: '1.62.0',
+  },
   ripgrep: {
     string: 'ripgrep 14.1.1 (rev 4649aa9700)',
     version: '14.1.1',

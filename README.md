@@ -72,6 +72,8 @@ npm install envinfo || yarn add envinfo
     Make: 3.81 - /usr/bin/make
     GCC: 10.14. - /usr/bin/gcc
     Git: 2.20.0 - /usr/local/bin/git
+    gh: 2.100.0 - /usr/local/bin/gh
+    glab: 1.62.0 - /usr/local/bin/glab
     Mercurial: 4.5.3 - /usr/bin/hg
     Clang: 1001.0.46.4 - /usr/bin/clang
     Subversion: 1.10.3 - /usr/bin/svn
