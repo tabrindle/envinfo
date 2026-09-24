@@ -160,10 +160,17 @@ module.exports = {
 
   getVSCodeInfo: () => {
     utils.log('trace', 'getVSCodeInfo');
-    return Promise.all([
-      utils.run('code --version').then(utils.findVersion),
-      utils.which('code'),
-    ]).then(v => utils.determineFound('VSCode', v[0], v[1]));
+    return Promise.all([utils.run('code --version').then(utils.findVersion), utils.which('code')])
+      .then(v => {
+        if (!v[0] && !v[1]) {
+          return Promise.all([
+            utils.run('codium --version').then(utils.findVersion),
+            utils.which('codium'),
+          ]);
+        }
+        return v;
+      })
+      .then(v => utils.determineFound('VSCode', v[0], v[1]));
   },
 
   getCursorInfo: () => {
