@@ -46,7 +46,7 @@ module.exports = {
       'Atom',
       'Emacs',
       'IntelliJ',
-      'NVim',
+      'Nvim',
       'Nano',
       'PhpStorm',
       'Sublime Text',
