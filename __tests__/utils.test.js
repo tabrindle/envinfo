@@ -251,3 +251,32 @@ describe('pick', () => {
     expect(utils.pick({ one: true, two: true }, ['two'])).toEqual({ two: true });
   });
 });
+
+describe('compareVersions', () => {
+  test('orders simple versions', () => {
+    expect(utils.compareVersions('2022.3', '2025.2')).toBeLessThan(0);
+    expect(utils.compareVersions('2025.2', '2022.3')).toBeGreaterThan(0);
+    expect(utils.compareVersions('2025.2', '2025.2')).toBe(0);
+  });
+
+  test('compares segment by segment, not lexicographically', () => {
+    expect(utils.compareVersions('4.10', '4.9')).toBeGreaterThan(0);
+    expect(utils.compareVersions('2022.3.1.18', '2022.3.1.8')).toBeGreaterThan(0);
+  });
+
+  test('treats missing trailing segments as zero', () => {
+    expect(utils.compareVersions('2025.2', '2025.2.0')).toBe(0);
+    expect(utils.compareVersions('2025.2.1', '2025.2')).toBeGreaterThan(0);
+  });
+
+  test('handles Android Studio version with build number suffix', () => {
+    expect(
+      utils.compareVersions('2025.2 AI-252.25557.131.2521.14432022', '2022.3 AI-223.8836.35.2231.10811636')
+    ).toBeGreaterThan(0);
+  });
+
+  test('sorts a list newest-last', () => {
+    const versions = ['2022.3', '2025.2', '4.1'];
+    expect([...versions].sort(utils.compareVersions)).toEqual(['4.1', '2022.3', '2025.2']);
+  });
+});
