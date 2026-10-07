@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "module": "nodenext",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "types": []
+  },
+  "include": ["*.ts"]
+}

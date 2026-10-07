@@ -1,4 +1,6 @@
-module.exports = {
+// The const cast has no runtime effect: it lets test-d/contract.test-d.ts read the exact
+// category items and preset names, so index.d.ts cannot drift from this file.
+module.exports = /** @type {const} */ ({
   defaults: {
     System: ['OS', 'CPU', 'Memory', 'Container', 'Shell'],
     Binaries: ['Node', 'Yarn', 'npm', 'pnpm', 'bun', 'Deno', 'Watchman'],
@@ -46,7 +48,7 @@ module.exports = {
       'Atom',
       'Emacs',
       'IntelliJ',
-      'NVim',
+      'Nvim',
       'Nano',
       'PhpStorm',
       'Sublime Text',
@@ -176,4 +178,4 @@ module.exports = {
     IDEs: ['VSCode', 'Cursor', 'Cursor Agent', 'Claude Code', 'Codex', 'opencode'],
     npmPackages: '{playwright*,@playwright/*}',
   },
-};
+});

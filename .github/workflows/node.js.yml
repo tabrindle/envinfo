@@ -26,7 +26,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x, 24.x]
+        node-version: [24.x, 26.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +37,19 @@ jobs:
       - run: yarn
       - run: yarn build
       - run: node --unhandled-rejections=strict src/cli.js --all
+
+  types:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: yarn
+      - run: yarn test:types
+      - run: yarn build
+      - run: yarn check:package
 
   build-macOS:
     runs-on: macos-14

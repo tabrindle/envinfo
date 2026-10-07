@@ -118,7 +118,7 @@ module.exports = {
         utils.which('nvim'),
       ]).then(v => utils.determineFound('Nvim', v[0], v[1]));
     }
-    return Promise.resolve(['Vim', 'N/A']);
+    return Promise.resolve(['Nvim', 'N/A']);
   },
 
   getPhpStormInfo: () => {
