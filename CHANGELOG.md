@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.23.0](https://github.com/tabrindle/envinfo/compare/v7.22.0...v7.23.0) (2026-10-07)
+
+
+### Features
+
+* ship TypeScript type definitions ([c556683](https://github.com/tabrindle/envinfo/commit/c556683f174855e47261183a3c911c29b1a6628a))
+* support gh and glab ([#305](https://github.com/tabrindle/envinfo/issues/305)) ([daef766](https://github.com/tabrindle/envinfo/commit/daef766e861e4ff5d9f3c0195e9c0acd256c99aa))
+
+
+### Bug Fixes
+
+* detect Neovim in the IDEs category ([c556683](https://github.com/tabrindle/envinfo/commit/c556683f174855e47261183a3c911c29b1a6628a))
+* support named imports of envinfo from ESM ([c556683](https://github.com/tabrindle/envinfo/commit/c556683f174855e47261183a3c911c29b1a6628a))
+
 ## [7.22.0](https://github.com/tabrindle/envinfo/compare/v7.21.0...v7.22.0) (2026-06-03)
 
 
