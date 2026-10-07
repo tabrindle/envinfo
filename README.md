@@ -222,6 +222,10 @@ const node = await envinfo.helpers.getNodeInfo();
 console.log(`Node: ${node[1]} - ${node[2]}`); // "Node: 10.9.0 - ~/.nvm/versions/node/v8.14.0/bin/node"
 ```
 
+### TypeScript
+
+envinfo ships its own type definitions, tested with TypeScript 6 and 7, so `@types/envinfo` is no longer needed. Category items, presets and options are typed by name, so a typo such as `Utilities: ['Ripgrep']` is a compile error.
+
 ## CLI Options
 
 ```
@@ -274,6 +278,8 @@ MIT
 ## Contributing
 
 PRs for additional features are welcome! Run `npm run lint && npm run format` before committing.
+
+When you add a helper, category item or preset, add it to `index.d.ts` too: `npm run test:types` checks the types against `src/` and names anything missing.
 
 This project came out of a [PR](https://github.com/facebook/react-native/pull/14428) to the React Native CLI tool - issues are reported frequently without important environment information, like Node/npm versions.
 
