@@ -106,6 +106,21 @@ const parseSDKManagerOutput = output => {
     .map(m => m[1].split('|').map(s => s.trim()))
     .map(image => image[0].split(';')[0] + ' | ' + image[2].split(' System Image')[0]);
 
+  // The Android CLI prints colorized, whitespace-separated rows with slash-separated paths.
+  // eslint-disable-next-line no-control-regex
+  const cliTable = installed.replace(/\u001b\[[\d;]*m/g, '');
+  matchAll(matchers.androidCliPackages, cliTable).forEach(match => {
+    const [kind, name] = match[1].split('/');
+    if (kind === 'build-tools') {
+      buildTools.push(name);
+    } else if (kind === 'platforms') {
+      const level = /^android-(\d+(?:\.\d+)?)(?:-|$)/.exec(name);
+      if (level) apiLevels.push(level[1]);
+    } else {
+      systemImages.push(name + ' | ' + match[2].trim().split(' System Image')[0]);
+    }
+  });
+
   return {
     apiLevels: apiLevels,
     buildTools: buildTools,

@@ -209,6 +209,24 @@ describe('parseSDKManagerOutput - Extracting info from sdkmanager', () => {
   expect(sdkmanager.apiLevels).toEqual(['28']);
   expect(sdkmanager.buildTools).toEqual(['28.0.3']);
   expect(sdkmanager.systemImages).toEqual(['android-28 | Google Play Intel x86 Atom']);
+
+  test('reads the installed packages table from Android CLI', () => {
+    const output = [
+      'Installed packages:',
+      '\u001b[32m  build-tools/36.0.0  36.0.0  Android SDK Build-Tools 36\u001b[39m\u001b[0m',
+      '\u001b[32m  platforms/android-36.1  2.0.0  Android SDK Platform 36.1\u001b[0m',
+      '\u001b[33m  system-images/android-26/google_apis/x86_64  15.0.0  ->  16.0.0  Google APIs Intel x86_64 Atom System Image\u001b[0m',
+      'Available packages:',
+      '  build-tools/37.0.0  37.0.0  Android SDK Build-Tools 37',
+      '  platforms/android-37  1.0.0  Android SDK Platform 37',
+    ].join('\r\n');
+
+    expect(utils.parseSDKManagerOutput(output)).toEqual({
+      apiLevels: ['36.1'],
+      buildTools: ['36.0.0'],
+      systemImages: ['android-26 | Google APIs Intel x86_64 Atom'],
+    });
+  });
 });
 
 describe('generatePlistBuddyCommand', () => {
