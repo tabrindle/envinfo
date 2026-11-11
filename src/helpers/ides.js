@@ -5,7 +5,8 @@ module.exports = {
   getAndroidStudioInfo: () => {
     let androidStudioVersion = Promise.resolve('N/A');
     if (utils.isMacOS) {
-      const paths = [
+      // Fallback locations for when Spotlight has not indexed the app yet.
+      const fallbackPaths = [
         path.join('/', 'Applications', 'Android Studio.app', 'Contents', 'Info.plist'),
         path.join(process.env.HOME, 'Applications', 'Android Studio.app', 'Contents', 'Info.plist'),
         path.join(
@@ -25,24 +26,32 @@ module.exports = {
           'Info.plist'
         ),
       ];
-      androidStudioVersion = Promise.all(
-        paths.map(p => {
-          return utils.fileExists(p).then(exists => {
-            if (!exists) {
-              return null;
-            }
-            const command = utils.generatePlistBuddyCommand(p.replace(/ /g, '\\ '), [
-              'CFBundleShortVersionString',
-              'CFBundleVersion',
-            ]);
-            return utils.run(command).then(version => {
-              return version.split('\n').join(' ');
-            });
-          });
+      const readPlistVersion = plistPath => {
+        const command = utils.generatePlistBuddyCommand(plistPath.replace(/ /g, '\\ '), [
+          'CFBundleShortVersionString',
+          'CFBundleVersion',
+        ]);
+        return utils.run(command).then(version => version.split('\n').join(' '));
+      };
+      androidStudioVersion = utils
+        .findDarwinApplications(utils.ideBundleIdentifiers['Android Studio'])
+        .then(appPaths => {
+          // Renamed apps and custom install locations are found via Spotlight by
+          // bundle identifier; fall back to well-known paths when it has no index.
+          if (appPaths.length > 0) {
+            return appPaths.map(appPath => path.join(appPath, 'Contents', 'Info.plist'));
+          }
+          return Promise.all(fallbackPaths.map(p => utils.fileExists(p))).then(existing =>
+            existing.filter(Boolean)
+          );
         })
-      ).then(versions => {
-        return versions.find(version => version !== null) || utils.NotFound;
-      });
+        .then(plistPaths => Promise.all(plistPaths.map(readPlistVersion)))
+        .then(versions => {
+          // Several versions may be installed side by side; report the newest one.
+          const found = versions.filter(Boolean);
+          if (found.length === 0) return utils.NotFound;
+          return found.sort(utils.compareVersions).reverse()[0];
+        });
     } else if (utils.isLinux) {
       androidStudioVersion = Promise.all([
         utils
