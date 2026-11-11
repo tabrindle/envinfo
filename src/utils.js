@@ -98,18 +98,51 @@ const matchAll = (regex, text) => {
   return matches;
 };
 
+const uniq = arr => {
+  return Array.from(new Set(arr)); // eslint-disable-line no-undef
+};
+
+// Splits a row of `sdkmanager --list` into its package path and description. The legacy sdkmanager
+// separates the columns with `|`. The Android CLI, which sdkmanager runs since the command-line tools 23.0,
+// separates them with spaces.
+const parseSDKManagerRow = line => {
+  if (line.indexOf('|') >= 0) {
+    const columns = line.split('|').map(column => column.trim());
+    return { path: columns[0], description: columns[2] || '' };
+  }
+  const row = matchers.androidSDKCliRow.exec(line);
+  return row ? { path: row[1], description: row[2] || '' } : null;
+};
+
 const parseSDKManagerOutput = output => {
-  const installed = output.split('Available')[0];
-  const apiLevels = matchAll(matchers.androidAPILevels, installed).map(m => m[1]);
-  const buildTools = matchAll(matchers.androidBuildTools, installed).map(m => m[1]);
-  const systemImages = matchAll(matchers.androidSystemImages, installed)
-    .map(m => m[1].split('|').map(s => s.trim()))
-    .map(image => image[0].split(';')[0] + ' | ' + image[2].split(' System Image')[0]);
+  const apiLevels = [];
+  const buildTools = [];
+  const systemImages = [];
+  const lines = output.replace(matchers.ansiEscapes, '').split('\n');
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i].trim();
+    // Available updates and packages follow the installed packages.
+    if (line.indexOf('Available') === 0) break;
+    const row = parseSDKManagerRow(line);
+    const pkg = row && matchers.androidSDKPackage.exec(row.path);
+    if (pkg) {
+      const segments = pkg[2].split(matchers.androidSDKPathSeparator);
+      if (pkg[1] === 'build-tools') {
+        buildTools.push(segments[0]);
+      } else if (pkg[1] === 'platforms') {
+        const level = matchers.androidAPILevel.exec(segments[0]);
+        if (level) apiLevels.push(level[1]);
+      } else if (pkg[1] === 'system-images') {
+        const image = row.description.split(' System Image')[0] || segments.slice(1).join('/');
+        systemImages.push(image ? segments[0] + ' | ' + image : segments[0]);
+      }
+    }
+  }
 
   return {
-    apiLevels: apiLevels,
-    buildTools: buildTools,
-    systemImages: systemImages,
+    apiLevels: uniq(apiLevels),
+    buildTools: uniq(buildTools),
+    systemImages: uniq(systemImages),
   };
 };
 
@@ -187,9 +220,7 @@ module.exports = {
     return Promise.resolve(version);
   },
 
-  uniq: arr => {
-    return Array.from(new Set(arr)); // eslint-disable-line no-undef
-  },
+  uniq: uniq,
 
   toReadableBytes: bytes => {
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
