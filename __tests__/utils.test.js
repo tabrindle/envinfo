@@ -192,7 +192,8 @@ describe('findVersion - Matching version strings against real world cases', () =
 });
 
 describe('parseSDKManagerOutput - Extracting info from sdkmanager', () => {
-  const output = `
+  test('reads the | separated table of the legacy sdkmanager', () => {
+    const output = `
     Path                                                                              | Version | Description                                     | Location
     -------                                                                           | ------- | -------                                         | -------
     build-tools;28.0.3                                                                | 28.0.3  | Android SDK Build-Tools 28.0.3                  | build-tools/28.0.3/
@@ -204,11 +205,47 @@ describe('parseSDKManagerOutput - Extracting info from sdkmanager', () => {
 
   Available Packages:
   `;
-  const sdkmanager = utils.parseSDKManagerOutput(output);
 
-  expect(sdkmanager.apiLevels).toEqual(['28']);
-  expect(sdkmanager.buildTools).toEqual(['28.0.3']);
-  expect(sdkmanager.systemImages).toEqual(['android-28 | Google Play Intel x86 Atom']);
+    expect(utils.parseSDKManagerOutput(output)).toEqual({
+      apiLevels: ['28'],
+      buildTools: ['28.0.3'],
+      systemImages: ['android-28 | Google Play Intel x86 Atom'],
+    });
+  });
+
+  test('reads minor API levels, SDK extensions and preview build tools from the legacy sdkmanager', () => {
+    const output = [
+      'Installed packages:',
+      '  Path                       | Version | Description                    | Location',
+      '  -------                    | ------- | -------                        | -------',
+      '  build-tools;36.0.0-rc1     | 36.0.0 rc1 | Android SDK Build-Tools 36-rc1 | build-tools/36.0.0-rc1',
+      '  platforms;android-35       | 2       | Android SDK Platform 35        | platforms/android-35',
+      '  platforms;android-35-ext14 | 1       | Android SDK Platform 35-ext14  | platforms/android-35-ext14',
+      '  platforms;android-36.1     | 1       | Android SDK Platform 36.1      | platforms/android-36.1',
+    ].join('\n');
+
+    expect(utils.parseSDKManagerOutput(output)).toEqual({
+      apiLevels: ['35', '36.1'],
+      buildTools: ['36.0.0-rc1'],
+      systemImages: [],
+    });
+  });
+
+  test('skips lines of the legacy sdkmanager that are not table rows', () => {
+    const output = [
+      "Warning: Observed package id 'system-images;android-30;google_apis;x86' in inconsistent location '/sdk/system-images/android-30/google_apis/x86-2' (Expected '/sdk/system-images/android-30/google_apis/x86')",
+      'Installed packages:',
+      '  Path                                     | Version | Description                    | Location',
+      '  -------                                  | ------- | -------                        | -------',
+      '  system-images;android-30;google_apis;x86 | 9       | Google APIs Intel x86 Atom System Image | system-images/android-30/google_apis/x86-2',
+    ].join('\n');
+
+    expect(utils.parseSDKManagerOutput(output)).toEqual({
+      apiLevels: [],
+      buildTools: [],
+      systemImages: ['android-30 | Google APIs Intel x86 Atom'],
+    });
+  });
 
   test('reads the installed packages table from Android CLI', () => {
     const output = [
@@ -225,6 +262,64 @@ describe('parseSDKManagerOutput - Extracting info from sdkmanager', () => {
       apiLevels: ['36.1'],
       buildTools: ['36.0.0'],
       systemImages: ['android-26 | Google APIs Intel x86_64 Atom'],
+    });
+  });
+
+  test('reads the sdkmanager --list of the command-line tools 23.0', () => {
+    // Rows from the list attached to #308, with less padding.
+    const output = [
+      'Installed packages:',
+      '\u001b[32m  build-tools/35.0.0                                         35.0.0          Android SDK Build-Tools 35                                  \u001b[39m\u001b[0m',
+      '\u001b[32m  build-tools/36.1.0                                         36.1.0          Android SDK Build-Tools 36.1                                \u001b[39m\u001b[0m',
+      '\u001b[32m  cmake/3.22.1                                               3.22.1          CMake 3.22.1                                                \u001b[39m\u001b[0m',
+      '\u001b[32m  ndk/27.0.12077973                                          27.0.12077973   NDK (Side by side) 27.0.12077973                            \u001b[39m\u001b[0m',
+      '\u001b[33m  platform-tools                                             36.0.2   ->  37.0.1  Android SDK Platform-Tools                          \u001b[39m\u001b[0m',
+      '\u001b[32m  platforms/android-33                                       3.0.0           Android SDK Platform 33                                     \u001b[39m\u001b[0m',
+      '\u001b[32m  platforms/android-35                                       2.0.0           Android SDK Platform 35                                     \u001b[39m\u001b[0m',
+      '\u001b[32m  platforms/android-35-ext14                                 1.0.0           Android SDK Platform 35-ext14                               \u001b[39m\u001b[0m',
+      '\u001b[32m  platforms/android-35-ext15                                 1.0.0           Android SDK Platform 35-ext15                               \u001b[39m\u001b[0m',
+      '\u001b[32m  platforms/android-37.0                                     2.0.0           Android SDK Platform 37.0                                   \u001b[39m\u001b[0m',
+      '\u001b[32m  sources/android-35                                         1.0.0           Sources for Android 35                                      \u001b[39m\u001b[0m',
+      '\u001b[32m  system-images/android-26/google_apis/x86_64                16.0.0          Google APIs Intel x86_64 Atom System Image                  \u001b[39m\u001b[0m',
+      '\u001b[32m  system-images/android-36.1/google_apis_playstore/x86_64    4.0.0           Google Play Intel x86_64 Atom System Image                  \u001b[39m\u001b[0m',
+      '\u001b[32m  system-images/android-36.1/google_apis_playstore_ps16k/x86_64  4.0.0      16 KB Page Size Google Play Intel x86_64 Atom System Image  \u001b[39m\u001b[0m',
+      'Available packages:',
+      '  add-ons/addon-google_apis-google-10                        2.0.0           Google APIs                                                 ',
+      '  platforms/android-38                                       1.0.0           Android SDK Platform 38                                     ',
+    ].join('\n');
+
+    expect(utils.parseSDKManagerOutput(output)).toEqual({
+      apiLevels: ['33', '35', '37.0'],
+      buildTools: ['35.0.0', '36.1.0'],
+      systemImages: [
+        'android-26 | Google APIs Intel x86_64 Atom',
+        'android-36.1 | Google Play Intel x86_64 Atom',
+        'android-36.1 | 16 KB Page Size Google Play Intel x86_64 Atom',
+      ],
+    });
+  });
+
+  test('reads Android CLI rows without colors, with updates and with other escape sequences', () => {
+    const output = [
+      'Installed packages:',
+      '\u001b[2K\u001b[32m  build-tools/36.0.0  35.0.0  ->  36.0.0  Android SDK Build-Tools 36\u001b(B\u001b[m',
+      '  platforms/android-36  1.0.0  ->  2.0.0  Android SDK Platform 36',
+      '\u001b]0;sdkmanager\u0007  system-images/android-28/google_apis/x86_64  11.0.0    ',
+      '  system-images/android-26/google_apis/x86_64  16.0.0',
+    ].join('\n');
+
+    expect(utils.parseSDKManagerOutput(output)).toEqual({
+      apiLevels: ['36'],
+      buildTools: ['36.0.0'],
+      systemImages: ['android-28 | google_apis/x86_64', 'android-26 | google_apis/x86_64'],
+    });
+  });
+
+  test('returns empty lists for empty output', () => {
+    expect(utils.parseSDKManagerOutput('')).toEqual({
+      apiLevels: [],
+      buildTools: [],
+      systemImages: [],
     });
   });
 });
